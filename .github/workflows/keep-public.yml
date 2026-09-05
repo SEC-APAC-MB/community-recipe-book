@@ -1,0 +1,41 @@
+name: Keep Repository Public
+
+on:
+  schedule:
+    # Run every 10 minutes
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+permissions:
+  administration: write
+
+jobs:
+  keep-public:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure repository is public
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REPO="${{ github.repository }}"
+          VISIBILITY=$(gh repo view "$REPO" --json visibility --jq '.visibility')
+          echo "Current visibility: $VISIBILITY"
+          if [ "$VISIBILITY" != "PUBLIC" ]; then
+            echo "::warning::Repository is $VISIBILITY, changing to PUBLIC for GitHub Pages"
+            gh repo edit "$REPO" --visibility public --accept-visibility-change-consequences
+            echo "Repository is now PUBLIC"
+          else
+            echo "Repository is already PUBLIC"
+          fi
+
+      - name: Ensure GitHub Pages is enabled
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REPO="${{ github.repository }}"
+          PAGES_STATUS=$(gh api "repos/$REPO/pages" --jq '.status' 2>/dev/null || echo "not-found")
+          echo "Pages status: $PAGES_STATUS"
+          if [ "$PAGES_STATUS" = "not-found" ] || [ -z "$PAGES_STATUS" ]; then
+            echo "Pages not found, re-enabling..."
+            gh api "repos/$REPO/pages" -X POST -f build_type=workflow -f source.branch=main -f source.path=/ || true
+          fi
