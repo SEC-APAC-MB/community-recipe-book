@@ -19,6 +19,10 @@
   <div class="nav-links">
     <a href="./" data-i18n="navBrowse">Browse</a>
     <a href="./submit.html" class="active" data-i18n="navSubmit">Submit</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span class="icon-moon">🌙</span>
+      <span class="icon-sun">☀️</span>
+    </button>
   </div>
 </nav>
 
@@ -42,10 +46,9 @@
 
   <form id="recipeForm" novalidate>
 
-    <!-- Section: Your Recipe — open by default -->
-    <div class="form-section accordion-section open">
-      <h2 class="accordion-header" data-i18n="sectionYourRecipe">Your Recipe <span class="accordion-icon">▾</span></h2>
-      <div class="accordion-body">
+    <!-- Section: Your Recipe -->
+    <div class="form-section">
+      <h2 data-i18n="sectionYourRecipe">Your Recipe</h2>
 
       <div class="form-group">
         <label><span data-i18n="recipeName">Recipe name</span> <span class="required" data-i18n="required">*</span></label>
@@ -67,14 +70,11 @@
         <label><span data-i18n="story">Tell us the story behind your recipe</span> <span class="optional" data-i18n="optional">(optional)</span></label>
         <textarea id="story" rows="4" data-i18n="storyPh" placeholder="Every dish has a story. What's yours?"></textarea>
       </div>
-
-      </div>
     </div>
 
     <!-- Section: Details -->
-    <div class="form-section accordion-section">
-      <h2 class="accordion-header" data-i18n="sectionDetails">The Details <span class="accordion-icon">▾</span></h2>
-      <div class="accordion-body">
+    <div class="form-section">
+      <h2 data-i18n="sectionDetails">The Details</h2>
 
       <div class="form-group">
         <label><span data-i18n="serves">How many people does it serve?</span> <span class="required" data-i18n="required">*</span></label>
@@ -102,14 +102,11 @@
           <option value="Advanced">👨‍🍳 Advanced</option>
         </select>
       </div>
-
-      </div>
     </div>
 
     <!-- Section: The Recipe -->
-    <div class="form-section accordion-section">
-      <h2 class="accordion-header" data-i18n="sectionTheRecipe">The Recipe <span class="accordion-icon">▾</span></h2>
-      <div class="accordion-body">
+    <div class="form-section">
+      <h2 data-i18n="sectionTheRecipe">The Recipe</h2>
 
       <div class="form-group">
         <label><span data-i18n="ingredients">Ingredients</span> <span class="required" data-i18n="required">*</span></label>
@@ -135,14 +132,11 @@
         <label><span data-i18n="serveWith">What do you serve it with?</span> <span class="optional" data-i18n="optional">(optional)</span></label>
         <input type="text" id="serve_with" data-i18n="serveWithPh" placeholder="e.g. Steamed rice, chilli oil, pickled ginger">
       </div>
-
-      </div>
     </div>
 
-    <!-- Section: Dietary & Allergens -->
-    <div class="form-section accordion-section">
-      <h2 class="accordion-header" data-i18n="sectionDietary">Dietary & Allergens <span class="accordion-icon">▾</span></h2>
-      <div class="accordion-body">
+    <!-- Section: Dietary -->
+    <div class="form-section">
+      <h2 data-i18n="sectionDietary">Dietary & Allergens</h2>
 
       <div class="form-group">
         <label><span data-i18n="dietaryInfo">Dietary information</span></label>
@@ -151,19 +145,9 @@
           <label><input type="checkbox" name="dietary" value="Vegan"> <span>🌱 Vegan</span></label>
           <label><input type="checkbox" name="dietary" value="Gluten-free"> <span>🌾 Gluten-free</span></label>
           <label><input type="checkbox" name="dietary" value="Halal"> <span>☪️ Halal</span></label>
-          <label><input type="checkbox" name="dietary" value="Kosher"> <span>✡️ Kosher</span></label>
           <label><input type="checkbox" name="dietary" value="Dairy-free"> <span>🥛 Dairy-free</span></label>
           <label><input type="checkbox" name="dietary" value="Nut-free"> <span>🥜 Nut-free</span></label>
-          <label><input type="checkbox" name="dietary" value="Egg-free"> <span>🥚 Egg-free</span></label>
-          <label><input type="checkbox" name="dietary" value="Soy-free"> <span>🫘 Soy-free</span></label>
-          <label><input type="checkbox" name="dietary" value="Shellfish-free"> <span>🦐 Shellfish-free</span></label>
-          <label><input type="checkbox" name="dietary" value="Sugar-free"> <span>🍬 Sugar-free</span></label>
-          <label><input type="checkbox" name="dietary" value="Low-carb"> <span>🍖 Low-carb</span></label>
-          <label><input type="checkbox" name="dietary" value="Keto"> <span>🥑 Keto</span></label>
-          <label><input type="checkbox" name="dietary" value="Paleo"> <span>🦴 Paleo</span></label>
-          <label class="other-checkbox-label"><input type="checkbox" name="dietary" value="_other" id="dietaryOtherCheckbox"> <span data-i18n="other">Other</span></label>
         </div>
-        <input type="text" id="dietaryOther" data-i18n="otherDietaryPh" placeholder="e.g. FODMAP, Pescatarian, Low-FODMAP..." style="display:none;margin-top:8px;" class="other-input">
       </div>
 
       <div class="form-group">
@@ -173,78 +157,15 @@
           <label><input type="checkbox" name="allergens" value="Dairy"> <span>Dairy</span></label>
           <label><input type="checkbox" name="allergens" value="Eggs"> <span>Eggs</span></label>
           <label><input type="checkbox" name="allergens" value="Nuts"> <span>Nuts</span></label>
-          <label><input type="checkbox" name="allergens" value="Peanuts"> <span>🥜 Peanuts</span></label>
           <label><input type="checkbox" name="allergens" value="Soy"> <span>Soy</span></label>
           <label><input type="checkbox" name="allergens" value="Shellfish"> <span>Shellfish</span></label>
-          <label><input type="checkbox" name="allergens" value="Fish"> <span>🐟 Fish</span></label>
-          <label><input type="checkbox" name="allergens" value="Sesame"> <span>Sesame</span></label>
-          <label><input type="checkbox" name="allergens" value="Celery"> <span>🥬 Celery</span></label>
-          <label><input type="checkbox" name="allergens" value="Mustard"> <span>Mustard</span></label>
-          <label><input type="checkbox" name="allergens" value="Sulphites"> <span>🍷 Sulphites</span></label>
-          <label class="other-checkbox-label"><input type="checkbox" name="allergens" value="_other" id="allergensOtherCheckbox"> <span data-i18n="other">Other</span></label>
         </div>
-        <input type="text" id="allergensOther" data-i18n="otherAllergensPh" placeholder="e.g. Lupin, Molluscs..." style="display:none;margin-top:8px;" class="other-input">
-      </div>
-
       </div>
     </div>
 
-    <!-- Section: Cuisine & Meal Type -->
-    <div class="form-section accordion-section">
-      <h2 class="accordion-header" data-i18n="sectionCuisine">Cuisine & Meal Type <span class="accordion-icon">▾</span></h2>
-      <div class="accordion-body">
-
-      <div class="form-group">
-        <label><span data-i18n="cuisineType">Cuisine / region</span> <span class="optional" data-i18n="optional">(optional)</span></label>
-        <div class="checkbox-group" role="group" aria-label="Cuisine type">
-          <label><input type="checkbox" name="cuisine" value="Chinese"> <span>🇨🇳 Chinese</span></label>
-          <label><input type="checkbox" name="cuisine" value="Indian"> <span>🇮🇳 Indian</span></label>
-          <label><input type="checkbox" name="cuisine" value="Japanese"> <span>🇯🇵 Japanese</span></label>
-          <label><input type="checkbox" name="cuisine" value="Korean"> <span>🇰🇷 Korean</span></label>
-          <label><input type="checkbox" name="cuisine" value="Thai"> <span>🇹🇭 Thai</span></label>
-          <label><input type="checkbox" name="cuisine" value="Vietnamese"> <span>🇻🇳 Vietnamese</span></label>
-          <label><input type="checkbox" name="cuisine" value="Indonesian"> <span>🇮🇩 Indonesian</span></label>
-          <label><input type="checkbox" name="cuisine" value="Filipino"> <span>🇵🇭 Filipino</span></label>
-          <label><input type="checkbox" name="cuisine" value="Malaysian"> <span>🇲🇾 Malaysian</span></label>
-          <label><input type="checkbox" name="cuisine" value="Italian"> <span>🇮🇹 Italian</span></label>
-          <label><input type="checkbox" name="cuisine" value="Mexican"> <span>🇲🇽 Mexican</span></label>
-          <label><input type="checkbox" name="cuisine" value="Middle Eastern"> <span>🇱🇧 Middle Eastern</span></label>
-          <label><input type="checkbox" name="cuisine" value="Mediterranean"> <span>🫒 Mediterranean</span></label>
-          <label><input type="checkbox" name="cuisine" value="African"> <span>🌍 African</span></label>
-          <label><input type="checkbox" name="cuisine" value="Caribbean"> <span>🏝️ Caribbean</span></label>
-          <label><input type="checkbox" name="cuisine" value="European"> <span>🇪🇺 European</span></label>
-          <label><input type="checkbox" name="cuisine" value="American"> <span>🇺🇸 American</span></label>
-          <label><input type="checkbox" name="cuisine" value="Fusion"> <span>🌍 Fusion</span></label>
-          <label class="other-checkbox-label"><input type="checkbox" name="cuisine" value="_other" id="cuisineOtherCheckbox"> <span data-i18n="other">Other</span></label>
-        </div>
-        <input type="text" id="cuisineOther" data-i18n="otherCuisinePh" placeholder="e.g. Peruvian, Ethiopian, Burmese..." style="display:none;margin-top:8px;" class="other-input">
-      </div>
-
-      <div class="form-group">
-        <label><span data-i18n="mealType">Meal type</span> <span class="optional" data-i18n="optional">(optional)</span></label>
-        <div class="checkbox-group" role="group" aria-label="Meal type">
-          <label><input type="checkbox" name="meal_type" value="Breakfast"> <span>🌅 Breakfast</span></label>
-          <label><input type="checkbox" name="meal_type" value="Lunch"> <span>🥪 Lunch</span></label>
-          <label><input type="checkbox" name="meal_type" value="Dinner"> <span>🍽️ Dinner</span></label>
-          <label><input type="checkbox" name="meal_type" value="Snack"> <span>🍿 Snack</span></label>
-          <label><input type="checkbox" name="meal_type" value="Dessert"> <span>🍰 Dessert</span></label>
-          <label><input type="checkbox" name="meal_type" value="Appetizer"> <span>🥗 Appetizer</span></label>
-          <label><input type="checkbox" name="meal_type" value="Side dish"> <span>🥘 Side dish</span></label>
-          <label><input type="checkbox" name="meal_type" value="Soup/Stew"> <span>🍲 Soup/Stew</span></label>
-          <label><input type="checkbox" name="meal_type" value="Drink"> <span>🥤 Drink</span></label>
-          <label><input type="checkbox" name="meal_type" value="Preserve/Pickle"> <span>🫙 Preserve/Pickle</span></label>
-          <label class="other-checkbox-label"><input type="checkbox" name="meal_type" value="_other" id="mealTypeOtherCheckbox"> <span data-i18n="other">Other</span></label>
-        </div>
-        <input type="text" id="mealTypeOther" data-i18n="otherMealTypePh" placeholder="e.g. Brunch, Street food..." style="display:none;margin-top:8px;" class="other-input">
-      </div>
-
-      </div>
-    </div>
-
-    <!-- Section: Photo & Contact -->
-    <div class="form-section accordion-section">
-      <h2 class="accordion-header" data-i18n="sectionPhoto">Photo & Contact <span class="accordion-icon">▾</span></h2>
-      <div class="accordion-body">
+    <!-- Section: Photo -->
+    <div class="form-section">
+      <h2 data-i18n="sectionPhoto">Photo & Contact</h2>
 
       <div class="form-group">
         <label><span data-i18n="photo">Upload a photo of your recipe</span> <span class="optional" data-i18n="optional">(optional)</span></label>
@@ -263,8 +184,6 @@
       <div class="form-group">
         <label><span data-i18n="contactEmail">Your email (so we can thank you!)</span> <span class="optional" data-i18n="optional">(optional)</span></label>
         <input type="email" id="contact_email" data-i18n="contactEmailPh" placeholder="e.g. mei@example.com">
-      </div>
-
       </div>
     </div>
 
@@ -295,57 +214,50 @@
 </footer>
 
 <script>
-// ── Accordion toggle ──
-document.querySelectorAll('.accordion-header').forEach(header => {
-  header.addEventListener('click', () => {
-    const section = header.parentElement;
-    section.classList.toggle('open');
-  });
-  header.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      const section = header.parentElement;
-      section.classList.toggle('open');
-    }
-  });
-});
-
-// ── "Other" checkbox toggle (show/hide free text field) ──
-function setupOtherToggle(checkboxId, inputId) {
-  const checkbox = document.getElementById(checkboxId);
-  const input = document.getElementById(inputId);
-  if (!checkbox || !input) return;
-  checkbox.addEventListener('change', () => {
-    input.style.display = checkbox.checked ? 'block' : 'none';
-    if (!checkbox.checked) input.value = '';
-  });
-}
-
-setupOtherToggle('dietaryOtherCheckbox', 'dietaryOther');
-setupOtherToggle('allergensOtherCheckbox', 'allergensOther');
-setupOtherToggle('cuisineOtherCheckbox', 'cuisineOther');
-setupOtherToggle('mealTypeOtherCheckbox', 'mealTypeOther');
-
 // ── IndexedDB ──
 const DB_NAME = 'CommunityRecipeBook';
 const DB_VERSION = 1;
+const STORE_NAME = 'recipes';
 
 function openDB() {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, DB_VERSION);
-    req.onupgradeneeded = e => {
+    req.onupgradeneeded = (e) => {
       const db = e.target.result;
-      if (!db.objectStoreNames.contains('recipes')) {
-        db.createObjectStore('recipes', { keyPath: 'id', autoIncrement: true });
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        const store = db.createObjectStore(STORE_NAME, { keyPath: 'slug' });
+        store.createIndex('created_at', 'created_at', { unique: false });
+        store.createIndex('origin', 'origin', { unique: false });
+        store.createIndex('difficulty', 'difficulty', { unique: false });
       }
     };
-    req.onsuccess = e => resolve(e.target.result);
-    req.onerror = e => reject(e.target.error);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
   });
 }
 
-// ── Drag & Drop / Photo ──
-let photoDataUrl = null;
+async function addRecipe(recipe) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    const store = tx.objectStore(STORE_NAME);
+    const req = store.put(recipe);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function slugify(text) {
+  return text.toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .substring(0, 60);
+}
+
+// ── Photo Upload (drag & drop + file input + preview) ──
+let photoDataUrl = '';
+
 const photoUpload = document.getElementById('photoUpload');
 const photoInput = document.getElementById('photoInput');
 const photoPreview = document.getElementById('photoPreview');
@@ -353,32 +265,44 @@ const photoPreviewImg = document.getElementById('photoPreviewImg');
 const removePhoto = document.getElementById('removePhoto');
 
 photoUpload.addEventListener('click', () => photoInput.click());
-photoUpload.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); photoInput.click(); }});
+photoUpload.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    photoInput.click();
+  }
+});
 
-photoUpload.addEventListener('dragover', e => { e.preventDefault(); photoUpload.classList.add('drag-over'); });
-photoUpload.addEventListener('dragleave', () => photoUpload.classList.remove('drag-over'));
-photoUpload.addEventListener('drop', e => {
+// Drag & drop
+photoUpload.addEventListener('dragover', (e) => {
   e.preventDefault();
-  photoUpload.classList.remove('drag-over');
+  photoUpload.classList.add('dragover');
+});
+
+photoUpload.addEventListener('dragleave', () => {
+  photoUpload.classList.remove('dragover');
+});
+
+photoUpload.addEventListener('drop', (e) => {
+  e.preventDefault();
+  photoUpload.classList.remove('dragover');
   const file = e.dataTransfer.files[0];
-  if (file && file.type.match('image.*') && file.size <= 5 * 1024 * 1024) handlePhoto(file);
+  if (file && file.type.startsWith('image/')) {
+    processPhoto(file);
+  }
 });
 
-photoInput.addEventListener('change', e => {
+photoInput.addEventListener('change', (e) => {
   const file = e.target.files[0];
-  if (file) handlePhoto(file);
+  if (file) processPhoto(file);
 });
 
-removePhoto.addEventListener('click', () => {
-  photoDataUrl = null;
-  photoPreview.style.display = 'none';
-  photoUpload.style.display = 'flex';
-  photoInput.value = '';
-});
-
-function handlePhoto(file) {
+function processPhoto(file) {
+  if (file.size > 5 * 1024 * 1024) {
+    alert('Photo must be less than 5 MB');
+    return;
+  }
   const reader = new FileReader();
-  reader.onload = e => {
+  reader.onload = (e) => {
     photoDataUrl = e.target.result;
     photoPreviewImg.src = photoDataUrl;
     photoPreview.style.display = 'block';
@@ -387,15 +311,33 @@ function handlePhoto(file) {
   reader.readAsDataURL(file);
 }
 
+removePhoto.addEventListener('click', () => {
+  photoDataUrl = '';
+  photoPreviewImg.src = '';
+  photoPreview.style.display = 'none';
+  photoUpload.style.display = 'block';
+  photoInput.value = '';
+});
+
 // ── Form Validation & Submission ──
-const form = document.getElementById('recipeForm');
+function showError(fieldId) {
+  const errorEl = document.getElementById(fieldId + '_error');
+  if (errorEl) errorEl.style.display = 'block';
+  const inputEl = document.getElementById(fieldId);
+  if (inputEl) inputEl.style.borderColor = 'var(--red)';
+}
 
-form.addEventListener('submit', async e => {
-  e.preventDefault();
-  let valid = true;
-
-  // Clear previous errors
+function clearErrors() {
   document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('.form-group input, .form-group textarea').forEach(el => {
+    el.style.borderColor = '';
+  });
+  document.getElementById('permission_error').style.display = 'none';
+}
+
+document.getElementById('recipeForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  clearErrors();
 
   const recipeName = document.getElementById('recipe_name').value.trim();
   const serves = document.getElementById('serves').value.trim();
@@ -403,136 +345,142 @@ form.addEventListener('submit', async e => {
   const method = document.getElementById('method').value.trim();
   const permission = document.getElementById('permission').checked;
 
-  if (!recipeName) { document.getElementById('recipe_name_error').style.display = 'block'; valid = false; }
-  if (!serves) { document.getElementById('serves_error').style.display = 'block'; valid = false; }
-  if (!ingredients) { document.getElementById('ingredients_error').style.display = 'block'; valid = false; }
-  if (!method) { document.getElementById('method_error').style.display = 'block'; valid = false; }
-  if (!permission) { document.getElementById('permission_error').style.display = 'block'; valid = false; }
+  let valid = true;
+
+  if (!recipeName) { showError('recipe_name'); valid = false; }
+  if (!serves) { showError('serves'); valid = false; }
+  if (!ingredients) { showError('ingredients'); valid = false; }
+  if (!method) { showError('method'); valid = false; }
+  if (!permission) {
+    document.getElementById('permission_error').style.display = 'block';
+    valid = false;
+  }
 
   if (!valid) return;
 
-  const displayName = document.getElementById('display_name').value.trim();
-  const origin = document.getElementById('origin').value.trim();
-  const story = document.getElementById('story').value.trim();
-  const prepTime = document.getElementById('prep_time').value.trim();
-  const cookTime = document.getElementById('cook_time').value.trim();
-  const difficulty = document.getElementById('difficulty').value;
-  const serveWith = document.getElementById('serve_with').value.trim();
-  const contactEmail = document.getElementById('contact_email').value.trim();
-
+  const slug = slugify(recipeName) + '-' + Date.now();
   const dietary = [];
-  document.querySelectorAll('input[name="dietary"]:checked').forEach(cb => {
-    if (cb.value === '_other') {
-      const custom = document.getElementById('dietaryOther').value.trim();
-      if (custom) dietary.push(custom);
-    } else {
-      dietary.push(cb.value);
-    }
-  });
+  document.querySelectorAll('input[name="dietary"]:checked').forEach(cb => dietary.push(cb.value));
   const allergens = [];
-  document.querySelectorAll('input[name="allergens"]:checked').forEach(cb => {
-    if (cb.value === '_other') {
-      const custom = document.getElementById('allergensOther').value.trim();
-      if (custom) allergens.push(custom);
-    } else {
-      allergens.push(cb.value);
-    }
-  });
-  const cuisine = [];
-  document.querySelectorAll('input[name="cuisine"]:checked').forEach(cb => {
-    if (cb.value === '_other') {
-      const custom = document.getElementById('cuisineOther').value.trim();
-      if (custom) cuisine.push(custom);
-    } else {
-      cuisine.push(cb.value);
-    }
-  });
-  const mealType = [];
-  document.querySelectorAll('input[name="meal_type"]:checked').forEach(cb => {
-    if (cb.value === '_other') {
-      const custom = document.getElementById('mealTypeOther').value.trim();
-      if (custom) mealType.push(custom);
-    } else {
-      mealType.push(cb.value);
-    }
-  });
+  document.querySelectorAll('input[name="allergens"]:checked').forEach(cb => allergens.push(cb.value));
 
   const recipe = {
+    slug,
     recipe_name: recipeName,
-    display_name: displayName || 'Anonymous',
-    origin: origin,
-    story: story,
-    serves: serves,
-    prep_time: prepTime,
-    cook_time: cookTime,
-    difficulty: difficulty,
-    ingredients: ingredients,
-    method: method,
-    serve_with: serveWith,
+    display_name: document.getElementById('display_name').value.trim(),
+    origin: document.getElementById('origin').value.trim(),
+    story: document.getElementById('story').value.trim(),
+    serves,
+    prep_time: document.getElementById('prep_time').value.trim(),
+    cook_time: document.getElementById('cook_time').value.trim(),
+    difficulty: document.getElementById('difficulty').value,
+    ingredients,
+    method,
+    serve_with: document.getElementById('serve_with').value.trim(),
     dietary,
     allergens,
-    cuisine,
-    meal_type: mealType,
     photo: photoDataUrl,
-    contact_email: contactEmail,
-    submitted_at: new Date().toISOString()
+    contact_email: document.getElementById('contact_email').value.trim(),
+    created_at: new Date().toISOString()
   };
 
   try {
-    const db = await openDB();
-    const tx = db.transaction('recipes', 'readwrite');
-    const store = tx.objectStore('recipes');
-    store.add(recipe);
-    tx.oncomplete = () => {
-      form.style.display = 'none';
-      document.querySelector('.intro-box').style.display = 'none';
-      document.getElementById('successMessage').style.display = 'block';
-      // Clear form
-      form.reset();
-      photoDataUrl = null;
-      photoPreview.style.display = 'none';
-      photoUpload.style.display = 'flex';
-    };
+    await addRecipe(recipe);
+    document.getElementById('recipeForm').style.display = 'none';
+    document.querySelector('.intro-box').style.display = 'none';
+    const successMsg = document.getElementById('successMessage');
+    successMsg.style.display = 'block';
+    successMsg.scrollIntoView({ behavior: 'smooth' });
   } catch (err) {
-    console.error('Error saving recipe:', err);
+    alert('Error saving recipe. Please try again.');
+    console.error(err);
   }
 });
 
-// ── Dark Mode ──
-const themeToggle = document.getElementById('themeToggle');
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+// Clear error on input
+document.querySelectorAll('.form-group input, .form-group textarea').forEach(el => {
+  el.addEventListener('input', () => {
+    el.style.borderColor = '';
+    const errorEl = document.getElementById(el.id + '_error');
+    if (errorEl) errorEl.style.display = 'none';
+  });
+});
 
-function setTheme(dark) {
-  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-  themeToggle.classList.toggle('dark', dark);
-  localStorage.setItem('theme', dark ? 'dark' : 'light');
+// ── Theme Toggle ──
+function initTheme() {
+  const saved = localStorage.getItem('recipeBookTheme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
 }
 
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme) setTheme(savedTheme === 'dark');
-else if (prefersDark.matches) setTheme(true);
-
-themeToggle.addEventListener('click', () => {
-  setTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('recipeBookTheme', next);
 });
 
-// ── i18n / Language ──
-const dropdown = document.getElementById('langDropdown');
-const dropdownBtn = document.getElementById('langDropdownBtn');
-const dropdownMenu = document.getElementById('langDropdownMenu');
+initTheme();
 
-dropdownBtn.addEventListener('click', () => {
-  const expanded = dropdownBtn.getAttribute('aria-expanded') === 'true';
-  dropdownBtn.setAttribute('aria-expanded', !expanded);
-  dropdownMenu.style.display = expanded ? 'none' : 'block';
-});
+// ── Language Dropdown ──
+function buildLangDropdown() {
+  const menu = document.getElementById('langDropdownMenu');
+  const btn = document.getElementById('langDropdownBtn');
+  const currentLang = window.i18n.detectLanguage();
 
-document.addEventListener('click', e => {
-  if (!dropdown.contains(e.target)) {
-    dropdownBtn.setAttribute('aria-expanded', 'false');
-    dropdownMenu.style.display = 'none';
-  }
-});
+  btn.textContent = '🌐 ' + window.i18n.LANG_NAMES[currentLang];
+
+  window.i18n.SUPPORTED_LANGS.forEach(lang => {
+    const item = document.createElement('a');
+    item.href = 'javascript:void(0)';
+    item.className = 'lang-dropdown-item' + (lang === currentLang ? ' active' : '');
+    item.textContent = window.i18n.LANG_NAMES[lang];
+    item.dataset.lang = lang;
+    item.setAttribute('role', 'option');
+    item.setAttribute('aria-selected', lang === currentLang ? 'true' : 'false');
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.i18n.setLanguage(lang);
+      btn.textContent = '🌐 ' + window.i18n.LANG_NAMES[lang];
+      btn.setAttribute('aria-expanded', 'false');
+      const url = new URL(window.location);
+      url.searchParams.set('lang', lang);
+      history.replaceState(null, '', url);
+      menu.classList.remove('open');
+      menu.querySelectorAll('.lang-dropdown-item').forEach(i => {
+        i.classList.toggle('active', i.dataset.lang === lang);
+        i.setAttribute('aria-selected', i.dataset.lang === lang ? 'true' : 'false');
+      });
+    });
+    menu.appendChild(item);
+  });
+
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+
+  document.addEventListener('click', () => {
+    menu.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  });
+
+  btn.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
+// ── Init ──
+const lang = window.i18n.detectLanguage();
+window.i18n.setLanguage(lang);
+buildLangDropdown();
 </script>
 </body>
 </html>

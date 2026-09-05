@@ -19,6 +19,10 @@
   <div class="nav-links">
     <a href="./" data-i18n="navBrowse">Browse</a>
     <a href="./submit.html" data-i18n="navSubmit">Submit</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span class="icon-moon">🌙</span>
+      <span class="icon-sun">☀️</span>
+    </button>
   </div>
 </nav>
 
@@ -135,18 +139,6 @@ async function renderRecipe() {
     ${dietary.length ? `
       <div class="recipe-card-tags" style="margin-bottom:8px">
         ${dietary.map(d => `<span class="tag tag-dietary">${escapeHtml(d)}</span>`).join('')}
-      </div>
-    ` : ''}
-
-    ${(recipe.cuisine && recipe.cuisine.length) ? `
-      <div class="recipe-card-tags" style="margin-bottom:8px">
-        ${(recipe.cuisine || []).map(c => `<span class="tag tag-cuisine">${escapeHtml(c)}</span>`).join('')}
-      </div>
-    ` : ''}
-
-    ${(recipe.meal_type && recipe.meal_type.length) ? `
-      <div class="recipe-card-tags" style="margin-bottom:8px">
-        ${(recipe.meal_type || []).map(m => `<span class="tag tag-meal">${escapeHtml(m)}</span>`).join('')}
       </div>
     ` : ''}
 
