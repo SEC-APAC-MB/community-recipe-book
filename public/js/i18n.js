@@ -48,7 +48,7 @@ const translations = {
     otherDietaryPh: "e.g. FODMAP, Pescatarian, Low-FODMAP...",
     otherAllergensPh: "e.g. Lupin, Molluscs...",
     otherCuisinePh: "e.g. Peruvian, Ethiopian, Burmese...",
-    otherMealTypePh: "e.g. Brunch, Street food...","
+    otherMealTypePh: "e.g. Brunch, Street food...",
     sectionPhoto: "Photo & Contact",
     // Fields
     recipeName: "Recipe name",
@@ -151,7 +151,7 @@ const translations = {
     otherDietaryPh: "bijv. FODMAP, Pescatarisch...",
     otherAllergensPh: "bijv. Lupine, Weekdieren...",
     otherCuisinePh: "bijv. Peruaans, Ethiopisch, Burmees...",
-    otherMealTypePh: "bijv. Brunch, Straatvoedsel...","
+    otherMealTypePh: "bijv. Brunch, Straatvoedsel...",
     sectionPhoto: "Foto & Contact",
     recipeName: "Receptnaam",
     displayName: "Jouw naam / naam die je wilt tonen",
@@ -247,7 +247,7 @@ const translations = {
     otherDietaryPh: "مثال: فودماب، بيسكاتريان...",
     otherAllergensPh: "مثال: Lupin, الرخويات...",
     otherCuisinePh: "مثال: بيروفي، إثيوبي، بورمي...",
-    otherMealTypePh: "مثال: فطور متأخر، طعام الشارع...","
+    otherMealTypePh: "مثال: فطور متأخر، طعام الشارع...",
     sectionPhoto: "الصورة والتواصل",
     recipeName: "اسم الوصفة",
     displayName: "اسمك / الاسم الذي تريد عرضه",
@@ -343,7 +343,7 @@ const translations = {
     otherDietaryPh: "örn. FODMAP, Pescatarian...",
     otherAllergensPh: "örn. Lupin, Yumuşakçalar...",
     otherCuisinePh: "örn. Perulu, Etiyopyalı, Birmanyalı...",
-    otherMealTypePh: "örn. Brunch, Sokak yemekleri...","
+    otherMealTypePh: "örn. Brunch, Sokak yemekleri...",
     sectionPhoto: "Fotoğraf & İletişim",
     recipeName: "Tarif adı",
     displayName: "Adınız / görüntülenmesini istediğiniz ad",
@@ -439,7 +439,7 @@ const translations = {
     otherDietaryPh: "np. FODMAP, Pescatarian...",
     otherAllergensPh: "np. Łubin, Mięczaki...",
     otherCuisinePh: "np. Peruwiańska, Etiopska, Birmańska...",
-    otherMealTypePh: "np. Brunch, Jedzenie uliczne...","
+    otherMealTypePh: "np. Brunch, Jedzenie uliczne...",
     sectionPhoto: "Zdjęcie i Kontakt",
     recipeName: "Nazwa przepisu",
     displayName: "Twoje imię / nazwa do wyświetlenia",
@@ -535,7 +535,7 @@ const translations = {
     otherDietaryPh: "例如：FODMAP、海鲜素...",
     otherAllergensPh: "例如：羽扇豆、软体动物...",
     otherCuisinePh: "例如：秘鲁菜、埃塞俄比亚菜、缅甸菜...",
-    otherMealTypePh: "例如：早午餐、街头小吃...","
+    otherMealTypePh: "例如：早午餐、街头小吃...",
     sectionPhoto: "照片与联系",
     recipeName: "食谱名称",
     displayName: "您的姓名/希望显示的名称",
