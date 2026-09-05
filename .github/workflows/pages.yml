@@ -17,8 +17,6 @@ concurrency:
 jobs:
   ensure-public:
     runs-on: ubuntu-latest
-    permissions:
-      administration: write
     steps:
       - name: Ensure repository is public
         env:
@@ -27,8 +25,6 @@ jobs:
           VISIBILITY=$(gh repo view --json visibility --jq '.visibility')
           if [ "$VISIBILITY" != "PUBLIC" ]; then
             echo "::warning::Repository is $VISIBILITY, GitHub Pages requires public visibility on free plan"
-            gh repo edit --visibility public --accept-visibility-change-consequences
-            echo "Repository is now public"
           else
             echo "Repository is already public"
           fi
