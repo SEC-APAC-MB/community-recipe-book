@@ -142,6 +142,18 @@ async function renderRecipe() {
       </div>
     ` : ''}
 
+    ${(recipe.cuisine && recipe.cuisine.length) ? `
+      <div class="recipe-card-tags" style="margin-bottom:8px">
+        ${(recipe.cuisine || []).map(c => `<span class="tag tag-cuisine">${escapeHtml(c)}</span>`).join('')}
+      </div>
+    ` : ''}
+
+    ${(recipe.meal_type && recipe.meal_type.length) ? `
+      <div class="recipe-card-tags" style="margin-bottom:8px">
+        ${(recipe.meal_type || []).map(m => `<span class="tag tag-meal">${escapeHtml(m)}</span>`).join('')}
+      </div>
+    ` : ''}
+
     ${allergens.length ? `
       <div class="recipe-card-tags" style="margin-bottom:24px">
         ${allergens.map(a => `<span class="tag">${escapeHtml(a)}</span>`).join('')}

@@ -680,6 +680,18 @@ img {
   border-color: var(--pink);
 }
 
+.tag-cuisine {
+  background: var(--cream);
+  color: var(--terracotta);
+  border-color: var(--terracotta);
+}
+
+.tag-meal {
+  background: var(--peach);
+  color: var(--warm-brown);
+  border-color: var(--copper);
+}
+
 /* ── No Results ── */
 .no-results {
   text-align: center;
@@ -976,6 +988,30 @@ img {
   width: auto;
   margin: 0;
   accent-color: var(--red);
+}
+
+.other-input {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  border: 2px dashed var(--pink);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-family: inherit;
+  background: var(--cream);
+  color: var(--ink);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.other-input:focus {
+  outline: none;
+  border-color: var(--terracotta);
+  border-style: solid;
+  box-shadow: 0 0 0 3px rgba(198, 149, 129, 0.2);
+}
+
+.other-checkbox-label {
+  background: var(--pink-light) !important;
+  border-color: var(--terracotta) !important;
 }
 
 /* Photo upload with drag & drop */

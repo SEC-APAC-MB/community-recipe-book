@@ -145,9 +145,19 @@
           <label><input type="checkbox" name="dietary" value="Vegan"> <span>🌱 Vegan</span></label>
           <label><input type="checkbox" name="dietary" value="Gluten-free"> <span>🌾 Gluten-free</span></label>
           <label><input type="checkbox" name="dietary" value="Halal"> <span>☪️ Halal</span></label>
+          <label><input type="checkbox" name="dietary" value="Kosher"> <span>✡️ Kosher</span></label>
           <label><input type="checkbox" name="dietary" value="Dairy-free"> <span>🥛 Dairy-free</span></label>
           <label><input type="checkbox" name="dietary" value="Nut-free"> <span>🥜 Nut-free</span></label>
+          <label><input type="checkbox" name="dietary" value="Egg-free"> <span>🥚 Egg-free</span></label>
+          <label><input type="checkbox" name="dietary" value="Soy-free"> <span>🫘 Soy-free</span></label>
+          <label><input type="checkbox" name="dietary" value="Shellfish-free"> <span>🦐 Shellfish-free</span></label>
+          <label><input type="checkbox" name="dietary" value="Sugar-free"> <span>🍬 Sugar-free</span></label>
+          <label><input type="checkbox" name="dietary" value="Low-carb"> <span>🍖 Low-carb</span></label>
+          <label><input type="checkbox" name="dietary" value="Keto"> <span>🥑 Keto</span></label>
+          <label><input type="checkbox" name="dietary" value="Paleo"> <span>🦴 Paleo</span></label>
+          <label class="other-checkbox-label"><input type="checkbox" name="dietary" value="_other" id="dietaryOtherCheckbox"> <span data-i18n="other">Other</span></label>
         </div>
+        <input type="text" id="dietaryOther" data-i18n="otherDietaryPh" placeholder="e.g. FODMAP, Pescatarian, Low-FODMAP..." style="display:none;margin-top:8px;" class="other-input">
       </div>
 
       <div class="form-group">
@@ -157,9 +167,66 @@
           <label><input type="checkbox" name="allergens" value="Dairy"> <span>Dairy</span></label>
           <label><input type="checkbox" name="allergens" value="Eggs"> <span>Eggs</span></label>
           <label><input type="checkbox" name="allergens" value="Nuts"> <span>Nuts</span></label>
+          <label><input type="checkbox" name="allergens" value="Peanuts"> <span>🥜 Peanuts</span></label>
           <label><input type="checkbox" name="allergens" value="Soy"> <span>Soy</span></label>
           <label><input type="checkbox" name="allergens" value="Shellfish"> <span>Shellfish</span></label>
+          <label><input type="checkbox" name="allergens" value="Fish"> <span>🐟 Fish</span></label>
+          <label><input type="checkbox" name="allergens" value="Sesame"> <span> Sesame</span></label>
+          <label><input type="checkbox" name="allergens" value="Celery"> <span>🥬 Celery</span></label>
+          <label><input type="checkbox" name="allergens" value="Mustard"> <span>Mustard</span></label>
+          <label><input type="checkbox" name="allergens" value="Sulphites"> <span>🍷 Sulphites</span></label>
+          <label class="other-checkbox-label"><input type="checkbox" name="allergens" value="_other" id="allergensOtherCheckbox"> <span data-i18n="other">Other</span></label>
         </div>
+        <input type="text" id="allergensOther" data-i18n="otherAllergensPh" placeholder="e.g. Lupin, Molluscs..." style="display:none;margin-top:8px;" class="other-input">
+      </div>
+    </div>
+
+    <!-- Section: Cuisine & Meal Type -->
+    <div class="form-section">
+      <h2 data-i18n="sectionCuisine">Cuisine & Meal Type</h2>
+
+      <div class="form-group">
+        <label><span data-i18n="cuisineType">Cuisine / region</span> <span class="optional" data-i18n="optional">(optional)</span></label>
+        <div class="checkbox-group" role="group" aria-label="Cuisine type">
+          <label><input type="checkbox" name="cuisine" value="Chinese"> <span>🇨🇳 Chinese</span></label>
+          <label><input type="checkbox" name="cuisine" value="Indian"> <span>🇮🇳 Indian</span></label>
+          <label><input type="checkbox" name="cuisine" value="Japanese"> <span>🇯🇵 Japanese</span></label>
+          <label><input type="checkbox" name="cuisine" value="Korean"> <span>🇰🇷 Korean</span></label>
+          <label><input type="checkbox" name="cuisine" value="Thai"> <span>🇹🇭 Thai</span></label>
+          <label><input type="checkbox" name="cuisine" value="Vietnamese"> <span>🇻🇳 Vietnamese</span></label>
+          <label><input type="checkbox" name="cuisine" value="Indonesian"> <span>🇮🇩 Indonesian</span></label>
+          <label><input type="checkbox" name="cuisine" value="Filipino"> <span>🇵🇭 Filipino</span></label>
+          <label><input type="checkbox" name="cuisine" value="Malaysian"> <span>🇲🇾 Malaysian</span></label>
+          <label><input type="checkbox" name="cuisine" value="Italian"> <span>🇮🇹 Italian</span></label>
+          <label><input type="checkbox" name="cuisine" value="Mexican"> <span>🇲🇽 Mexican</span></label>
+          <label><input type="checkbox" name="cuisine" value="Middle Eastern"> <span>🇱🇧 Middle Eastern</span></label>
+          <label><input type="checkbox" name="cuisine" value="Mediterranean"> <span>🫒 Mediterranean</span></label>
+          <label><input type="checkbox" name="cuisine" value="African"> <span>🌍 African</span></label>
+          <label><input type="checkbox" name="cuisine" value="Caribbean"> <span>🏝️ Caribbean</span></label>
+          <label><input type="checkbox" name="cuisine" value="European"> <span>🇪🇺 European</span></label>
+          <label><input type="checkbox" name="cuisine" value="American"> <span>🇺🇸 American</span></label>
+          <label><input type="checkbox" name="cuisine" value="Fusion"> <span>🌍 Fusion</span></label>
+          <label class="other-checkbox-label"><input type="checkbox" name="cuisine" value="_other" id="cuisineOtherCheckbox"> <span data-i18n="other">Other</span></label>
+        </div>
+        <input type="text" id="cuisineOther" data-i18n="otherCuisinePh" placeholder="e.g. Peruvian, Ethiopian, Burmese..." style="display:none;margin-top:8px;" class="other-input">
+      </div>
+
+      <div class="form-group">
+        <label><span data-i18n="mealType">Meal type</span> <span class="optional" data-i18n="optional">(optional)</span></label>
+        <div class="checkbox-group" role="group" aria-label="Meal type">
+          <label><input type="checkbox" name="meal_type" value="Breakfast"> <span>🌅 Breakfast</span></label>
+          <label><input type="checkbox" name="meal_type" value="Lunch"> <span>🥪 Lunch</span></label>
+          <label><input type="checkbox" name="meal_type" value="Dinner"> <span>🍽️ Dinner</span></label>
+          <label><input type="checkbox" name="meal_type" value="Snack"> <span>🍿 Snack</span></label>
+          <label><input type="checkbox" name="meal_type" value="Dessert"> <span>🍰 Dessert</span></label>
+          <label><input type="checkbox" name="meal_type" value="Appetizer"> <span>🥗 Appetizer</span></label>
+          <label><input type="checkbox" name="meal_type" value="Side dish"> <span>🥘 Side dish</span></label>
+          <label><input type="checkbox" name="meal_type" value="Soup/Stew"> <span>🍲 Soup/Stew</span></label>
+          <label><input type="checkbox" name="meal_type" value="Drink"> <span>🥤 Drink</span></label>
+          <label><input type="checkbox" name="meal_type" value="Preserve/Pickle"> <span>🫙 Preserve/Pickle</span></label>
+          <label class="other-checkbox-label"><input type="checkbox" name="meal_type" value="_other" id="mealTypeOtherCheckbox"> <span data-i18n="other">Other</span></label>
+        </div>
+        <input type="text" id="mealTypeOther" data-i18n="otherMealTypePh" placeholder="e.g. Brunch, Street food..." style="display:none;margin-top:8px;" class="other-input">
       </div>
     </div>
 
@@ -319,6 +386,22 @@ removePhoto.addEventListener('click', () => {
   photoInput.value = '';
 });
 
+// ── "Other" checkbox toggle (show/hide free text field) ──
+function setupOtherToggle(checkboxId, inputId) {
+  const checkbox = document.getElementById(checkboxId);
+  const input = document.getElementById(inputId);
+  if (!checkbox || !input) return;
+  checkbox.addEventListener('change', () => {
+    input.style.display = checkbox.checked ? 'block' : 'none';
+    if (!checkbox.checked) input.value = '';
+  });
+}
+
+setupOtherToggle('dietaryOtherCheckbox', 'dietaryOther');
+setupOtherToggle('allergensOtherCheckbox', 'allergensOther');
+setupOtherToggle('cuisineOtherCheckbox', 'cuisineOther');
+setupOtherToggle('mealTypeOtherCheckbox', 'mealTypeOther');
+
 // ── Form Validation & Submission ──
 function showError(fieldId) {
   const errorEl = document.getElementById(fieldId + '_error');
@@ -360,9 +443,41 @@ document.getElementById('recipeForm').addEventListener('submit', async (e) => {
 
   const slug = slugify(recipeName) + '-' + Date.now();
   const dietary = [];
-  document.querySelectorAll('input[name="dietary"]:checked').forEach(cb => dietary.push(cb.value));
+  document.querySelectorAll('input[name="dietary"]:checked').forEach(cb => {
+    if (cb.value === '_other') {
+      const custom = document.getElementById('dietaryOther').value.trim();
+      if (custom) dietary.push(custom);
+    } else {
+      dietary.push(cb.value);
+    }
+  });
   const allergens = [];
-  document.querySelectorAll('input[name="allergens"]:checked').forEach(cb => allergens.push(cb.value));
+  document.querySelectorAll('input[name="allergens"]:checked').forEach(cb => {
+    if (cb.value === '_other') {
+      const custom = document.getElementById('allergensOther').value.trim();
+      if (custom) allergens.push(custom);
+    } else {
+      allergens.push(cb.value);
+    }
+  });
+  const cuisine = [];
+  document.querySelectorAll('input[name="cuisine"]:checked').forEach(cb => {
+    if (cb.value === '_other') {
+      const custom = document.getElementById('cuisineOther').value.trim();
+      if (custom) cuisine.push(custom);
+    } else {
+      cuisine.push(cb.value);
+    }
+  });
+  const mealType = [];
+  document.querySelectorAll('input[name="meal_type"]:checked').forEach(cb => {
+    if (cb.value === '_other') {
+      const custom = document.getElementById('mealTypeOther').value.trim();
+      if (custom) mealType.push(custom);
+    } else {
+      mealType.push(cb.value);
+    }
+  });
 
   const recipe = {
     slug,
@@ -379,6 +494,8 @@ document.getElementById('recipeForm').addEventListener('submit', async (e) => {
     serve_with: document.getElementById('serve_with').value.trim(),
     dietary,
     allergens,
+    cuisine,
+    meal_type: mealType,
     photo: photoDataUrl,
     contact_email: document.getElementById('contact_email').value.trim(),
     created_at: new Date().toISOString()
