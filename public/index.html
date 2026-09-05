@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,58 +12,60 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./css/style.css">
+<script src="./js/i18n.js"></script>
 </head>
 <body>
 
 <nav class="nav">
-  <a href="./" class="nav-brand">🥟 Community Recipe Book</a>
+  <a href="./" class="nav-brand" data-i18n="navBrand">🥟 Community Recipe Book</a>
   <div class="nav-links">
-    <a href="./" class="active">Browse</a>
-    <a href="./submit.html">Submit</a>
+    <a href="./" class="active" data-i18n="navBrowse">Browse</a>
+    <a href="./submit.html" data-i18n="navSubmit">Submit</a>
+    <div class="lang-switcher" id="langSwitcher"></div>
   </div>
 </nav>
 
 <div class="hero">
   <span class="hero-emoji">🥟</span>
-  <h1>Community Recipe Book</h1>
-  <p>Have a recipe you love? <span class="subtitle-accent">Share it with us!</span><br>
-  Your recipe may be featured for other festival attendees and food lovers to discover.</p>
+  <h1 data-i18n="heroTitle">Community Recipe Book</h1>
+  <p><span data-i18n="heroSubtitle">Have a recipe you love?</span> <span class="subtitle-accent" data-i18n="heroAccent">Share it with us!</span><br>
+  <span data-i18n="heroDesc">Your recipe may be featured for other festival attendees and food lovers to discover.</span></p>
 </div>
 
 <div class="search-section">
   <form class="search-box" id="searchForm">
-    <input type="text" id="searchInput" placeholder="Search recipes by name, ingredient, origin..." autocomplete="off">
+    <input type="text" id="searchInput" data-i18n="searchPlaceholder" placeholder="Search recipes by name, ingredient, origin..." autocomplete="off">
     <button type="submit" class="search-btn" aria-label="Search">🔍</button>
   </form>
   <div class="filter-tags" id="filterTags">
-    <a href="javascript:void(0)" class="filter-tag active" data-filter="all">All</a>
-    <a href="javascript:void(0)" class="filter-tag" data-dietary="Vegetarian">🥬 Vegetarian</a>
-    <a href="javascript:void(0)" class="filter-tag" data-dietary="Vegan">🌱 Vegan</a>
-    <a href="javascript:void(0)" class="filter-tag" data-dietary="Gluten-free">🌾 Gluten-free</a>
-    <a href="javascript:void(0)" class="filter-tag" data-dietary="Halal">☪️ Halal</a>
-    <a href="javascript:void(0)" class="filter-tag" data-difficulty="Easy">😊 Easy</a>
-    <a href="javascript:void(0)" class="filter-tag" data-difficulty="Intermediate">🤔 Intermediate</a>
-    <a href="javascript:void(0)" class="filter-tag" data-difficulty="Advanced">👨‍🍳 Advanced</a>
+    <a href="javascript:void(0)" class="filter-tag active" data-filter="all" data-i18n="filterAll">All</a>
+    <a href="javascript:void(0)" class="filter-tag" data-dietary="Vegetarian" data-i18n="filterVegetarian">🥬 Vegetarian</a>
+    <a href="javascript:void(0)" class="filter-tag" data-dietary="Vegan" data-i18n="filterVegan">🌱 Vegan</a>
+    <a href="javascript:void(0)" class="filter-tag" data-dietary="Gluten-free" data-i18n="filterGlutenFree">🌾 Gluten-free</a>
+    <a href="javascript:void(0)" class="filter-tag" data-dietary="Halal" data-i18n="filterHalal">☪️ Halal</a>
+    <a href="javascript:void(0)" class="filter-tag" data-difficulty="Easy" data-i18n="filterEasy">😊 Easy</a>
+    <a href="javascript:void(0)" class="filter-tag" data-difficulty="Intermediate" data-i18n="filterIntermediate">🤔 Intermediate</a>
+    <a href="javascript:void(0)" class="filter-tag" data-difficulty="Advanced" data-i18n="filterAdvanced">👨‍🍳 Advanced</a>
   </div>
 </div>
 
 <div class="container">
   <div class="stats-bar" id="statsBar">
-    <span>🥘 <strong id="totalCount">0</strong> recipes</span>
-    <span>🌍 <strong id="originCount">0</strong> regions</span>
+    <span>🥘 <strong id="totalCount">0</strong> <span data-i18n="statsRecipes">recipes</span></span>
+    <span>🌍 <strong id="originCount">0</strong> <span data-i18n="statsRegions">regions</span></span>
   </div>
 
   <div class="recipe-grid" id="recipeGrid"></div>
 
   <div class="no-results" id="noResults" style="display:none">
     <span class="emoji">🔍</span>
-    <h3>No recipes found</h3>
-    <p>Try a different search term or filter.</p>
+    <h3 data-i18n="noResultsTitle">No recipes found</h3>
+    <p data-i18n="noResultsText">Try a different search term or filter.</p>
   </div>
 </div>
 
 <footer class="footer">
-  <p>🥟 Community Recipe Book — Celebrating food, family &amp; culture</p>
+  <p data-i18n="footer">🥟 Community Recipe Book — Celebrating food, family &amp; culture</p>
 </footer>
 
 <script>
@@ -106,17 +108,6 @@ async function addRecipe(recipe) {
     const tx = db.transaction(STORE_NAME, 'readwrite');
     const store = tx.objectStore(STORE_NAME);
     const req = store.put(recipe);
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-}
-
-async function getRecipe(slug) {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, 'readonly');
-    const store = tx.objectStore(STORE_NAME);
-    const req = store.get(slug);
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
   });
@@ -169,192 +160,225 @@ async function seedIfEmpty() {
       recipe_name: 'Empanada de Carne',
       display_name: 'Carlos M.',
       origin: 'Argentina',
-      story: "Every Sunday, my abuela would make empanadas. She'd sit at the kitchen table for hours, crimping each one by hand. She said the secret was love — and a little cumin. I still make these with her recipe, handwritten on a stained index card.",
+      story: "Every Sunday, my abuela would make empanadas. She'd sit at the kitchen table for hours, crimping each one by hand. She said the secret was love — and a pinch of cumin. I still use her recipe, and I still think of her every time.",
       serves: '8',
       prep_time: '45 minutes',
-      cook_time: '30 minutes',
+      cook_time: '20 minutes',
       difficulty: 'Intermediate',
-      ingredients: '500 g beef mince\n2 large onions, diced\n1 red capsicum, diced\n2 hard-boiled eggs, chopped\n1/2 cup green olives, sliced\n1 tsp cumin\n1 tsp paprika\n2 tbsp oil\n1 pack empanada discs (or homemade dough)\n1 egg, beaten (for glazing)',
-      method: '1. Heat oil in a large pan. Sauté onions and capsicum until soft.\n2. Add beef mince, cumin, and paprika. Cook until browned.\n3. Stir in chopped eggs and olives. Season with salt and pepper.\n4. Let filling cool completely.\n5. Place 2 tbsp filling on each empanada disc. Fold and crimp edges.\n6. Brush with beaten egg. Bake at 200°C for 25-30 minutes until golden.',
-      serve_with: 'Chimichurri sauce, ensalada mixta',
-      dietary: ['Contains beef', 'Dairy-free'],
-      allergens: ['Wheat/gluten', 'Egg'],
+      ingredients: '500 g beef mince\n2 onions, diced\n1 hard-boiled egg, chopped\n1 tbsp cumin\n1 tbsp paprika\n1 pack empanada discs\n2 tbsp olive oil\nSalt and pepper to taste',
+      method: '1. Heat olive oil and cook onions until soft.\n2. Add beef mince, cumin, paprika, salt, and pepper. Cook until browned.\n3. Stir in chopped egg and let filling cool.\n4. Place a spoonful of filling on each disc, fold in half, and crimp edges.\n5. Bake at 200°C for 20 minutes until golden.',
+      serve_with: 'Chimichurri sauce',
+      dietary: ['Contains beef'],
+      allergens: ['Wheat/gluten'],
       photo: '',
-      created_at: new Date('2026-05-10').toISOString()
+      created_at: new Date('2026-02-10').toISOString()
     },
     {
-      slug: 'samosas',
+      slug: 'samosa',
       recipe_name: 'Aunty Priya\'s Samosas',
       display_name: 'Priya K.',
       origin: 'Punjab, India',
-      story: "Every Diwali, our house smelled like frying samosas from morning till night. My aunty Priya taught me to fold them — she could make 100 in an hour. The trick is cold dough and hot oil. I've never matched her speed, but the taste is the same.",
+      story: 'Every Diwali, my aunty would make hundreds of samosas. The whole house would smell like cumin and ghee. We\'d sneak them fresh from the oil, burning our tongues because we couldn\'t wait. That\'s how you know they\'re good.',
       serves: '6',
       prep_time: '40 minutes',
-      cook_time: '20 minutes',
+      cook_time: '15 minutes',
       difficulty: 'Advanced',
-      ingredients: '2 cups plain flour\n4 tbsp oil or ghee\n1/2 tsp salt\nWater as needed\n3 medium potatoes, boiled and mashed\n1 cup green peas\n1 tsp cumin seeds\n1 tsp garam masala\n1/2 tsp chilli powder\n2 tbsp fresh coriander, chopped\nOil for deep frying',
-      method: '1. Mix flour, oil/ghee, and salt. Add water gradually to make a stiff dough. Rest 30 minutes.\n2. For filling: heat oil, add cumin seeds until they splutter. Add peas and cook 2 minutes.\n3. Add mashed potatoes, garam masala, chilli powder, coriander, and salt. Mix well and cool.\n4. Divide dough into balls, roll into ovals, cut in half.\n5. Form each half into a cone, fill with potato mixture, and seal edges with water.\n6. Deep fry in medium-hot oil until golden and crispy.',
+      ingredients: '2 cups all-purpose flour\n4 tbsp ghee\n1/2 tsp salt\nWater for dough\n3 potatoes, boiled and mashed\n1 tsp cumin seeds\n1 tsp garam masala\n1/2 tsp chilli powder\n1/2 cup peas\nOil for frying',
+      method: '1. Mix flour, ghee, and salt. Add water gradually to form a stiff dough. Rest 20 minutes.\n2. For filling: heat oil, add cumin seeds, then add potatoes, peas, garam masala, and chilli powder. Cook 5 minutes.\n3. Divide dough into balls, roll into ovals, cut in half.\n4. Form each half into a cone, fill with potato mixture, and seal edges with water.\n5. Deep fry in hot oil until golden and crispy.',
       serve_with: 'Mint chutney, tamarind sauce',
       dietary: ['Vegetarian', 'Halal'],
-      allergens: ['Wheat/gluten'],
+      allergens: ['Wheat/gluten', 'Dairy'],
       photo: '',
-      created_at: new Date('2026-07-04').toISOString()
+      created_at: new Date('2026-04-05').toISOString()
     },
     {
       slug: 'baklava',
-      recipe_name: 'Mama\'s Baklava',
-      display_name: 'Elena S.',
-      origin: 'Greece',
-      story: "My mother would make baklava for Easter every year. She'd layer the phyllo so thin you could almost see through it, brushing each layer with melted butter. The honey syrup had to be just right — warm enough to soak in, cool enough not to make it soggy. It takes patience, but that's the point.",
+      recipe_name: 'Baklava',
+      display_name: 'Elif D.',
+      origin: 'Turkey',
+      story: "My grandmother's baklava was legendary. She'd count the layers of filo — '40 for 40 days of Lent,' she'd say. The secret isn't just the recipe, it's the patience. You can't rush the syrup, and you can't rush love.",
       serves: '12',
-      prep_time: '1 hour',
+      prep_time: '60 minutes',
       cook_time: '45 minutes',
       difficulty: 'Advanced',
-      ingredients: '500 g phyllo dough\n300 g walnuts, finely chopped\n200 g butter, melted\n1 tsp cinnamon\n1 cup sugar\n1 cup water\n1/2 cup honey\n1 tsp vanilla\nPinch of clove',
-      method: '1. Preheat oven to 180°C. Brush a large baking dish with butter.\n2. Mix chopped walnuts with cinnamon and clove.\n3. Layer 8 sheets of phyllo in the dish, brushing each with butter.\n4. Spread a thin layer of walnut mixture over the phyllo.\n5. Repeat layers: 4 sheets buttered phyllo, then walnut filling, until walnuts are used up.\n6. Top with 8 more buttered phyllo sheets.\n7. Cut diamond shapes with a sharp knife before baking.\n8. Bake 45 minutes until golden.\n9. While baking, simmer sugar and water until dissolved. Add honey and vanilla.\n10. Pour warm syrup over hot baklava. Let soak for 4+ hours.',
-      serve_with: 'Greek coffee, strong and sweet',
+      ingredients: '500 g filo pastry\n250 g unsalted butter, melted\n2 cups walnuts, finely chopped\n1 tsp cinnamon\n1 cup sugar\n3/4 cup water\n1 tbsp lemon juice\n1/4 cup honey',
+      method: '1. For syrup: boil sugar, water, and lemon juice for 10 minutes. Add honey, stir, and let cool completely.\n2. Mix walnuts with cinnamon.\n3. Layer filo in a buttered dish, brushing each sheet with melted butter. Every 3rd layer, sprinkle walnut mixture.\n4. Continue until all filo is used. Cut into diamond shapes with a sharp knife.\n5. Bake at 175°C for 45 minutes until golden.\n6. Pour cooled syrup over hot baklava immediately from the oven. Let soak for 4+ hours.',
+      serve_with: 'Turkish tea',
       dietary: ['Vegetarian'],
-      allergens: ['Wheat/gluten', 'Milk', 'Tree nuts'],
+      allergens: ['Walnuts', 'Wheat/gluten', 'Dairy'],
       photo: '',
-      created_at: new Date('2026-04-18').toISOString()
+      created_at: new Date('2026-05-18').toISOString()
     }
   ];
 
   for (const recipe of demos) {
     await addRecipe(recipe);
   }
-  console.log('✅ Seeded demo recipes');
 }
 
-// ── Render ──
+// ── Render Recipes ──
 function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
 }
 
-function renderCard(recipe) {
+async function renderRecipes() {
+  await seedIfEmpty();
+  const recipes = await getAllRecipes();
   const grid = document.getElementById('recipeGrid');
-  const card = document.createElement('a');
-  card.href = `./recipe.html?slug=${recipe.slug}`;
-  card.className = 'recipe-card';
-  card.style.animation = 'fadeSlideUp 0.4s ease-out both';
-  card.style.animationDelay = `${Math.random() * 0.3}s`;
+  const totalCount = document.getElementById('totalCount');
+  const originCount = document.getElementById('originCount');
+  const noResults = document.getElementById('noResults');
 
-  const difficultyEmoji = { Easy: '😊', Intermediate: '🤔', Advanced: '👨‍🍳' }[recipe.difficulty] || '';
-
-  card.innerHTML = `
-    ${recipe.photo
-      ? `<img src="${recipe.photo}" alt="${escapeHtml(recipe.recipe_name)}" class="recipe-card-image" loading="lazy">`
-      : `<div class="recipe-card-placeholder">🥘</div>`
-    }
-    <div class="recipe-card-body">
-      <h3>${escapeHtml(recipe.recipe_name)}</h3>
-      <div class="recipe-card-meta">
-        ${recipe.display_name ? `<span>👤 ${escapeHtml(recipe.display_name)}</span>` : ''}
-        ${recipe.origin ? `<span>🌍 ${escapeHtml(recipe.origin)}</span>` : ''}
-        <span>👥 ${escapeHtml(recipe.serves)}</span>
-        <span>⏱ ${escapeHtml(recipe.prep_time)}</span>
-        ${recipe.difficulty ? `<span>${difficultyEmoji} ${recipe.difficulty}</span>` : ''}
-      </div>
-      ${recipe.story ? `<p class="recipe-card-story">${escapeHtml(recipe.story.substring(0, 150))}${recipe.story.length > 150 ? '…' : ''}</p>` : ''}
-      <div class="recipe-card-tags">
-        ${(recipe.dietary || []).map(d => `<span class="tag tag-dietary">${escapeHtml(d)}</span>`).join('')}
-        ${(recipe.allergens || []).slice(0, 3).map(a => `<span class="tag">${escapeHtml(a)}</span>`).join('')}
-      </div>
-    </div>
-  `;
-
-  grid.appendChild(card);
-}
-
-function renderNoResults() {
-  document.getElementById('recipeGrid').innerHTML = '';
-  document.getElementById('noResults').style.display = 'block';
-}
-
-async function loadAndRender(query = '', dietary = '', difficulty = '') {
-  let recipes = await getAllRecipes();
-
-  // Filter
-  if (query) {
-    const q = query.toLowerCase();
-    recipes = recipes.filter(r =>
-      r.recipe_name.toLowerCase().includes(q) ||
-      r.origin.toLowerCase().includes(q) ||
-      r.ingredients.toLowerCase().includes(q) ||
-      r.method.toLowerCase().includes(q) ||
-      r.story.toLowerCase().includes(q)
-    );
-  }
-  if (dietary) {
-    recipes = recipes.filter(r => (r.dietary || []).includes(dietary));
-  }
-  if (difficulty) {
-    recipes = recipes.filter(r => r.difficulty === difficulty);
-  }
-
-  // Sort newest first
-  recipes.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-
-  document.getElementById('recipeGrid').innerHTML = '';
+  const origins = new Set(recipes.map(r => r.origin).filter(Boolean));
+  totalCount.textContent = recipes.length;
+  originCount.textContent = origins.size;
 
   if (recipes.length === 0) {
-    renderNoResults();
-  } else {
-    document.getElementById('noResults').style.display = 'none';
-    recipes.forEach(r => renderCard(r));
+    grid.style.display = 'none';
+    noResults.style.display = 'block';
+    return;
   }
 
-  // Stats
-  const all = await getAllRecipes();
-  const origins = new Set(all.filter(r => r.origin).map(r => r.origin));
-  document.getElementById('totalCount').textContent = all.length;
-  document.getElementById('originCount').textContent = origins.size;
+  noResults.style.display = 'none';
+  grid.style.display = 'grid';
+  grid.innerHTML = recipes.map(recipe => {
+    const dietary = recipe.dietary || [];
+    const placeholderEmojis = { Easy: '😊', Intermediate: '🤔', Advanced: '👨‍🍳' };
+    const emoji = placeholderEmojis[recipe.difficulty] || '🥘';
+
+    return `
+      <a href="./recipe.html?slug=${encodeURIComponent(recipe.slug)}" class="recipe-card">
+        ${recipe.photo
+          ? `<img src="${escapeHtml(recipe.photo)}" alt="${escapeHtml(recipe.recipe_name)}" class="recipe-card-image">`
+          : `<div class="recipe-card-placeholder">${emoji}</div>`
+        }
+        <div class="recipe-card-body">
+          <h3>${escapeHtml(recipe.recipe_name)}</h3>
+          <div class="recipe-card-meta">
+            ${recipe.origin ? `<span>🌍 ${escapeHtml(recipe.origin)}</span>` : ''}
+            <span>👥 ${escapeHtml(recipe.serves)}</span>
+            ${recipe.difficulty ? `<span>${placeholderEmojis[recipe.difficulty] || ''} ${escapeHtml(recipe.difficulty)}</span>` : ''}
+          </div>
+          ${dietary.length ? `
+            <div class="recipe-card-tags">
+              ${dietary.map(d => `<span class="tag tag-dietary">${escapeHtml(d)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </div>
+      </a>
+    `;
+  }).join('');
 }
 
-// ── Events ──
-document.getElementById('searchForm').addEventListener('submit', e => {
+// ── Search & Filters ──
+document.getElementById('searchForm').addEventListener('submit', (e) => {
   e.preventDefault();
-  const q = document.getElementById('searchInput').value.trim();
-  const activeTag = document.querySelector('.filter-tag.active');
-  const dietary = activeTag ? activeTag.dataset.dietary : '';
-  const difficulty = activeTag ? activeTag.dataset.difficulty : '';
-  loadAndRender(q, dietary, difficulty);
+  filterRecipes();
 });
 
-let searchTimeout;
-document.getElementById('searchInput').addEventListener('input', () => {
-  clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
-    const q = document.getElementById('searchInput').value.trim();
-    const activeTag = document.querySelector('.filter-tag.active');
-    const dietary = activeTag ? activeTag.dataset.dietary : '';
-    const difficulty = activeTag ? activeTag.dataset.difficulty : '';
-    loadAndRender(q, dietary, difficulty);
-  }, 300);
-});
+document.getElementById('searchInput').addEventListener('input', filterRecipes);
 
 document.querySelectorAll('.filter-tag').forEach(tag => {
-  tag.addEventListener('click', e => {
+  tag.addEventListener('click', (e) => {
     e.preventDefault();
     document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
     tag.classList.add('active');
-    const q = document.getElementById('searchInput').value.trim();
-    const dietary = tag.dataset.dietary || '';
-    const difficulty = tag.dataset.difficulty || '';
-    loadAndRender(q, dietary, difficulty);
+    filterRecipes();
   });
 });
 
-// URL query param support
-const params = new URLSearchParams(window.location.search);
-if (params.get('q')) {
-  document.getElementById('searchInput').value = params.get('q');
+async function filterRecipes() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const activeFilter = document.querySelector('.filter-tag.active');
+  const recipes = await getAllRecipes();
+
+  const dietary = activeFilter?.dataset.dietary;
+  const difficulty = activeFilter?.dataset.difficulty;
+  const showAll = activeFilter?.dataset.filter === 'all';
+
+  const filtered = recipes.filter(recipe => {
+    const matchesQuery = !query ||
+      recipe.recipe_name?.toLowerCase().includes(query) ||
+      recipe.ingredients?.toLowerCase().includes(query) ||
+      recipe.origin?.toLowerCase().includes(query) ||
+      recipe.story?.toLowerCase().includes(query);
+
+    const matchesDietary = !dietary || (recipe.dietary || []).includes(dietary);
+    const matchesDifficulty = !difficulty || recipe.difficulty === difficulty;
+
+    return matchesQuery && (showAll ? true : matchesDietary || matchesDifficulty);
+  });
+
+  const grid = document.getElementById('recipeGrid');
+  const noResults = document.getElementById('noResults');
+
+  if (filtered.length === 0) {
+    grid.style.display = 'none';
+    noResults.style.display = 'block';
+  } else {
+    noResults.style.display = 'none';
+    grid.style.display = 'grid';
+
+    const placeholderEmojis = { Easy: '😊', Intermediate: '🤔', Advanced: '👨‍🍳' };
+    grid.innerHTML = filtered.map(recipe => {
+      const dietary = recipe.dietary || [];
+      const emoji = placeholderEmojis[recipe.difficulty] || '🥘';
+
+      return `
+        <a href="./recipe.html?slug=${encodeURIComponent(recipe.slug)}" class="recipe-card">
+          ${recipe.photo
+            ? `<img src="${escapeHtml(recipe.photo)}" alt="${escapeHtml(recipe.recipe_name)}" class="recipe-card-image">`
+            : `<div class="recipe-card-placeholder">${emoji}</div>`
+          }
+          <div class="recipe-card-body">
+            <h3>${escapeHtml(recipe.recipe_name)}</h3>
+            <div class="recipe-card-meta">
+              ${recipe.origin ? `<span>🌍 ${escapeHtml(recipe.origin)}</span>` : ''}
+              <span>👥 ${escapeHtml(recipe.serves)}</span>
+              ${recipe.difficulty ? `<span>${placeholderEmojis[recipe.difficulty] || ''} ${escapeHtml(recipe.difficulty)}</span>` : ''}
+            </div>
+            ${dietary.length ? `
+              <div class="recipe-card-tags">
+                ${dietary.map(d => `<span class="tag tag-dietary">${escapeHtml(d)}</span>`).join('')}
+              </div>
+            ` : ''}
+          </div>
+        </a>
+      `;
+    }).join('');
+  }
 }
 
-// Initial load
-seedIfEmpty().then(() => loadAndRender());
+// ── Language Switcher ──
+function buildLangSwitcher() {
+  const container = document.getElementById('langSwitcher');
+  const currentLang = window.i18n.detectLanguage();
+
+  window.i18n.SUPPORTED_LANGS.forEach(lang => {
+    const btn = document.createElement('button');
+    btn.className = 'lang-btn' + (lang === currentLang ? ' active' : '');
+    btn.dataset.lang = lang;
+    btn.textContent = window.i18n.LANG_NAMES[lang];
+    btn.addEventListener('click', () => {
+      window.i18n.setLanguage(lang);
+      // Update URL param
+      const url = new URL(window.location);
+      url.searchParams.set('lang', lang);
+      history.replaceState(null, '', url);
+      // Re-render recipes with new language
+      filterRecipes();
+    });
+    container.appendChild(btn);
+  });
+}
+
+// ── Init ──
+const lang = window.i18n.detectLanguage();
+window.i18n.setLanguage(lang);
+buildLangSwitcher();
+renderRecipes();
 </script>
 </body>
 </html>

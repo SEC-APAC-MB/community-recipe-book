@@ -1,203 +1,205 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Submit a Recipe — 🥟 Community Recipe Book</title>
-<meta name="description" content="Share your recipe with our community. It takes about 3–5 minutes to submit.">
-<meta property="og:title" content="Submit a Recipe — Community Recipe Book">
-<meta property="og:description" content="Have a recipe you love? Share it with us!">
+<title>Submit Recipe — 🥟 Community Recipe Book</title>
+<meta name="description" content="Share your recipe with our community.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./css/style.css">
+<script src="./js/i18n.js"></script>
 </head>
 <body>
 
 <nav class="nav">
-  <a href="./" class="nav-brand">🥟 Community Recipe Book</a>
+  <a href="./" class="nav-brand" data-i18n="navBrand">🥟 Community Recipe Book</a>
   <div class="nav-links">
-    <a href="./">Browse</a>
-    <a href="./submit.html" class="active">Submit</a>
+    <a href="./" data-i18n="navBrowse">Browse</a>
+    <a href="./submit.html" class="active" data-i18n="navSubmit">Submit</a>
+    <div class="lang-switcher" id="langSwitcher"></div>
   </div>
 </nav>
 
 <div class="hero">
-  <span class="hero-emoji">🥟</span>
-  <h1>Share Your Recipe</h1>
-  <p>Have a recipe you love? <span class="subtitle-accent">Share it with us!</span><br>
-  Your recipe may be featured in our community recipe book for other festival attendees and food lovers to discover.</p>
+  <span class="hero-emoji">📝</span>
+  <h1 data-i18n="submitTitle">Share Your Recipe</h1>
+  <p><span data-i18n="submitSubtitle">Have a recipe you love?</span> <span class="subtitle-accent" data-i18n="submitAccent">Share it with us!</span><br>
+  <span data-i18n="submitDesc">Your recipe may be featured in our community recipe book for other festival attendees and food lovers to discover.</span></p>
 </div>
 
-<div class="container">
-
-  <div class="intro-card">
-    <p>It takes about <strong>3–5 minutes</strong> to submit. Every dish tells a story — we'd love to hear yours.</p>
-    <div class="time-note">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-      <span>3–5 minutes · All fields with <span style="color:var(--terra)">*</span> are required</span>
-    </div>
+<div class="form-page">
+  <div class="intro-box">
+    <p data-i18n="introText">It takes about <strong>3–5 minutes</strong> to submit. Every dish tells a story — we'd love to hear yours.</p>
+    <p style="margin-top:8px;font-size:0.85rem;color:var(--ink-muted);"><span data-i18n="introTime">3–5 minutes · All fields with</span> <span style="color:var(--red)">*</span> <span data-i18n="introTimeReq">are required</span></p>
   </div>
 
-  <form class="recipe-form" id="recipeForm" novalidate>
+  <form id="recipeForm" novalidate>
 
-    <div class="section-divider"><span class="icon">📝</span> Your Recipe</div>
+    <!-- Section: Your Recipe -->
+    <div class="form-section">
+      <h2 data-i18n="sectionYourRecipe">Your Recipe</h2>
 
-    <div class="field-group">
-      <label for="recipeName">Recipe name <span class="required">*</span></label>
-      <input type="text" id="recipeName" name="recipeName" placeholder="e.g. Grandma's Pork Dumplings" required>
+      <div class="form-group">
+        <label><span data-i18n="recipeName">Recipe name</span> <span class="required" data-i18n="required">*</span></label>
+        <input type="text" id="recipe_name" data-i18n="recipeNamePh" placeholder="e.g. Grandma's Pork Dumplings" required>
+        <div class="error" id="recipe_name_error" data-i18n="recipeName">Recipe name is required</div>
+      </div>
+
+      <div class="form-group">
+        <label><span data-i18n="displayName">Your name / name you'd like displayed</span> <span class="optional" data-i18n="optional">(optional)</span></label>
+        <input type="text" id="display_name" data-i18n="displayNamePh" placeholder="e.g. Mei Chen">
+      </div>
+
+      <div class="form-group">
+        <label><span data-i18n="origin">Country or region of origin</span> <span class="optional" data-i18n="optional">(optional)</span></label>
+        <input type="text" id="origin" data-i18n="originPh" placeholder="e.g. Sichuan, China">
+      </div>
+
+      <div class="form-group">
+        <label><span data-i18n="story">Tell us the story behind your recipe</span> <span class="optional" data-i18n="optional">(optional)</span></label>
+        <textarea id="story" rows="4" data-i18n="storyPh" placeholder="Every dish has a story. What's yours?"></textarea>
+      </div>
     </div>
 
-    <div class="field-group">
-      <label for="displayName">Your name / name you'd like displayed <span class="optional">(optional)</span></label>
-      <input type="text" id="displayName" name="displayName" placeholder="e.g. Mei Chen">
-    </div>
+    <!-- Section: Details -->
+    <div class="form-section">
+      <h2 data-i18n="sectionDetails">The Details</h2>
 
-    <div class="field-group">
-      <label for="origin">Country or region of origin <span class="optional">(optional)</span></label>
-      <input type="text" id="origin" name="origin" placeholder="e.g. Sichuan, China">
-    </div>
+      <div class="form-group">
+        <label><span data-i18n="serves">How many people does it serve?</span> <span class="required" data-i18n="required">*</span></label>
+        <input type="text" id="serves" data-i18n="servesPh" placeholder="e.g. 4" required>
+      </div>
 
-    <div class="field-group">
-      <label for="story">Tell us the story behind your recipe <span class="optional">(optional)</span></label>
-      <textarea id="story" name="story" rows="4" placeholder="Every dish has a story. What's yours?"></textarea>
-    </div>
-
-    <div class="section-divider"><span class="icon">⏱</span> The Details</div>
-
-    <div class="field-group">
-      <label for="serves">How many people does it serve? <span class="required">*</span></label>
-      <input type="text" id="serves" name="serves" placeholder="e.g. 4" required>
-    </div>
-
-    <div class="field-group">
-      <label for="prepTime">Preparation time <span class="required">*</span></label>
-      <input type="text" id="prepTime" name="prepTime" placeholder="e.g. 30 minutes" required>
-    </div>
-
-    <div class="field-group">
-      <label for="cookTime">Cooking time <span class="required">*</span></label>
-      <input type="text" id="cookTime" name="cookTime" placeholder="e.g. 45 minutes" required>
-    </div>
-
-    <div class="field-group">
-      <label>Difficulty <span class="optional">(optional)</span></label>
-      <div class="radio-group">
-        <div class="radio-option">
-          <input type="radio" id="diffEasy" name="difficulty" value="Easy">
-          <label for="diffEasy">😊 Easy</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="form-group">
+          <label><span data-i18n="prepTime">Preparation time</span></label>
+          <input type="text" id="prep_time" data-i18n="prepTimePh" placeholder="e.g. 30 minutes">
         </div>
-        <div class="radio-option">
-          <input type="radio" id="diffInter" name="difficulty" value="Intermediate">
-          <label for="diffInter">🤔 Intermediate</label>
-        </div>
-        <div class="radio-option">
-          <input type="radio" id="diffAdv" name="difficulty" value="Advanced">
-          <label for="diffAdv">👨‍🍳 Advanced</label>
+        <div class="form-group">
+          <label><span data-i18n="cookTime">Cooking time</span></label>
+          <input type="text" id="cook_time" data-i18n="cookTimePh" placeholder="e.g. 45 minutes">
         </div>
       </div>
-    </div>
 
-    <div class="section-divider"><span class="icon">🍳</span> The Recipe</div>
-
-    <div class="field-group">
-      <label for="ingredients">Ingredients <span class="required">*</span></label>
-      <textarea id="ingredients" name="ingredients" rows="6" placeholder="Please include quantities, e.g.&#10;500 g pork mince&#10;2 spring onions&#10;1 tbsp soy sauce&#10;..." required></textarea>
-    </div>
-
-    <div class="field-group">
-      <label for="method">Method / cooking instructions <span class="required">*</span></label>
-      <textarea id="method" name="method" rows="8" placeholder="Step-by-step instructions&#10;1. &#10;2. &#10;3. " required></textarea>
-    </div>
-
-    <div class="field-group">
-      <label for="serveWith">What do you serve it with? <span class="optional">(optional)</span></label>
-      <textarea id="serveWith" name="serveWith" rows="2" placeholder="e.g. Steamed rice, chilli oil, pickled ginger"></textarea>
-    </div>
-
-    <div class="section-divider"><span class="icon">🌿</span> Dietary &amp; Allergens</div>
-
-    <div class="field-group">
-      <label>Dietary information <span class="optional">(select all that apply)</span></label>
-      <div class="checkbox-grid">
-        <label class="checkbox-option"><input type="checkbox" name="dietary" value="Vegetarian"><span>🥬 Vegetarian</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="dietary" value="Vegan"><span>🌱 Vegan</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="dietary" value="Gluten-free"><span>🌾 Gluten-free</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="dietary" value="Dairy-free"><span>🥛 Dairy-free</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="dietary" value="Nut-free"><span>🥜 Nut-free</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="dietary" value="Halal"><span>☪️ Halal</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="dietary" value="Contains pork"><span>🐷 Contains pork</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="dietary" value="Contains beef"><span>🐄 Contains beef</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="dietary" value="Contains chicken"><span>🐔 Contains chicken</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="dietary" value="Contains seafood"><span>🦐 Contains seafood</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="dietary" value="Other"><span>✨ Other</span></label>
+      <div class="form-group">
+        <label><span data-i18n="difficulty">Difficulty</span></label>
+        <select id="difficulty">
+          <option value="">—</option>
+          <option value="Easy">😊 Easy</option>
+          <option value="Intermediate">🤔 Intermediate</option>
+          <option value="Advanced">👨‍🍳 Advanced</option>
+        </select>
       </div>
     </div>
 
-    <div class="field-group">
-      <label>Allergens <span class="optional">(select all that apply)</span></label>
-      <div class="checkbox-grid">
-        <label class="checkbox-option"><input type="checkbox" name="allergens" value="Wheat/gluten"><span>Wheat/gluten</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="allergens" value="Egg"><span>Egg</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="allergens" value="Milk"><span>Milk</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="allergens" value="Soy"><span>Soy</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="allergens" value="Sesame"><span>Sesame</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="allergens" value="Peanuts"><span>Peanuts</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="allergens" value="Tree nuts"><span>Tree nuts</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="allergens" value="Fish"><span>Fish</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="allergens" value="Shellfish"><span>Shellfish</span></label>
-        <label class="checkbox-option"><input type="checkbox" name="allergens" value="Other"><span>Other</span></label>
+    <!-- Section: The Recipe -->
+    <div class="form-section">
+      <h2 data-i18n="sectionTheRecipe">The Recipe</h2>
+
+      <div class="form-group">
+        <label><span data-i18n="ingredients">Ingredients</span> <span class="required" data-i18n="required">*</span></label>
+        <textarea id="ingredients" rows="6" data-i18n="ingredientsHint" placeholder="Please include quantities, e.g.
+500 g pork mince
+2 spring onions
+1 tbsp soy sauce
+..." required></textarea>
+        <div class="hint" data-i18n="ingredientsHint">Please include quantities</div>
+      </div>
+
+      <div class="form-group">
+        <label><span data-i18n="method">Method / cooking instructions</span> <span class="required" data-i18n="required">*</span></label>
+        <textarea id="method" rows="6" data-i18n="methodHint" placeholder="Step-by-step instructions
+1.
+2.
+3." required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label><span data-i18n="serveWith">What do you serve it with?</span> <span class="optional" data-i18n="optional">(optional)</span></label>
+        <input type="text" id="serve_with" data-i18n="serveWithPh" placeholder="e.g. Steamed rice, chilli oil, pickled ginger">
       </div>
     </div>
 
-    <div class="section-divider"><span class="icon">📸</span> Photo &amp; Contact</div>
+    <!-- Section: Dietary -->
+    <div class="form-section">
+      <h2 data-i18n="sectionDietary">Dietary & Allergens</h2>
 
-    <div class="field-group">
-      <label>Upload a photo of your recipe <span class="optional">(optional)</span></label>
-      <div class="file-upload" id="dropZone">
-        <input type="file" id="recipePhoto" name="photo" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
-        <span class="upload-icon">📷</span>
-        <p class="upload-text"><strong>Click to upload</strong> or drag and drop</p>
-        <p class="upload-hint">JPG / PNG only · Max 2 MB</p>
+      <div class="form-group">
+        <label><span data-i18n="dietaryInfo">Dietary information</span></label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="dietary" value="Vegetarian"> <span>🥬 Vegetarian</span></label>
+          <label><input type="checkbox" name="dietary" value="Vegan"> <span>🌱 Vegan</span></label>
+          <label><input type="checkbox" name="dietary" value="Gluten-free"> <span>🌾 Gluten-free</span></label>
+          <label><input type="checkbox" name="dietary" value="Halal"> <span>☪️ Halal</span></label>
+          <label><input type="checkbox" name="dietary" value="Dairy-free"> <span>🥛 Dairy-free</span></label>
+          <label><input type="checkbox" name="dietary" value="Nut-free"> <span>🥜 Nut-free</span></label>
+        </div>
       </div>
-      <img id="imagePreview" class="image-preview" style="display:none" alt="Recipe photo preview">
+
+      <div class="form-group">
+        <label><span data-i18n="allergens">Allergens</span></label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="allergens" value="Wheat/gluten"> <span>Wheat/gluten</span></label>
+          <label><input type="checkbox" name="allergens" value="Dairy"> <span>Dairy</span></label>
+          <label><input type="checkbox" name="allergens" value="Eggs"> <span>Eggs</span></label>
+          <label><input type="checkbox" name="allergens" value="Nuts"> <span>Nuts</span></label>
+          <label><input type="checkbox" name="allergens" value="Soy"> <span>Soy</span></label>
+          <label><input type="checkbox" name="allergens" value="Shellfish"> <span>Shellfish</span></label>
+        </div>
+      </div>
     </div>
 
-    <div class="field-group">
-      <label for="email">Contact email <span class="required">*</span></label>
-      <input type="email" id="email" name="email" placeholder="your@email.com" required>
-      <p class="hint">Your email will not be displayed publicly.</p>
+    <!-- Section: Photo & Contact -->
+    <div class="form-section">
+      <h2 data-i18n="sectionPhoto">Photo & Contact</h2>
+
+      <div class="form-group">
+        <label><span data-i18n="photo">Upload a photo of your recipe</span> <span class="optional" data-i18n="optional">(optional)</span></label>
+        <div class="photo-upload" id="photoUpload">
+          <span class="emoji">📷</span>
+          <p data-i18n="photoText">Click to upload or drag and drop</p>
+          <p class="hint" data-i18n="photoHint">JPG / PNG only · Max 2 MB</p>
+          <input type="file" id="photo" accept="image/jpeg,image/png" style="display:none">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label><span data-i18n="email">Contact email</span> <span class="optional" data-i18n="optional">(optional)</span></label>
+        <input type="email" id="email" data-i18n="emailPh" placeholder="your@email.com">
+        <div class="hint" data-i18n="emailHint">Your email will not be displayed publicly.</div>
+      </div>
     </div>
 
-    <div class="field-group">
-      <label class="permission-check">
-        <input type="checkbox" id="permission" name="permission" required>
-        <span class="perm-text">I confirm that I have permission to share this recipe and photo, and I give permission for the festival organisers to publish my recipe, name/name displayed and uploaded photo on the community recipe website.</span>
-      </label>
+    <!-- Permission -->
+    <div class="permission-group">
+      <input type="checkbox" id="permission" required>
+      <label for="permission" data-i18n="permission">I confirm that I have permission to share this recipe and photo, and I give permission for the festival organisers to publish my recipe, name/name displayed and uploaded photo on the community recipe website.</label>
     </div>
 
-    <button type="submit" class="submit-btn" id="submitBtn">🥟 Submit Recipe</button>
+    <button type="submit" class="submit-btn" data-i18n="submitBtn">🥟 Submit Recipe</button>
   </form>
+
+  <!-- Success Message -->
+  <div class="success-message" id="successMessage" style="display:none">
+    <span class="emoji">🎉</span>
+    <h2 data-i18n="successTitle">Thank you for sharing your recipe!</h2>
+    <p data-i18n="successText">Your recipe has been submitted and will be reviewed before being added to our community recipe book.</p>
+    <p data-i18n="successThankYou">🥟 Thank you for helping us celebrate food, family & culture!</p>
+    <div class="success-actions">
+      <a href="./" class="submit-btn" style="background:var(--purple);" data-i18n="successBrowse">Browse recipes</a>
+      <button onclick="document.getElementById('recipeForm').reset();document.getElementById('successMessage').style.display='none';document.getElementById('recipeForm').style.display='block';" class="submit-btn" style="background:var(--ink-muted);" data-i18n="successAnother">Submit another</button>
+    </div>
+  </div>
 </div>
 
 <footer class="footer">
-  <p>🥟 Community Recipe Book — Celebrating food, family &amp; culture</p>
+  <p data-i18n="footer">🥟 Community Recipe Book — Celebrating food, family &amp; culture</p>
 </footer>
 
-<!-- Success overlay -->
-<div class="success-overlay" id="successOverlay">
-  <div class="success-card">
-    <span class="success-emoji">🎉</span>
-    <h2>Thank you for sharing your recipe!</h2>
-    <p>Your recipe has been submitted and will be reviewed before being added to our community recipe book.</p>
-    <p class="thank-you">🥟 Thank you for helping us celebrate food, family and culture!</p>
-    <a href="./" class="close-btn">Browse recipes</a>
-    <button class="close-btn" onclick="document.getElementById('successOverlay').classList.remove('visible'); document.getElementById('recipeForm').reset(); document.getElementById('imagePreview').style.display='none';" style="margin-left:8px;background:var(--ink-soft)">Submit another</button>
-  </div>
-</div>
-
 <script>
-// ── IndexedDB Recipe Store ──
+// ── IndexedDB ──
 const DB_NAME = 'CommunityRecipeBook';
 const DB_VERSION = 1;
 const STORE_NAME = 'recipes';
@@ -210,8 +212,6 @@ function openDB() {
       if (!db.objectStoreNames.contains(STORE_NAME)) {
         const store = db.createObjectStore(STORE_NAME, { keyPath: 'slug' });
         store.createIndex('created_at', 'created_at', { unique: false });
-        store.createIndex('origin', 'origin', { unique: false });
-        store.createIndex('difficulty', 'difficulty', { unique: false });
       }
     };
     req.onsuccess = () => resolve(req.result);
@@ -230,147 +230,105 @@ async function addRecipe(recipe) {
   });
 }
 
-// ── Slug generator ──
-function generateSlug(name) {
-  return name.toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .trim()
-    .substring(0, 80);
+function slugify(text) {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
 
-// ── Photo to base64 ──
-let photoData = '';
+// ── Photo Upload ──
+const photoUpload = document.getElementById('photoUpload');
+const photoInput = document.getElementById('photo');
 
-function handlePhoto(file) {
-  if (!file) return;
-  if (!file.type.match(/^image\/(jpeg|png)$/)) {
-    alert('Please upload a JPG or PNG image.');
-    document.getElementById('recipePhoto').value = '';
-    return;
-  }
-  if (file.size > 2 * 1024 * 1024) {
-    alert('Photo must be under 2 MB.');
-    document.getElementById('recipePhoto').value = '';
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    photoData = e.target.result;
-    const preview = document.getElementById('imagePreview');
-    preview.src = photoData;
-    preview.style.display = 'block';
-  };
-  reader.readAsDataURL(file);
-}
-
-document.getElementById('recipePhoto').addEventListener('change', (e) => handlePhoto(e.target.files[0]));
-
-const dropZone = document.getElementById('dropZone');
-dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragging'); });
-dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragging'));
-dropZone.addEventListener('drop', (e) => {
+photoUpload.addEventListener('click', () => photoInput.click());
+photoUpload.addEventListener('dragover', (e) => { e.preventDefault(); photoUpload.style.borderColor = 'var(--red)'; });
+photoUpload.addEventListener('dragleave', () => { photoUpload.style.borderColor = 'var(--pink)'; });
+photoUpload.addEventListener('drop', (e) => {
   e.preventDefault();
-  dropZone.classList.remove('dragging');
-  const file = e.dataTransfer.files[0];
-  if (file) {
-    document.getElementById('recipePhoto').files = e.dataTransfer.files;
-    handlePhoto(file);
+  photoUpload.style.borderColor = 'var(--pink)';
+  if (e.dataTransfer.files.length) {
+    photoInput.files = e.dataTransfer.files;
+    updatePhotoPreview();
   }
 });
 
-// ── Form submission ──
-const form = document.getElementById('recipeForm');
-const submitBtn = document.getElementById('submitBtn');
+photoInput.addEventListener('change', updatePhotoPreview);
 
-form.addEventListener('submit', async (e) => {
+function updatePhotoPreview() {
+  const file = photoInput.files[0];
+  if (file) {
+    photoUpload.innerHTML = `<span class="emoji">✅</span><p>${file.name}</p><p class="hint">Click to change</p><input type="file" id="photo" accept="image/jpeg,image/png" style="display:none">`;
+    // Re-attach change listener
+    document.getElementById('photo').addEventListener('change', updatePhotoPreview);
+  }
+}
+
+// ── Form Submission ──
+document.getElementById('recipeForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  // Validate required fields
-  const required = ['recipeName', 'serves', 'prepTime', 'cookTime', 'ingredients', 'method', 'email'];
-  let valid = true;
+  const recipeName = document.getElementById('recipe_name').value.trim();
+  const ingredients = document.getElementById('ingredients').value.trim();
+  const method = document.getElementById('method').value.trim();
 
-  required.forEach(id => {
-    const el = document.getElementById(id);
-    if (!el.value.trim()) {
-      el.style.borderColor = 'var(--terra)';
-      valid = false;
-    } else {
-      el.style.borderColor = '';
-    }
-  });
-
-  const perm = document.getElementById('permission');
-  if (!perm.checked) {
-    perm.closest('.permission-check').style.borderColor = 'var(--terra)';
-    valid = false;
-  } else {
-    perm.closest('.permission-check').style.borderColor = '';
-  }
-
-  const email = document.getElementById('email');
-  if (email.value && !email.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-    email.style.borderColor = 'var(--terra)';
-    valid = false;
-  }
-
-  if (!valid) {
-    const firstError = document.querySelector('[style*="border-color: var(--terra)"]');
-    if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (!recipeName || !ingredients || !method) {
+    alert('Please fill in all required fields.');
     return;
   }
 
-  // Collect values
-  const getCheckboxes = (name) => {
-    const checked = [];
-    document.querySelectorAll(`input[name="${name}"]:checked`).forEach(cb => checked.push(cb.value));
-    return checked;
-  };
+  const dietary = Array.from(document.querySelectorAll('input[name="dietary"]:checked')).map(c => c.value);
+  const allergens = Array.from(document.querySelectorAll('input[name="allergens"]:checked')).map(c => c.value);
 
-  const slug = generateSlug(document.getElementById('recipeName').value) + '-' + Date.now();
+  const slug = slugify(recipeName) + '-' + Date.now().toString(36);
 
   const recipe = {
     slug,
-    recipe_name: document.getElementById('recipeName').value.trim(),
-    display_name: document.getElementById('displayName').value.trim(),
+    recipe_name: recipeName,
+    display_name: document.getElementById('display_name').value.trim(),
     origin: document.getElementById('origin').value.trim(),
     story: document.getElementById('story').value.trim(),
-    serves: document.getElementById('serves').value.trim(),
-    prep_time: document.getElementById('prepTime').value.trim(),
-    cook_time: document.getElementById('cookTime').value.trim(),
-    difficulty: document.querySelector('input[name="difficulty"]:checked')?.value || '',
-    ingredients: document.getElementById('ingredients').value.trim(),
-    method: document.getElementById('method').value.trim(),
-    serve_with: document.getElementById('serveWith').value.trim(),
-    dietary: getCheckboxes('dietary'),
-    allergens: getCheckboxes('allergens'),
-    photo: photoData,
+    serves: document.getElementById('serves').value.trim() || '4',
+    prep_time: document.getElementById('prep_time').value.trim(),
+    cook_time: document.getElementById('cook_time').value.trim(),
+    difficulty: document.getElementById('difficulty').value,
+    ingredients,
+    method,
+    serve_with: document.getElementById('serve_with').value.trim(),
+    dietary,
+    allergens,
+    photo: '',
+    email: document.getElementById('email').value.trim(),
     created_at: new Date().toISOString()
   };
 
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Saving...';
+  await addRecipe(recipe);
 
-  try {
-    await addRecipe(recipe);
-    document.getElementById('successOverlay').classList.add('visible');
-  } catch (err) {
-    alert('Failed to save recipe. Please try again.');
-    console.error(err);
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = '🥟 Submit Recipe';
-  }
+  document.getElementById('recipeForm').style.display = 'none';
+  document.getElementById('successMessage').style.display = 'block';
+  window.scrollTo(0, 0);
 });
 
-// Clear validation on input
-document.querySelectorAll('input, textarea').forEach(el => {
-  el.addEventListener('input', function() { this.style.borderColor = ''; });
-});
-document.getElementById('permission').addEventListener('change', function() {
-  this.closest('.permission-check').style.borderColor = '';
-});
+// ── Language Switcher ──
+function buildLangSwitcher() {
+  const container = document.getElementById('langSwitcher');
+  const currentLang = window.i18n.detectLanguage();
+  window.i18n.SUPPORTED_LANGS.forEach(lang => {
+    const btn = document.createElement('button');
+    btn.className = 'lang-btn' + (lang === currentLang ? ' active' : '');
+    btn.dataset.lang = lang;
+    btn.textContent = window.i18n.LANG_NAMES[lang];
+    btn.addEventListener('click', () => {
+      window.i18n.setLanguage(lang);
+      const url = new URL(window.location);
+      url.searchParams.set('lang', lang);
+      history.replaceState(null, '', url);
+    });
+    container.appendChild(btn);
+  });
+}
+
+// ── Init ──
+const lang = window.i18n.detectLanguage();
+window.i18n.setLanguage(lang);
+buildLangSwitcher();
 </script>
 </body>
 </html>
