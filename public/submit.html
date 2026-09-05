@@ -46,9 +46,10 @@
 
   <form id="recipeForm" novalidate>
 
-    <!-- Section: Your Recipe -->
-    <div class="form-section">
-      <h2 data-i18n="sectionYourRecipe">Your Recipe</h2>
+    <!-- Section: Your Recipe — open by default -->
+    <div class="form-section accordion-section open">
+      <h2 class="accordion-header" data-i18n="sectionYourRecipe">Your Recipe <span class="accordion-icon">▾</span></h2>
+      <div class="accordion-body">
 
       <div class="form-group">
         <label><span data-i18n="recipeName">Recipe name</span> <span class="required" data-i18n="required">*</span></label>
@@ -70,11 +71,14 @@
         <label><span data-i18n="story">Tell us the story behind your recipe</span> <span class="optional" data-i18n="optional">(optional)</span></label>
         <textarea id="story" rows="4" data-i18n="storyPh" placeholder="Every dish has a story. What's yours?"></textarea>
       </div>
+
+      </div>
     </div>
 
     <!-- Section: Details -->
-    <div class="form-section">
-      <h2 data-i18n="sectionDetails">The Details</h2>
+    <div class="form-section accordion-section">
+      <h2 class="accordion-header" data-i18n="sectionDetails">The Details <span class="accordion-icon">▾</span></h2>
+      <div class="accordion-body">
 
       <div class="form-group">
         <label><span data-i18n="serves">How many people does it serve?</span> <span class="required" data-i18n="required">*</span></label>
@@ -102,11 +106,14 @@
           <option value="Advanced">👨‍🍳 Advanced</option>
         </select>
       </div>
+
+      </div>
     </div>
 
     <!-- Section: The Recipe -->
-    <div class="form-section">
-      <h2 data-i18n="sectionTheRecipe">The Recipe</h2>
+    <div class="form-section accordion-section">
+      <h2 class="accordion-header" data-i18n="sectionTheRecipe">The Recipe <span class="accordion-icon">▾</span></h2>
+      <div class="accordion-body">
 
       <div class="form-group">
         <label><span data-i18n="ingredients">Ingredients</span> <span class="required" data-i18n="required">*</span></label>
@@ -132,11 +139,14 @@
         <label><span data-i18n="serveWith">What do you serve it with?</span> <span class="optional" data-i18n="optional">(optional)</span></label>
         <input type="text" id="serve_with" data-i18n="serveWithPh" placeholder="e.g. Steamed rice, chilli oil, pickled ginger">
       </div>
+
+      </div>
     </div>
 
-    <!-- Section: Dietary -->
-    <div class="form-section">
-      <h2 data-i18n="sectionDietary">Dietary & Allergens</h2>
+    <!-- Section: Dietary & Allergens -->
+    <div class="form-section accordion-section">
+      <h2 class="accordion-header" data-i18n="sectionDietary">Dietary & Allergens <span class="accordion-icon">▾</span></h2>
+      <div class="accordion-body">
 
       <div class="form-group">
         <label><span data-i18n="dietaryInfo">Dietary information</span></label>
@@ -171,7 +181,7 @@
           <label><input type="checkbox" name="allergens" value="Soy"> <span>Soy</span></label>
           <label><input type="checkbox" name="allergens" value="Shellfish"> <span>Shellfish</span></label>
           <label><input type="checkbox" name="allergens" value="Fish"> <span>🐟 Fish</span></label>
-          <label><input type="checkbox" name="allergens" value="Sesame"> <span> Sesame</span></label>
+          <label><input type="checkbox" name="allergens" value="Sesame"> <span>Sesame</span></label>
           <label><input type="checkbox" name="allergens" value="Celery"> <span>🥬 Celery</span></label>
           <label><input type="checkbox" name="allergens" value="Mustard"> <span>Mustard</span></label>
           <label><input type="checkbox" name="allergens" value="Sulphites"> <span>🍷 Sulphites</span></label>
@@ -179,11 +189,14 @@
         </div>
         <input type="text" id="allergensOther" data-i18n="otherAllergensPh" placeholder="e.g. Lupin, Molluscs..." style="display:none;margin-top:8px;" class="other-input">
       </div>
+
+      </div>
     </div>
 
     <!-- Section: Cuisine & Meal Type -->
-    <div class="form-section">
-      <h2 data-i18n="sectionCuisine">Cuisine & Meal Type</h2>
+    <div class="form-section accordion-section">
+      <h2 class="accordion-header" data-i18n="sectionCuisine">Cuisine & Meal Type <span class="accordion-icon">▾</span></h2>
+      <div class="accordion-body">
 
       <div class="form-group">
         <label><span data-i18n="cuisineType">Cuisine / region</span> <span class="optional" data-i18n="optional">(optional)</span></label>
@@ -228,11 +241,14 @@
         </div>
         <input type="text" id="mealTypeOther" data-i18n="otherMealTypePh" placeholder="e.g. Brunch, Street food..." style="display:none;margin-top:8px;" class="other-input">
       </div>
+
+      </div>
     </div>
 
-    <!-- Section: Photo -->
-    <div class="form-section">
-      <h2 data-i18n="sectionPhoto">Photo & Contact</h2>
+    <!-- Section: Photo & Contact -->
+    <div class="form-section accordion-section">
+      <h2 class="accordion-header" data-i18n="sectionPhoto">Photo & Contact <span class="accordion-icon">▾</span></h2>
+      <div class="accordion-body">
 
       <div class="form-group">
         <label><span data-i18n="photo">Upload a photo of your recipe</span> <span class="optional" data-i18n="optional">(optional)</span></label>
@@ -251,6 +267,8 @@
       <div class="form-group">
         <label><span data-i18n="contactEmail">Your email (so we can thank you!)</span> <span class="optional" data-i18n="optional">(optional)</span></label>
         <input type="email" id="contact_email" data-i18n="contactEmailPh" placeholder="e.g. mei@example.com">
+      </div>
+
       </div>
     </div>
 
@@ -281,109 +299,19 @@
 </footer>
 
 <script>
-// ── IndexedDB ──
-const DB_NAME = 'CommunityRecipeBook';
-const DB_VERSION = 1;
-const STORE_NAME = 'recipes';
-
-function openDB() {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, DB_VERSION);
-    req.onupgradeneeded = (e) => {
-      const db = e.target.result;
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        const store = db.createObjectStore(STORE_NAME, { keyPath: 'slug' });
-        store.createIndex('created_at', 'created_at', { unique: false });
-        store.createIndex('origin', 'origin', { unique: false });
-        store.createIndex('difficulty', 'difficulty', { unique: false });
-      }
-    };
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
+// ── Accordion toggle ──
+document.querySelectorAll('.accordion-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const section = header.parentElement;
+    section.classList.toggle('open');
   });
-}
-
-async function addRecipe(recipe) {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, 'readwrite');
-    const store = tx.objectStore(STORE_NAME);
-    const req = store.put(recipe);
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
+  header.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      const section = header.parentElement;
+      section.classList.toggle('open');
+    }
   });
-}
-
-function slugify(text) {
-  return text.toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .substring(0, 60);
-}
-
-// ── Photo Upload (drag & drop + file input + preview) ──
-let photoDataUrl = '';
-
-const photoUpload = document.getElementById('photoUpload');
-const photoInput = document.getElementById('photoInput');
-const photoPreview = document.getElementById('photoPreview');
-const photoPreviewImg = document.getElementById('photoPreviewImg');
-const removePhoto = document.getElementById('removePhoto');
-
-photoUpload.addEventListener('click', () => photoInput.click());
-photoUpload.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    photoInput.click();
-  }
-});
-
-// Drag & drop
-photoUpload.addEventListener('dragover', (e) => {
-  e.preventDefault();
-  photoUpload.classList.add('dragover');
-});
-
-photoUpload.addEventListener('dragleave', () => {
-  photoUpload.classList.remove('dragover');
-});
-
-photoUpload.addEventListener('drop', (e) => {
-  e.preventDefault();
-  photoUpload.classList.remove('dragover');
-  const file = e.dataTransfer.files[0];
-  if (file && file.type.startsWith('image/')) {
-    processPhoto(file);
-  }
-});
-
-photoInput.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (file) processPhoto(file);
-});
-
-function processPhoto(file) {
-  if (file.size > 5 * 1024 * 1024) {
-    alert('Photo must be less than 5 MB');
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    photoDataUrl = e.target.result;
-    photoPreviewImg.src = photoDataUrl;
-    photoPreview.style.display = 'block';
-    photoUpload.style.display = 'none';
-  };
-  reader.readAsDataURL(file);
-}
-
-removePhoto.addEventListener('click', () => {
-  photoDataUrl = '';
-  photoPreviewImg.src = '';
-  photoPreview.style.display = 'none';
-  photoUpload.style.display = 'block';
-  photoInput.value = '';
 });
 
 // ── "Other" checkbox toggle (show/hide free text field) ──
@@ -402,25 +330,76 @@ setupOtherToggle('allergensOtherCheckbox', 'allergensOther');
 setupOtherToggle('cuisineOtherCheckbox', 'cuisineOther');
 setupOtherToggle('mealTypeOtherCheckbox', 'mealTypeOther');
 
-// ── Form Validation & Submission ──
-function showError(fieldId) {
-  const errorEl = document.getElementById(fieldId + '_error');
-  if (errorEl) errorEl.style.display = 'block';
-  const inputEl = document.getElementById(fieldId);
-  if (inputEl) inputEl.style.borderColor = 'var(--red)';
-}
+// ── IndexedDB ──
+const DB_NAME = 'CommunityRecipeBook';
+const DB_VERSION = 1;
 
-function clearErrors() {
-  document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
-  document.querySelectorAll('.form-group input, .form-group textarea').forEach(el => {
-    el.style.borderColor = '';
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = e => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains('recipes')) {
+        db.createObjectStore('recipes', { keyPath: 'id', autoIncrement: true });
+      }
+    };
+    req.onsuccess = e => resolve(e.target.result);
+    req.onerror = e => reject(e.target.error);
   });
-  document.getElementById('permission_error').style.display = 'none';
 }
 
-document.getElementById('recipeForm').addEventListener('submit', async (e) => {
+// ── Drag & Drop / Photo ──
+let photoDataUrl = null;
+const photoUpload = document.getElementById('photoUpload');
+const photoInput = document.getElementById('photoInput');
+const photoPreview = document.getElementById('photoPreview');
+const photoPreviewImg = document.getElementById('photoPreviewImg');
+const removePhoto = document.getElementById('removePhoto');
+
+photoUpload.addEventListener('click', () => photoInput.click());
+photoUpload.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); photoInput.click(); }});
+
+photoUpload.addEventListener('dragover', e => { e.preventDefault(); photoUpload.classList.add('drag-over'); });
+photoUpload.addEventListener('dragleave', () => photoUpload.classList.remove('drag-over'));
+photoUpload.addEventListener('drop', e => {
   e.preventDefault();
-  clearErrors();
+  photoUpload.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.match('image.*') && file.size <= 5 * 1024 * 1024) handlePhoto(file);
+});
+
+photoInput.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (file) handlePhoto(file);
+});
+
+removePhoto.addEventListener('click', () => {
+  photoDataUrl = null;
+  photoPreview.style.display = 'none';
+  photoUpload.style.display = 'flex';
+  photoInput.value = '';
+});
+
+function handlePhoto(file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    photoDataUrl = e.target.result;
+    photoPreviewImg.src = photoDataUrl;
+    photoPreview.style.display = 'block';
+    photoUpload.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── Form Validation & Submission ──
+const form = document.getElementById('recipeForm');
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  let valid = true;
+
+  // Clear previous errors
+  document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
 
   const recipeName = document.getElementById('recipe_name').value.trim();
   const serves = document.getElementById('serves').value.trim();
@@ -428,20 +407,23 @@ document.getElementById('recipeForm').addEventListener('submit', async (e) => {
   const method = document.getElementById('method').value.trim();
   const permission = document.getElementById('permission').checked;
 
-  let valid = true;
-
-  if (!recipeName) { showError('recipe_name'); valid = false; }
-  if (!serves) { showError('serves'); valid = false; }
-  if (!ingredients) { showError('ingredients'); valid = false; }
-  if (!method) { showError('method'); valid = false; }
-  if (!permission) {
-    document.getElementById('permission_error').style.display = 'block';
-    valid = false;
-  }
+  if (!recipeName) { document.getElementById('recipe_name_error').style.display = 'block'; valid = false; }
+  if (!serves) { document.getElementById('serves_error').style.display = 'block'; valid = false; }
+  if (!ingredients) { document.getElementById('ingredients_error').style.display = 'block'; valid = false; }
+  if (!method) { document.getElementById('method_error').style.display = 'block'; valid = false; }
+  if (!permission) { document.getElementById('permission_error').style.display = 'block'; valid = false; }
 
   if (!valid) return;
 
-  const slug = slugify(recipeName) + '-' + Date.now();
+  const displayName = document.getElementById('display_name').value.trim();
+  const origin = document.getElementById('origin').value.trim();
+  const story = document.getElementById('story').value.trim();
+  const prepTime = document.getElementById('prep_time').value.trim();
+  const cookTime = document.getElementById('cook_time').value.trim();
+  const difficulty = document.getElementById('difficulty').value;
+  const serveWith = document.getElementById('serve_with').value.trim();
+  const contactEmail = document.getElementById('contact_email').value.trim();
+
   const dietary = [];
   document.querySelectorAll('input[name="dietary"]:checked').forEach(cb => {
     if (cb.value === '_other') {
@@ -480,124 +462,81 @@ document.getElementById('recipeForm').addEventListener('submit', async (e) => {
   });
 
   const recipe = {
-    slug,
     recipe_name: recipeName,
-    display_name: document.getElementById('display_name').value.trim(),
-    origin: document.getElementById('origin').value.trim(),
-    story: document.getElementById('story').value.trim(),
-    serves,
-    prep_time: document.getElementById('prep_time').value.trim(),
-    cook_time: document.getElementById('cook_time').value.trim(),
-    difficulty: document.getElementById('difficulty').value,
-    ingredients,
-    method,
-    serve_with: document.getElementById('serve_with').value.trim(),
+    display_name: displayName || 'Anonymous',
+    origin: origin,
+    story: story,
+    serves: serves,
+    prep_time: prepTime,
+    cook_time: cookTime,
+    difficulty: difficulty,
+    ingredients: ingredients,
+    method: method,
+    serve_with: serveWith,
     dietary,
     allergens,
     cuisine,
     meal_type: mealType,
     photo: photoDataUrl,
-    contact_email: document.getElementById('contact_email').value.trim(),
-    created_at: new Date().toISOString()
+    contact_email: contactEmail,
+    submitted_at: new Date().toISOString()
   };
 
   try {
-    await addRecipe(recipe);
-    document.getElementById('recipeForm').style.display = 'none';
-    document.querySelector('.intro-box').style.display = 'none';
-    const successMsg = document.getElementById('successMessage');
-    successMsg.style.display = 'block';
-    successMsg.scrollIntoView({ behavior: 'smooth' });
+    const db = await openDB();
+    const tx = db.transaction('recipes', 'readwrite');
+    const store = tx.objectStore('recipes');
+    store.add(recipe);
+    tx.oncomplete = () => {
+      form.style.display = 'none';
+      document.querySelector('.intro-box').style.display = 'none';
+      document.getElementById('successMessage').style.display = 'block';
+      // Clear form
+      form.reset();
+      photoDataUrl = null;
+      photoPreview.style.display = 'none';
+      photoUpload.style.display = 'flex';
+    };
   } catch (err) {
-    alert('Error saving recipe. Please try again.');
-    console.error(err);
+    console.error('Error saving recipe:', err);
   }
 });
 
-// Clear error on input
-document.querySelectorAll('.form-group input, .form-group textarea').forEach(el => {
-  el.addEventListener('input', () => {
-    el.style.borderColor = '';
-    const errorEl = document.getElementById(el.id + '_error');
-    if (errorEl) errorEl.style.display = 'none';
-  });
+// ── Dark Mode ──
+const themeToggle = document.getElementById('themeToggle');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+function setTheme(dark) {
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  themeToggle.classList.toggle('dark', dark);
+  localStorage.setItem('theme', dark ? 'dark' : 'light');
+}
+
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) setTheme(savedTheme === 'dark');
+else if (prefersDark.matches) setTheme(true);
+
+themeToggle.addEventListener('click', () => {
+  setTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
 });
 
-// ── Theme Toggle ──
-function initTheme() {
-  const saved = localStorage.getItem('recipeBookTheme');
-  if (saved) {
-    document.documentElement.setAttribute('data-theme', saved);
-  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    document.documentElement.setAttribute('data-theme', 'dark');
+// ── i18n / Language ──
+const dropdown = document.getElementById('langDropdown');
+const dropdownBtn = document.getElementById('langDropdownBtn');
+const dropdownMenu = document.getElementById('langDropdownMenu');
+
+dropdownBtn.addEventListener('click', () => {
+  const expanded = dropdownBtn.getAttribute('aria-expanded') === 'true';
+  dropdownBtn.setAttribute('aria-expanded', !expanded);
+  dropdownMenu.style.display = expanded ? 'none' : 'block';
+});
+
+document.addEventListener('click', e => {
+  if (!dropdown.contains(e.target)) {
+    dropdownBtn.setAttribute('aria-expanded', 'false');
+    dropdownMenu.style.display = 'none';
   }
-}
-
-document.getElementById('themeToggle').addEventListener('click', () => {
-  const current = document.documentElement.getAttribute('data-theme');
-  const next = current === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('recipeBookTheme', next);
 });
-
-initTheme();
-
-// ── Language Dropdown ──
-function buildLangDropdown() {
-  const menu = document.getElementById('langDropdownMenu');
-  const btn = document.getElementById('langDropdownBtn');
-  const currentLang = window.i18n.detectLanguage();
-
-  btn.textContent = '🌐 ' + window.i18n.LANG_NAMES[currentLang];
-
-  window.i18n.SUPPORTED_LANGS.forEach(lang => {
-    const item = document.createElement('a');
-    item.href = 'javascript:void(0)';
-    item.className = 'lang-dropdown-item' + (lang === currentLang ? ' active' : '');
-    item.textContent = window.i18n.LANG_NAMES[lang];
-    item.dataset.lang = lang;
-    item.setAttribute('role', 'option');
-    item.setAttribute('aria-selected', lang === currentLang ? 'true' : 'false');
-    item.addEventListener('click', (e) => {
-      e.preventDefault();
-      window.i18n.setLanguage(lang);
-      btn.textContent = '🌐 ' + window.i18n.LANG_NAMES[lang];
-      btn.setAttribute('aria-expanded', 'false');
-      const url = new URL(window.location);
-      url.searchParams.set('lang', lang);
-      history.replaceState(null, '', url);
-      menu.classList.remove('open');
-      menu.querySelectorAll('.lang-dropdown-item').forEach(i => {
-        i.classList.toggle('active', i.dataset.lang === lang);
-        i.setAttribute('aria-selected', i.dataset.lang === lang ? 'true' : 'false');
-      });
-    });
-    menu.appendChild(item);
-  });
-
-  btn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const isOpen = menu.classList.toggle('open');
-    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-  });
-
-  document.addEventListener('click', () => {
-    menu.classList.remove('open');
-    btn.setAttribute('aria-expanded', 'false');
-  });
-
-  btn.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      menu.classList.remove('open');
-      btn.setAttribute('aria-expanded', 'false');
-    }
-  });
-}
-
-// ── Init ──
-const lang = window.i18n.detectLanguage();
-window.i18n.setLanguage(lang);
-buildLangDropdown();
 </script>
 </body>
 </html>
