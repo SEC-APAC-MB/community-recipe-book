@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Recipe — 🥟 Community Recipe Book</title>
+<title>Recept — 🥟 Dumpling Festival Rivierenbuurt</title>
 <meta name="description" content="A community recipe from our recipe book.">
 <meta name="theme-color" content="#6A4994">
 <link rel="stylesheet" href="./css/fonts.css">
@@ -19,7 +19,7 @@
 <a href="#main" class="skip-link">Skip to content</a>
 
 <nav class="nav" role="navigation" aria-label="Main navigation">
-  <a href="./" class="nav-brand" data-i18n="navBrand">🥟 Community Recipe Book</a>
+  <a href="./" class="nav-brand" data-i18n="navBrand">🥟 Dumpling Festival Rivierenbuurt</a>
   <div class="nav-links">
     <a href="./" data-i18n="navBrowse">Browse</a>
     <a href="./submit.html" data-i18n="navSubmit">Submit</a>
@@ -41,7 +41,7 @@
 </main>
 
 <footer class="footer">
-  <p data-i18n="footer">🥟 Community Recipe Book — Celebrating food, family &amp; culture</p>
+  <p data-i18n="footer">🥟 Dumpling Festival Rivierenbuurt — Celebrating food, family &amp; culture</p>
 </footer>
 
 <script>
@@ -110,7 +110,7 @@ async function renderRecipe() {
   const difficultyEmoji = { Easy: '😊', Intermediate: '🤔', Advanced: '👨‍🍳' }[recipe.difficulty] || '';
   const date = new Date(recipe.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
-  document.title = `${recipe.recipe_name} — Community Recipe Book`;
+  document.title = `${recipe.recipe_name} — Dumpling Festival Rivierenbuurt`;
 
   const dietary = recipe.dietary || [];
   const allergens = recipe.allergens || [];

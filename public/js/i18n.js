@@ -1,14 +1,14 @@
-// Community Recipe Book — Internationalization (i18n)
+// Dumpling Festival Rivierenbuurt — Internationalization (i18n)
 // Languages: English (default), Dutch, Arabic, Turkish, Polish, Chinese
 
 const translations = {
   en: {
     // Nav
-    navBrand: "🥟 Community Recipe Book",
+    navBrand: "🥟 Dumpling Festival Rivierenbuurt",
     navBrowse: "Browse",
     navSubmit: "Submit",
     // Hero
-    heroTitle: "Community Recipe Book",
+    heroTitle: "Dumpling Festival Rivierenbuurt",
     heroSubtitle: "Have a recipe you love?",
     heroAccent: "Share it with us!",
     heroDesc: "Your recipe may be featured for other festival attendees and food lovers to discover.",
@@ -96,7 +96,7 @@ const translations = {
     serveWithLabel: "Serve with",
     addedLabel: "Added",
     // Footer
-    footer: "🥟 Community Recipe Book — Celebrating food, family & culture",
+    footer: "🥟 Dumpling Festival Rivierenbuurt — Vieren, familie & cultuur",
     // Optional label
     optional: "(optional)",
     required: "*",
@@ -114,7 +114,7 @@ const translations = {
   },
 
   nl: {
-    navBrand: "🥟 Gemeenschapskookboek",
+    navBrand: "🥟 Dumpling Festival Rivierenbuurt",
     navBrowse: "Bladeren",
     navSubmit: "Insturen",
     heroTitle: "Gemeenschapskookboek",
@@ -213,7 +213,7 @@ const translations = {
   },
 
   ar: {
-    navBrand: "🥟 كتاب وصفات المجتمع",
+    navBrand: "🥟 مهرجان الدمبلنغ Rivierenbuurt",
     navBrowse: "تصفح",
     navSubmit: "أرسل",
     heroTitle: "كتاب وصفات المجتمع",
@@ -312,7 +312,7 @@ const translations = {
   },
 
   tr: {
-    navBrand: "🥟 Topluluk Tarif Kitabı",
+    navBrand: "🥟 Dumpling Festivali Rivierenbuurt",
     navBrowse: "Göz at",
     navSubmit: "Gönder",
     heroTitle: "Topluluk Tarif Kitabı",
@@ -411,7 +411,7 @@ const translations = {
   },
 
   pl: {
-    navBrand: "🥟 Książka Przepisów Społeczności",
+    navBrand: "🥟 Festiwal Pierogów Rivierenbuurt",
     navBrowse: "Przeglądaj",
     navSubmit: "Wyślij",
     heroTitle: "Książka Przepisów Społeczności",
@@ -510,7 +510,7 @@ const translations = {
   },
 
   zh: {
-    navBrand: "🥟 社区食谱",
+    navBrand: "🥟 饺子节 Rivierenbuurt",
     navBrowse: "浏览",
     navSubmit: "提交",
     heroTitle: "社区食谱",
@@ -670,7 +670,7 @@ function applyTranslations(lang) {
   });
 
   // Translate page title
-  if (t.heroTitle) document.title = t.heroTitle + ' — 🥟';
+  if (t.heroTitle) document.title = t.heroTitle + ' — 🥟 Dumpling Festival';
 
   // Update language selector
   document.querySelectorAll('.lang-btn').forEach(btn => {

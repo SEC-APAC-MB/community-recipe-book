@@ -1,4 +1,4 @@
-// ── Community Recipe Book — Service Worker ──
+// ── Dumpling Festival Rivierenbuurt — Service Worker ──
 // Provides offline access to cached recipes and static assets
 
 const CACHE_NAME = 'recipe-book-v1';
