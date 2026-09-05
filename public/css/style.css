@@ -202,6 +202,9 @@ img {
 /* ── Nav (dark from image 2) ── */
 .nav {
   display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 200;
   justify-content: space-between;
   align-items: center;
   padding: var(--space-md) var(--space-lg);
@@ -1145,7 +1148,29 @@ img {
   }
 
   .recipe-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
+  }
+
+  .recipe-card-body {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .recipe-card-body h3 {
+    font-size: 0.95rem;
+  }
+
+  .recipe-card-meta {
+    font-size: 0.75rem;
+  }
+
+  .recipe-card-placeholder {
+    height: 120px;
+    font-size: 2.5rem;
+  }
+
+  .recipe-card-image {
+    height: 120px;
   }
 
   .search-section {
