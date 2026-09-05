@@ -467,9 +467,41 @@ document.getElementById('recipeForm').addEventListener('submit', async (e) => {
 
   const slug = slugify(recipeName) + '-' + Date.now();
   const dietary = [];
-  document.querySelectorAll('input[name="dietary"]:checked').forEach(cb => dietary.push(cb.value));
+  document.querySelectorAll('input[name="dietary"]:checked').forEach(cb => {
+    if (cb.value === '_other') {
+      const otherVal = document.getElementById('dietaryOther')?.value?.trim();
+      if (otherVal) dietary.push(otherVal);
+    } else {
+      dietary.push(cb.value);
+    }
+  });
   const allergens = [];
-  document.querySelectorAll('input[name="allergens"]:checked').forEach(cb => allergens.push(cb.value));
+  document.querySelectorAll('input[name="allergens"]:checked').forEach(cb => {
+    if (cb.value === '_other') {
+      const otherVal = document.getElementById('allergensOther')?.value?.trim();
+      if (otherVal) allergens.push(otherVal);
+    } else {
+      allergens.push(cb.value);
+    }
+  });
+  const cuisine = [];
+  document.querySelectorAll('input[name="cuisine"]:checked').forEach(cb => {
+    if (cb.value === '_other') {
+      const otherVal = document.getElementById('cuisineOther')?.value?.trim();
+      if (otherVal) cuisine.push(otherVal);
+    } else {
+      cuisine.push(cb.value);
+    }
+  });
+  const meal_type = [];
+  document.querySelectorAll('input[name="meal_type"]:checked').forEach(cb => {
+    if (cb.value === '_other') {
+      const otherVal = document.getElementById('mealTypeOther')?.value?.trim();
+      if (otherVal) meal_type.push(otherVal);
+    } else {
+      meal_type.push(cb.value);
+    }
+  });
 
   const recipe = {
     slug,
@@ -486,8 +518,8 @@ document.getElementById('recipeForm').addEventListener('submit', async (e) => {
     serve_with: document.getElementById('serve_with').value.trim(),
     dietary,
     allergens,
-      cuisine,
-      meal_type,
+    cuisine,
+    meal_type,
     photo: photoDataUrl,
     created_at: new Date().toISOString()
   };
