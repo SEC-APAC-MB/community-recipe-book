@@ -1,9 +1,9 @@
 /* ── CommunityBook Custom Fonts ── */
-/* Based on Cormorant Garamond (SIL OFL 1.1) + Abril Fatface (SIL OFL 1.1) + Inter (SIL OFL 1.1) */
-/* Modified for Community Recipe Book — poster-style typography */
+/* Based on Poppins (SIL OFL 1.1) for display headings + Inter (SIL OFL 1.1) for body */
+/* Modified for Community Recipe Book — Dumpling Festival poster typography */
 
 /* ── CommunityBook Display (Poster Heading Font) ── */
-/* Bold, playful display font from the Dumpling Festival poster */
+/* Bold, rounded, geometric sans-serif — matches the Dumpling Festival poster */
 @font-face {
   font-family: 'CommunityBook Display';
   src: url('../fonts/CommunityBookDisplay-Regular.woff2') format('woff2'),
@@ -13,58 +13,21 @@
   font-display: swap;
 }
 
-/* ── CommunityBook (Serif Heading Font) ── */
 @font-face {
-  font-family: 'CommunityBook';
-  src: url('../fonts/CommunityBook-Regular.woff2') format('woff2'),
-       url('../fonts/CommunityBook-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'CommunityBook';
-  src: url('../fonts/CommunityBook-Medium.woff2') format('woff2'),
-       url('../fonts/CommunityBook-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'CommunityBook';
-  src: url('../fonts/CommunityBook-SemiBold.woff2') format('woff2'),
-       url('../fonts/CommunityBook-SemiBold.ttf') format('truetype');
+  font-family: 'CommunityBook Display';
+  src: url('../fonts/CommunityBookDisplay-SemiBold.woff2') format('woff2'),
+       url('../fonts/CommunityBookDisplay-SemiBold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'CommunityBook';
-  src: url('../fonts/CommunityBook-Bold.woff2') format('woff2'),
-       url('../fonts/CommunityBook-Bold.ttf') format('truetype');
+  font-family: 'CommunityBook Display';
+  src: url('../fonts/CommunityBookDisplay-Bold.woff2') format('woff2'),
+       url('../fonts/CommunityBookDisplay-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'CommunityBook';
-  src: url('../fonts/CommunityBook-Italic.woff2') format('woff2'),
-       url('../fonts/CommunityBook-Italic.ttf') format('truetype');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'CommunityBook';
-  src: url('../fonts/CommunityBook-MediumItalic.woff2') format('woff2'),
-       url('../fonts/CommunityBook-MediumItalic.ttf') format('truetype');
-  font-weight: 500;
-  font-style: italic;
   font-display: swap;
 }
 

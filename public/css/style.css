@@ -10,29 +10,29 @@
   --warm-white: #F9F5EC;
   --linen: #E9E3D9;
   
-  /* Pink/Rose (from image 1) */
-  --pink: #F5AFC9;
-  --pink-light: #FCD5E3;
-  --pink-dark: #E88AA8;
+  /* Pink/Rose (from poster analysis — softer, more muted blush) */
+  --pink: #EDC6D4;
+  --pink-light: #F5DDE6;
+  --pink-dark: #D9A8BA;
   --rose-gradient-start: #F0ABC7;
   --rose-gradient-end: #F5AFC9;
   
-  /* Terracotta/Copper (from image 2) */
-  --terracotta: #C69581;
-  --copper: #C07F54;
-  --warm-brown: #B76E4C;
-  --peach: #E0C5AE;
+  /* Terracotta/Copper (from poster — softer, warmer) */
+  --terracotta: #D4A09A;
+  --copper: #C8948E;
+  --warm-brown: #B0786E;
+  --peach: #E8CFC4;
   
-  /* Red (from image 1 — bold CTA) */
-  --red: #DD3930;
-  --red-light: #F06860;
-  --red-dark: #C42E26;
+  /* Red (from poster analysis — warmer, deeper red) */
+  --red: #C7493D;
+  --red-light: #D95F54;
+  --red-dark: #A8372D;
   
-  /* Purple (from image 1 — headings) */
-  --purple: #5F3994;
-  --purple-light: #8B6BBF;
-  --purple-mid: #9F6CAA;
-  --purple-deep: #8054A1;
+  /* Purple (from poster analysis — warmer, slightly lighter) */
+  --purple: #6A4994;
+  --purple-light: #9474BF;
+  --purple-mid: #A67DB5;
+  --purple-deep: #8A5DA8;
   
   /* Dark (from image 2 — nav/footer) */
   --dark: #131313;
@@ -133,9 +133,11 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'CommunityBook Display', 'CommunityBook', Georgia, serif;
+  font-family: 'CommunityBook Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   color: var(--purple);
-  line-height: 1.3;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: 0.01em;
 }
 
 a {
@@ -245,9 +247,9 @@ img {
 }
 
 .nav-brand {
-  font-family: 'CommunityBook Display', 'CommunityBook', serif;
+  font-family: 'CommunityBook Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 1.2rem;
-  font-weight: 400;
+  font-weight: 700;
   color: var(--warm-white) !important;
   text-decoration: none;
 }
@@ -424,10 +426,10 @@ img {
 }
 
 .hero h1 {
-  font-family: 'CommunityBook Display', 'CommunityBook', Georgia, serif;
+  font-family: 'CommunityBook Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 2.5rem;
-  font-weight: 400;
-  letter-spacing: 0.03em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   margin-bottom: var(--space-sm);
   position: relative;
   color: var(--purple);
@@ -641,6 +643,7 @@ img {
 
 .recipe-card-body h3 {
   font-size: 1.15rem;
+  font-weight: 700;
   margin-bottom: var(--space-xs);
   color: var(--purple);
 }
@@ -773,6 +776,7 @@ img {
 
 .recipe-detail h2 {
   font-size: 1.3rem;
+  font-weight: 700;
   margin-top: var(--space-lg);
   margin-bottom: var(--space-sm);
   color: var(--purple);
@@ -873,8 +877,9 @@ img {
   font-size: 1.2rem;
   margin-bottom: var(--space-md);
   color: var(--purple);
+  font-weight: 700;
   padding-bottom: var(--space-sm);
-  border-bottom: 2px solid var(--peach);
+  border-bottom: 2px solid var(--pink);
 }
 
 .form-group {
