@@ -1,0 +1,7 @@
+node_modules/
+data/
+public/uploads/
+public/recipes/
+*.db
+*.log
+.env

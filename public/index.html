@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🥟 Community Recipe Book — Share & Discover Recipes</title>
+<meta name="description" content="Have a recipe you love? Share it with us! Your recipe may be featured in our community recipe book.">
+<meta property="og:title" content="Community Recipe Book">
+<meta property="og:description" content="Share your recipe and discover dishes from around the world.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-brand">🥟 Community Recipe Book</a>
+  <div class="nav-links">
+    <a href="/" class="active">Browse</a>
+    <a href="/submit.html">Submit</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <span class="hero-emoji">🥟</span>
+  <h1>Community Recipe Book</h1>
+  <p>Have a recipe you love? <span class="subtitle-accent">Share it with us!</span><br>
+  Your recipe may be featured for other festival attendees and food lovers to discover.</p>
+</div>
+
+<div class="search-section">
+  <form class="search-box" id="searchForm">
+    <input type="text" id="searchInput" placeholder="Search recipes by name, ingredient, origin..." autocomplete="off">
+    <button type="submit" class="search-btn" aria-label="Search">🔍</button>
+  </form>
+  <div class="filter-tags" id="filterTags">
+    <a href="#" class="filter-tag" data-filter="all">All</a>
+    <a href="#" class="filter-tag" data-dietary="Vegetarian">🥬 Vegetarian</a>
+    <a href="#" class="filter-tag" data-dietary="Vegan">🌱 Vegan</a>
+    <a href="#" class="filter-tag" data-dietary="Gluten-free">🌾 Gluten-free</a>
+    <a href="#" class="filter-tag" data-dietary="Halal">☪️ Halal</a>
+    <a href="#" class="filter-tag" data-difficulty="Easy">😊 Easy</a>
+    <a href="#" class="filter-tag" data-difficulty="Intermediate">🤔 Intermediate</a>
+    <a href="#" class="filter-tag" data-difficulty="Advanced">👨‍🍳 Advanced</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="stats-bar" id="statsBar">
+    <span>🥘 <strong id="totalCount">0</strong> recipes</span>
+    <span>🌍 <strong id="originCount">0</strong> regions</span>
+  </div>
+
+  <div class="recipe-grid" id="recipeGrid"></div>
+
+  <div class="no-results" id="noResults" style="display:none">
+    <span class="emoji">🔍</span>
+    <h3>No recipes found</h3>
+    <p>Try a different search term or filter.</p>
+  </div>
+
+  <div id="loadMore" style="text-align:center;margin-top:24px;display:none">
+    <button onclick="loadMore()" style="padding:12px 32px;background:var(--terra);color:white;border:none;border-radius:8px;font-size:1rem;cursor:pointer;font-family:'Source Sans 3',sans-serif;font-weight:600">Load more recipes</button>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>🥟 Community Recipe Book — Celebrating food, family &amp; culture</p>
+</footer>
+
+<script>
+let currentPage = 1;
+let totalPages = 1;
+let currentQuery = '';
+let currentDietary = '';
+let currentDifficulty = '';
+let currentSort = 'newest';
+
+// Load recipes from API
+async function loadRecipes(append = false) {
+  const params = new URLSearchParams();
+  if (currentQuery) params.set('q', currentQuery);
+  if (currentDietary) params.set('dietary', currentDietary);
+  if (currentDifficulty) params.set('difficulty', currentDifficulty);
+  params.set('page', currentPage);
+  params.set('limit', 12);
+  params.set('sort', currentSort);
+
+  try {
+    const res = await fetch(`/api/recipes?${params}`);
+    const data = await res.json();
+
+    if (!append) {
+      document.getElementById('recipeGrid').innerHTML = '';
+    }
+
+    if (data.recipes.length === 0 && currentPage === 1) {
+      document.getElementById('noResults').style.display = 'block';
+      document.getElementById('loadMore').style.display = 'none';
+    } else {
+      document.getElementById('noResults').style.display = 'none';
+      data.recipes.forEach(recipe => renderCard(recipe));
+      document.getElementById('loadMore').style.display =
+        currentPage < data.totalPages ? 'block' : 'none';
+    }
+
+    totalPages = data.totalPages;
+  } catch (err) {
+    console.error('Failed to load recipes:', err);
+  }
+}
+
+// Render a recipe card
+function renderCard(recipe) {
+  const grid = document.getElementById('recipeGrid');
+  const card = document.createElement('a');
+  card.href = `/recipe/${recipe.slug}`;
+  card.className = 'recipe-card';
+  card.style.animation = 'fadeSlideUp 0.4s ease-out both';
+  card.style.animationDelay = `${Math.random() * 0.3}s`;
+
+  const difficultyEmoji = { Easy: '😊', Intermediate: '🤔', Advanced: '👨‍🍳' }[recipe.difficulty] || '';
+
+  card.innerHTML = `
+    ${recipe.photo
+      ? `<img src="${recipe.photo}" alt="${recipe.recipe_name}" class="recipe-card-image" loading="lazy">`
+      : `<div class="recipe-card-placeholder">🥘</div>`
+    }
+    <div class="recipe-card-body">
+      <h3>${escapeHtml(recipe.recipe_name)}</h3>
+      <div class="recipe-card-meta">
+        ${recipe.display_name ? `<span>👤 ${escapeHtml(recipe.display_name)}</span>` : ''}
+        ${recipe.origin ? `<span>🌍 ${escapeHtml(recipe.origin)}</span>` : ''}
+        <span>👥 ${escapeHtml(recipe.serves)}</span>
+        <span>⏱ ${escapeHtml(recipe.prep_time)}</span>
+        ${recipe.difficulty ? `<span>${difficultyEmoji} ${recipe.difficulty}</span>` : ''}
+      </div>
+      ${recipe.story ? `<p class="recipe-card-story">${escapeHtml(recipe.story)}</p>` : ''}
+      <div class="recipe-card-tags">
+        ${(recipe.dietary || []).map(d => `<span class="tag tag-dietary">${escapeHtml(d)}</span>`).join('')}
+        ${(recipe.allergens || []).slice(0, 3).map(a => `<span class="tag">${escapeHtml(a)}</span>`).join('')}
+      </div>
+    </div>
+  `;
+
+  grid.appendChild(card);
+}
+
+// Load stats
+async function loadStats() {
+  try {
+    const res = await fetch('/api/stats');
+    const data = await res.json();
+    document.getElementById('totalCount').textContent = data.totalRecipes;
+    document.getElementById('originCount').textContent = data.uniqueOrigins;
+  } catch (err) {
+    console.error('Failed to load stats:', err);
+  }
+}
+
+// Escape HTML
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// Search form
+document.getElementById('searchForm').addEventListener('submit', e => {
+  e.preventDefault();
+  currentQuery = document.getElementById('searchInput').value.trim();
+  currentPage = 1;
+  loadRecipes();
+});
+
+// Live search with debounce
+let searchTimeout;
+document.getElementById('searchInput').addEventListener('input', e => {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    currentQuery = e.target.value.trim();
+    currentPage = 1;
+    loadRecipes();
+  }, 300);
+});
+
+// Filter tags
+document.querySelectorAll('.filter-tag').forEach(tag => {
+  tag.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+    tag.classList.add('active');
+
+    currentDietary = tag.dataset.dietary || '';
+    currentDifficulty = tag.dataset.difficulty || '';
+    currentPage = 1;
+    loadRecipes();
+  });
+});
+
+// Load more
+function loadMore() {
+  currentPage++;
+  loadRecipes(true);
+}
+
+// Initial load
+loadRecipes();
+loadStats();
+</script>
+</body>
+</html>
