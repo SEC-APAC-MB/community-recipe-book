@@ -18,13 +18,17 @@
   <div class="nav-links">
     <a href="./" data-i18n="navBrowse">Browse</a>
     <a href="./submit.html" class="active" data-i18n="navSubmit">Submit</a>
-    <div class="lang-switcher" id="langSwitcher"></div>
   </div>
 </nav>
 
 <div class="hero">
   <span class="hero-emoji">📝</span>
   <h1 data-i18n="submitTitle">Share Your Recipe</h1>
+  <div class="lang-dropdown" id="langDropdown">
+    <button class="lang-dropdown-btn" id="langDropdownBtn">🌐 English</button>
+    <div class="lang-dropdown-menu" id="langDropdownMenu">
+    </div>
+  </div>
   <p><span data-i18n="submitSubtitle">Have a recipe you love?</span> <span class="subtitle-accent" data-i18n="submitAccent">Share it with us!</span><br>
   <span data-i18n="submitDesc">Your recipe may be featured in our community recipe book for other festival attendees and food lovers to discover.</span></p>
 </div>
@@ -306,29 +310,45 @@ document.getElementById('recipeForm').addEventListener('submit', async (e) => {
   window.scrollTo(0, 0);
 });
 
-// ── Language Switcher ──
-function buildLangSwitcher() {
-  const container = document.getElementById('langSwitcher');
+// ── Language Dropdown ──
+function buildLangDropdown() {
+  const menu = document.getElementById('langDropdownMenu');
+  const btn = document.getElementById('langDropdownBtn');
   const currentLang = window.i18n.detectLanguage();
+
+  btn.textContent = '🌐 ' + window.i18n.LANG_NAMES[currentLang];
+
   window.i18n.SUPPORTED_LANGS.forEach(lang => {
-    const btn = document.createElement('button');
-    btn.className = 'lang-btn' + (lang === currentLang ? ' active' : '');
-    btn.dataset.lang = lang;
-    btn.textContent = window.i18n.LANG_NAMES[lang];
-    btn.addEventListener('click', () => {
+    const item = document.createElement('a');
+    item.href = 'javascript:void(0)';
+    item.className = 'lang-dropdown-item' + (lang === currentLang ? ' active' : '');
+    item.textContent = window.i18n.LANG_NAMES[lang];
+    item.dataset.lang = lang;
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
       window.i18n.setLanguage(lang);
+      btn.textContent = '🌐 ' + window.i18n.LANG_NAMES[lang];
       const url = new URL(window.location);
       url.searchParams.set('lang', lang);
       history.replaceState(null, '', url);
+      menu.classList.remove('open');
+      menu.querySelectorAll('.lang-dropdown-item').forEach(i => i.classList.toggle('active', i.dataset.lang === lang));
     });
-    container.appendChild(btn);
+    menu.appendChild(item);
   });
+
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    menu.classList.toggle('open');
+  });
+
+  document.addEventListener('click', () => menu.classList.remove('open'));
 }
 
 // ── Init ──
 const lang = window.i18n.detectLanguage();
 window.i18n.setLanguage(lang);
-buildLangSwitcher();
+buildLangDropdown();
 </script>
 </body>
 </html>
