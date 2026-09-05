@@ -307,10 +307,10 @@ async function filterRecipes() {
       recipe.origin?.toLowerCase().includes(query) ||
       recipe.story?.toLowerCase().includes(query);
 
-    const matchesDietary = !dietary || (recipe.dietary || []).includes(dietary);
-    const matchesDifficulty = !difficulty || recipe.difficulty === difficulty;
+    const matchesDietary = dietary ? (recipe.dietary || []).includes(dietary) : true;
+    const matchesDifficulty = difficulty ? recipe.difficulty === difficulty : true;
 
-    return matchesQuery && (showAll ? true : matchesDietary || matchesDifficulty);
+    return matchesQuery && matchesDietary && matchesDifficulty;
   });
 
   const grid = document.getElementById('recipeGrid');
