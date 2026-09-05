@@ -8,17 +8,24 @@
 <meta property="og:title" content="Community Recipe Book">
 <meta property="og:description" content="Share your recipe and discover dishes from around the world.">
 <meta property="og:type" content="website">
+<meta name="theme-color" content="#5F3994">
 <link rel="stylesheet" href="./css/fonts.css">
 <link rel="stylesheet" href="./css/style.css">
 <script src="./js/i18n.js"></script>
 </head>
 <body>
 
-<nav class="nav">
+<a href="#main" class="skip-link">Skip to content</a>
+
+<nav class="nav" role="navigation" aria-label="Main navigation">
   <a href="./" class="nav-brand" data-i18n="navBrand">🥟 Community Recipe Book</a>
   <div class="nav-links">
     <a href="./" class="active" data-i18n="navBrowse">Browse</a>
     <a href="./submit.html" data-i18n="navSubmit">Submit</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span class="icon-moon">🌙</span>
+      <span class="icon-sun">☀️</span>
+    </button>
   </div>
 </nav>
 
@@ -26,28 +33,29 @@
   <span class="hero-emoji">🥟</span>
   <h1 data-i18n="heroTitle">Community Recipe Book</h1>
   <div class="lang-dropdown" id="langDropdown">
-    <button class="lang-dropdown-btn" id="langDropdownBtn">🌐 English</button>
-    <div class="lang-dropdown-menu" id="langDropdownMenu">
+    <button class="lang-dropdown-btn" id="langDropdownBtn" aria-haspopup="listbox" aria-expanded="false">🌐 English</button>
+    <div class="lang-dropdown-menu" id="langDropdownMenu" role="listbox" aria-label="Select language">
     </div>
   </div>
   <p><span data-i18n="heroSubtitle">Have a recipe you love?</span> <span class="subtitle-accent" data-i18n="heroAccent">Share it with us!</span><br>
   <span data-i18n="heroDesc">Your recipe may be featured for other festival attendees and food lovers to discover.</span></p>
 </div>
 
-<div class="search-section">
-  <form class="search-box" id="searchForm">
-    <input type="text" id="searchInput" data-i18n="searchPlaceholder" placeholder="Search recipes by name, ingredient, origin..." autocomplete="off">
+<div class="search-section" id="main">
+  <form class="search-box" id="searchForm" role="search">
+    <input type="text" id="searchInput" data-i18n="searchPlaceholder" placeholder="Search recipes by name, ingredient, origin..." autocomplete="off" aria-label="Search recipes">
+    <button type="button" class="search-clear" id="searchClear" aria-label="Clear search">✕</button>
     <button type="submit" class="search-btn" aria-label="Search">🔍</button>
   </form>
-  <div class="filter-tags" id="filterTags">
-    <a href="javascript:void(0)" class="filter-tag active" data-filter="all" data-i18n="filterAll">All</a>
-    <a href="javascript:void(0)" class="filter-tag" data-dietary="Vegetarian" data-i18n="filterVegetarian">🥬 Vegetarian</a>
-    <a href="javascript:void(0)" class="filter-tag" data-dietary="Vegan" data-i18n="filterVegan">🌱 Vegan</a>
-    <a href="javascript:void(0)" class="filter-tag" data-dietary="Gluten-free" data-i18n="filterGlutenFree">🌾 Gluten-free</a>
-    <a href="javascript:void(0)" class="filter-tag" data-dietary="Halal" data-i18n="filterHalal">☪️ Halal</a>
-    <a href="javascript:void(0)" class="filter-tag" data-difficulty="Easy" data-i18n="filterEasy">😊 Easy</a>
-    <a href="javascript:void(0)" class="filter-tag" data-difficulty="Intermediate" data-i18n="filterIntermediate">🤔 Intermediate</a>
-    <a href="javascript:void(0)" class="filter-tag" data-difficulty="Advanced" data-i18n="filterAdvanced">👨‍🍳 Advanced</a>
+  <div class="filter-tags" id="filterTags" role="group" aria-label="Filter recipes">
+    <a href="javascript:void(0)" class="filter-tag active" data-filter="all" data-i18n="filterAll" role="button" tabindex="0">All</a>
+    <a href="javascript:void(0)" class="filter-tag" data-dietary="Vegetarian" data-i18n="filterVegetarian" role="button" tabindex="0">🥬 Vegetarian</a>
+    <a href="javascript:void(0)" class="filter-tag" data-dietary="Vegan" data-i18n="filterVegan" role="button" tabindex="0">🌱 Vegan</a>
+    <a href="javascript:void(0)" class="filter-tag" data-dietary="Gluten-free" data-i18n="filterGlutenFree" role="button" tabindex="0">🌾 Gluten-free</a>
+    <a href="javascript:void(0)" class="filter-tag" data-dietary="Halal" data-i18n="filterHalal" role="button" tabindex="0">☪️ Halal</a>
+    <a href="javascript:void(0)" class="filter-tag" data-difficulty="Easy" data-i18n="filterEasy" role="button" tabindex="0">😊 Easy</a>
+    <a href="javascript:void(0)" class="filter-tag" data-difficulty="Intermediate" data-i18n="filterIntermediate" role="button" tabindex="0">🤔 Intermediate</a>
+    <a href="javascript:void(0)" class="filter-tag" data-difficulty="Advanced" data-i18n="filterAdvanced" role="button" tabindex="0">👨‍🍳 Advanced</a>
   </div>
 </div>
 
@@ -177,7 +185,7 @@ async function seedIfEmpty() {
     },
     {
       slug: 'samosa',
-      recipe_name: 'Aunty Priya\'s Samosas',
+      recipe_name: "Aunty Priya's Samosas",
       display_name: 'Priya K.',
       origin: 'Punjab, India',
       story: 'Every Diwali, my aunty would make hundreds of samosas. The whole house would smell like cumin and ghee. We\'d sneak them fresh from the oil, burning our tongues because we couldn\'t wait. That\'s how you know they\'re good.',
@@ -245,15 +253,15 @@ async function renderRecipes() {
 
   noResults.style.display = 'none';
   grid.style.display = 'grid';
-  grid.innerHTML = recipes.map(recipe => {
+  grid.innerHTML = recipes.map((recipe, i) => {
     const dietary = recipe.dietary || [];
     const placeholderEmojis = { Easy: '😊', Intermediate: '🤔', Advanced: '👨‍🍳' };
     const emoji = placeholderEmojis[recipe.difficulty] || '🥘';
 
     return `
-      <a href="./recipe.html?slug=${encodeURIComponent(recipe.slug)}" class="recipe-card">
+      <a href="./recipe.html?slug=${encodeURIComponent(recipe.slug)}" class="recipe-card animate-fade-in-up" style="animation-delay: ${Math.min(i * 0.05, 0.4)}s" loading="lazy">
         ${recipe.photo
-          ? `<img src="${escapeHtml(recipe.photo)}" alt="${escapeHtml(recipe.recipe_name)}" class="recipe-card-image">`
+          ? `<img src="${escapeHtml(recipe.photo)}" alt="${escapeHtml(recipe.recipe_name)}" class="recipe-card-image" loading="lazy" onload="this.classList.add('loaded')">`
           : `<div class="recipe-card-placeholder">${emoji}</div>`
         }
         <div class="recipe-card-body">
@@ -275,12 +283,28 @@ async function renderRecipes() {
 }
 
 // ── Search & Filters ──
+let searchDebounceTimer;
+
 document.getElementById('searchForm').addEventListener('submit', (e) => {
   e.preventDefault();
   filterRecipes();
 });
 
-document.getElementById('searchInput').addEventListener('input', filterRecipes);
+document.getElementById('searchInput').addEventListener('input', () => {
+  const clearBtn = document.getElementById('searchClear');
+  clearBtn.classList.toggle('visible', document.getElementById('searchInput').value.length > 0);
+  clearTimeout(searchDebounceTimer);
+  searchDebounceTimer = setTimeout(filterRecipes, 200);
+});
+
+document.getElementById('searchClear').addEventListener('click', () => {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchClear').classList.remove('visible');
+  // Reset to "All" filter
+  document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  filterRecipes();
+});
 
 document.querySelectorAll('.filter-tag').forEach(tag => {
   tag.addEventListener('click', (e) => {
@@ -288,6 +312,13 @@ document.querySelectorAll('.filter-tag').forEach(tag => {
     document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
     tag.classList.add('active');
     filterRecipes();
+  });
+  // Keyboard accessibility for filter tags
+  tag.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      tag.click();
+    }
   });
 });
 
@@ -298,7 +329,6 @@ async function filterRecipes() {
 
   const dietary = activeFilter?.dataset.dietary;
   const difficulty = activeFilter?.dataset.difficulty;
-  const showAll = activeFilter?.dataset.filter === 'all';
 
   const filtered = recipes.filter(recipe => {
     const matchesQuery = !query ||
@@ -324,14 +354,14 @@ async function filterRecipes() {
     grid.style.display = 'grid';
 
     const placeholderEmojis = { Easy: '😊', Intermediate: '🤔', Advanced: '👨‍🍳' };
-    grid.innerHTML = filtered.map(recipe => {
+    grid.innerHTML = filtered.map((recipe, i) => {
       const dietary = recipe.dietary || [];
       const emoji = placeholderEmojis[recipe.difficulty] || '🥘';
 
       return `
-        <a href="./recipe.html?slug=${encodeURIComponent(recipe.slug)}" class="recipe-card">
+        <a href="./recipe.html?slug=${encodeURIComponent(recipe.slug)}" class="recipe-card animate-fade-in-up" style="animation-delay: ${Math.min(i * 0.05, 0.4)}s">
           ${recipe.photo
-            ? `<img src="${escapeHtml(recipe.photo)}" alt="${escapeHtml(recipe.recipe_name)}" class="recipe-card-image">`
+            ? `<img src="${escapeHtml(recipe.photo)}" alt="${escapeHtml(recipe.recipe_name)}" class="recipe-card-image" loading="lazy" onload="this.classList.add('loaded')">`
             : `<div class="recipe-card-placeholder">${emoji}</div>`
           }
           <div class="recipe-card-body">
@@ -353,13 +383,31 @@ async function filterRecipes() {
   }
 }
 
+// ── Theme Toggle ──
+function initTheme() {
+  const saved = localStorage.getItem('recipeBookTheme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+}
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('recipeBookTheme', next);
+});
+
+initTheme();
+
 // ── Language Dropdown ──
 function buildLangDropdown() {
   const menu = document.getElementById('langDropdownMenu');
   const btn = document.getElementById('langDropdownBtn');
   const currentLang = window.i18n.detectLanguage();
 
-  // Set initial button text
   btn.textContent = '🌐 ' + window.i18n.LANG_NAMES[currentLang];
 
   window.i18n.SUPPORTED_LANGS.forEach(lang => {
@@ -368,29 +416,44 @@ function buildLangDropdown() {
     item.className = 'lang-dropdown-item' + (lang === currentLang ? ' active' : '');
     item.textContent = window.i18n.LANG_NAMES[lang];
     item.dataset.lang = lang;
+    item.setAttribute('role', 'option');
+    item.setAttribute('aria-selected', lang === currentLang ? 'true' : 'false');
     item.addEventListener('click', (e) => {
       e.preventDefault();
       window.i18n.setLanguage(lang);
       btn.textContent = '🌐 ' + window.i18n.LANG_NAMES[lang];
+      btn.setAttribute('aria-expanded', 'false');
       const url = new URL(window.location);
       url.searchParams.set('lang', lang);
       history.replaceState(null, '', url);
       menu.classList.remove('open');
-      // Update active state
-      menu.querySelectorAll('.lang-dropdown-item').forEach(i => i.classList.toggle('active', i.dataset.lang === lang));
+      menu.querySelectorAll('.lang-dropdown-item').forEach(i => {
+        i.classList.toggle('active', i.dataset.lang === lang);
+        i.setAttribute('aria-selected', i.dataset.lang === lang ? 'true' : 'false');
+      });
       filterRecipes();
     });
     menu.appendChild(item);
   });
 
-  // Toggle dropdown on click
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
-    menu.classList.toggle('open');
+    const isOpen = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   });
 
-  // Close dropdown when clicking outside
-  document.addEventListener('click', () => menu.classList.remove('open'));
+  document.addEventListener('click', () => {
+    menu.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  });
+
+  // Keyboard: Escape closes dropdown
+  btn.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
 }
 
 // ── Init ──
@@ -398,6 +461,11 @@ const lang = window.i18n.detectLanguage();
 window.i18n.setLanguage(lang);
 buildLangDropdown();
 renderRecipes();
+
+// ── Register Service Worker ──
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
 </script>
 </body>
 </html>

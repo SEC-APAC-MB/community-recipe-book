@@ -5,25 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Recipe — 🥟 Community Recipe Book</title>
 <meta name="description" content="A community recipe from our recipe book.">
+<meta name="theme-color" content="#5F3994">
 <link rel="stylesheet" href="./css/fonts.css">
 <link rel="stylesheet" href="./css/style.css">
 <script src="./js/i18n.js"></script>
 </head>
 <body>
 
-<nav class="nav">
+<a href="#main" class="skip-link">Skip to content</a>
+
+<nav class="nav" role="navigation" aria-label="Main navigation">
   <a href="./" class="nav-brand" data-i18n="navBrand">🥟 Community Recipe Book</a>
   <div class="nav-links">
     <a href="./" data-i18n="navBrowse">Browse</a>
     <a href="./submit.html" data-i18n="navSubmit">Submit</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span class="icon-moon">🌙</span>
+      <span class="icon-sun">☀️</span>
+    </button>
   </div>
 </nav>
 
-<main class="recipe-detail" id="recipeDetail">
+<main class="recipe-detail" id="main">
   <div style="text-align:center;margin-bottom:16px;">
     <div class="lang-dropdown" id="langDropdown">
-      <button class="lang-dropdown-btn" id="langDropdownBtn">🌐 English</button>
-      <div class="lang-dropdown-menu" id="langDropdownMenu">
+      <button class="lang-dropdown-btn" id="langDropdownBtn" aria-haspopup="listbox" aria-expanded="false">🌐 English</button>
+      <div class="lang-dropdown-menu" id="langDropdownMenu" role="listbox" aria-label="Select language">
       </div>
     </div>
   </div>
@@ -88,7 +95,7 @@ async function renderRecipe() {
   const t = window.i18n.translations[window.i18n.detectLanguage()] || window.i18n.translations.en;
 
   if (!recipe) {
-    document.getElementById('recipeDetail').innerHTML = `
+    document.getElementById('main').innerHTML = `
       <a href="./" class="back-link">${t.backToRecipes}</a>
       <div class="no-results">
         <span class="emoji">🔍</span>
@@ -108,12 +115,12 @@ async function renderRecipe() {
   const dietary = recipe.dietary || [];
   const allergens = recipe.allergens || [];
 
-  document.getElementById('recipeDetail').innerHTML = `
+  document.getElementById('main').innerHTML = `
     <a href="./" class="back-link">${t.backToRecipes}</a>
 
     ${recipe.photo
-      ? `<img src="${escapeHtml(recipe.photo)}" alt="${escapeHtml(recipe.recipe_name)}" class="recipe-detail-image">`
-      : `<div class="recipe-detail-placeholder">🥘</div>`
+      ? `<img src="${escapeHtml(recipe.photo)}" alt="${escapeHtml(recipe.recipe_name)}" class="recipe-detail-image" loading="lazy">`
+      : `<div class="recipe-detail-placeholder">${difficultyEmoji || '🥘'}</div>`
     }
 
     <h1>${escapeHtml(recipe.recipe_name)}</h1>
@@ -152,9 +159,96 @@ async function renderRecipe() {
       <div class="method-text">${escapeHtml(recipe.serve_with)}</div>
     ` : ''}
 
+    <div class="recipe-actions">
+      <button class="recipe-action-btn" onclick="shareRecipe()" aria-label="Share recipe">
+        <span class="icon">🔗</span> ${t.shareLabel || 'Share'}
+      </button>
+      <button class="recipe-action-btn" onclick="window.print()" aria-label="Print recipe">
+        <span class="icon">🖨️</span> ${t.printLabel || 'Print'}
+      </button>
+    </div>
+
     <p style="margin-top:32px;color:var(--ink-muted);font-size:0.85rem;">${t.addedLabel} ${date}</p>
   `;
+
+  // JSON-LD structured data for this recipe
+  addRecipeStructuredData(recipe);
 }
+
+function shareRecipe() {
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title: document.title, url: url }).catch(() => {});
+  } else {
+    // Fallback: copy to clipboard
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = document.querySelector('.recipe-action-btn');
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<span class="icon">✅</span> Copied!';
+      setTimeout(() => { btn.innerHTML = orig; }, 2000);
+    }).catch(() => {
+      // Ultimate fallback
+      const input = document.createElement('input');
+      input.value = url;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+    });
+  }
+}
+
+function addRecipeStructuredData(recipe) {
+  // Remove any existing structured data
+  const existing = document.getElementById('recipe-jsonld');
+  if (existing) existing.remove();
+
+  const ld = {
+    "@context": "https://schema.org",
+    "@type": "Recipe",
+    "name": recipe.recipe_name,
+    "author": recipe.display_name ? { "@type": "Person", "name": recipe.display_name } : undefined,
+    "recipeYield": recipe.serves,
+    "recipeIngredient": recipe.ingredients?.split('\n').filter(l => l.trim()) || [],
+    "recipeInstructions": recipe.method?.split('\n').filter(l => l.trim()).map((step, i) => ({
+      "@type": "HowToStep",
+      "position": i + 1,
+      "text": step.replace(/^\d+[\.\)]\s*/, '')
+    })) || [],
+  };
+
+  if (recipe.prep_time) ld.prepTime = `PT${recipe.prep_time.replace(/[^0-9]/g, '')}M`;
+  if (recipe.cook_time) ld.cookTime = `PT${recipe.cook_time.replace(/[^0-9]/g, '')}M`;
+  if (recipe.difficulty) ld.recipeCategory = recipe.difficulty;
+  if (recipe.origin) ld.recipeCuisine = recipe.origin;
+  if (recipe.dietary?.length) ld.suitableForDiet = recipe.dietary;
+  if (recipe.photo) ld.image = recipe.photo;
+
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.id = 'recipe-jsonld';
+  script.textContent = JSON.stringify(ld);
+  document.head.appendChild(script);
+}
+
+// ── Theme Toggle ──
+function initTheme() {
+  const saved = localStorage.getItem('recipeBookTheme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+}
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('recipeBookTheme', next);
+});
+
+initTheme();
 
 // ── Language Dropdown ──
 function buildLangDropdown() {
@@ -170,15 +264,21 @@ function buildLangDropdown() {
     item.className = 'lang-dropdown-item' + (lang === currentLang ? ' active' : '');
     item.textContent = window.i18n.LANG_NAMES[lang];
     item.dataset.lang = lang;
+    item.setAttribute('role', 'option');
+    item.setAttribute('aria-selected', lang === currentLang ? 'true' : 'false');
     item.addEventListener('click', (e) => {
       e.preventDefault();
       window.i18n.setLanguage(lang);
       btn.textContent = '🌐 ' + window.i18n.LANG_NAMES[lang];
+      btn.setAttribute('aria-expanded', 'false');
       const url = new URL(window.location);
       url.searchParams.set('lang', lang);
       history.replaceState(null, '', url);
       menu.classList.remove('open');
-      menu.querySelectorAll('.lang-dropdown-item').forEach(i => i.classList.toggle('active', i.dataset.lang === lang));
+      menu.querySelectorAll('.lang-dropdown-item').forEach(i => {
+        i.classList.toggle('active', i.dataset.lang === lang);
+        i.setAttribute('aria-selected', i.dataset.lang === lang ? 'true' : 'false');
+      });
       renderRecipe();
     });
     menu.appendChild(item);
@@ -186,10 +286,21 @@ function buildLangDropdown() {
 
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
-    menu.classList.toggle('open');
+    const isOpen = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   });
 
-  document.addEventListener('click', () => menu.classList.remove('open'));
+  document.addEventListener('click', () => {
+    menu.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  });
+
+  btn.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
 }
 
 // ── Init ──

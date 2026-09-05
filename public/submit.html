@@ -5,17 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Submit Recipe — 🥟 Community Recipe Book</title>
 <meta name="description" content="Share your recipe with our community.">
+<meta name="theme-color" content="#5F3994">
 <link rel="stylesheet" href="./css/fonts.css">
 <link rel="stylesheet" href="./css/style.css">
 <script src="./js/i18n.js"></script>
 </head>
 <body>
 
-<nav class="nav">
+<a href="#main" class="skip-link">Skip to content</a>
+
+<nav class="nav" role="navigation" aria-label="Main navigation">
   <a href="./" class="nav-brand" data-i18n="navBrand">🥟 Community Recipe Book</a>
   <div class="nav-links">
     <a href="./" data-i18n="navBrowse">Browse</a>
     <a href="./submit.html" class="active" data-i18n="navSubmit">Submit</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span class="icon-moon">🌙</span>
+      <span class="icon-sun">☀️</span>
+    </button>
   </div>
 </nav>
 
@@ -23,15 +30,15 @@
   <span class="hero-emoji">📝</span>
   <h1 data-i18n="submitTitle">Share Your Recipe</h1>
   <div class="lang-dropdown" id="langDropdown">
-    <button class="lang-dropdown-btn" id="langDropdownBtn">🌐 English</button>
-    <div class="lang-dropdown-menu" id="langDropdownMenu">
+    <button class="lang-dropdown-btn" id="langDropdownBtn" aria-haspopup="listbox" aria-expanded="false">🌐 English</button>
+    <div class="lang-dropdown-menu" id="langDropdownMenu" role="listbox" aria-label="Select language">
     </div>
   </div>
   <p><span data-i18n="submitSubtitle">Have a recipe you love?</span> <span class="subtitle-accent" data-i18n="submitAccent">Share it with us!</span><br>
   <span data-i18n="submitDesc">Your recipe may be featured in our community recipe book for other festival attendees and food lovers to discover.</span></p>
 </div>
 
-<div class="form-page">
+<div class="form-page" id="main">
   <div class="intro-box">
     <p data-i18n="introText">It takes about <strong>3–5 minutes</strong> to submit. Every dish tells a story — we'd love to hear yours.</p>
     <p style="margin-top:8px;font-size:0.85rem;color:var(--ink-muted);"><span data-i18n="introTime">3–5 minutes · All fields with</span> <span style="color:var(--red)">*</span> <span data-i18n="introTimeReq">are required</span></p>
@@ -45,7 +52,7 @@
 
       <div class="form-group">
         <label><span data-i18n="recipeName">Recipe name</span> <span class="required" data-i18n="required">*</span></label>
-        <input type="text" id="recipe_name" data-i18n="recipeNamePh" placeholder="e.g. Grandma's Pork Dumplings" required>
+        <input type="text" id="recipe_name" data-i18n="recipeNamePh" placeholder="e.g. Grandma's Pork Dumplings" required aria-required="true">
         <div class="error" id="recipe_name_error" data-i18n="recipeName">Recipe name is required</div>
       </div>
 
@@ -71,7 +78,8 @@
 
       <div class="form-group">
         <label><span data-i18n="serves">How many people does it serve?</span> <span class="required" data-i18n="required">*</span></label>
-        <input type="text" id="serves" data-i18n="servesPh" placeholder="e.g. 4" required>
+        <input type="text" id="serves" data-i18n="servesPh" placeholder="e.g. 4" required aria-required="true">
+        <div class="error" id="serves_error" data-i18n="serves">Serving size is required</div>
       </div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
@@ -106,8 +114,9 @@
 500 g pork mince
 2 spring onions
 1 tbsp soy sauce
-..." required></textarea>
+..." required aria-required="true"></textarea>
         <div class="hint" data-i18n="ingredientsHint">Please include quantities</div>
+        <div class="error" id="ingredients_error" data-i18n="ingredients">Ingredients are required</div>
       </div>
 
       <div class="form-group">
@@ -115,7 +124,8 @@
         <textarea id="method" rows="6" data-i18n="methodHint" placeholder="Step-by-step instructions
 1.
 2.
-3." required></textarea>
+3." required aria-required="true"></textarea>
+        <div class="error" id="method_error" data-i18n="method">Method is required</div>
       </div>
 
       <div class="form-group">
@@ -130,7 +140,7 @@
 
       <div class="form-group">
         <label><span data-i18n="dietaryInfo">Dietary information</span></label>
-        <div class="checkbox-group">
+        <div class="checkbox-group" role="group" aria-label="Dietary information">
           <label><input type="checkbox" name="dietary" value="Vegetarian"> <span>🥬 Vegetarian</span></label>
           <label><input type="checkbox" name="dietary" value="Vegan"> <span>🌱 Vegan</span></label>
           <label><input type="checkbox" name="dietary" value="Gluten-free"> <span>🌾 Gluten-free</span></label>
@@ -142,7 +152,7 @@
 
       <div class="form-group">
         <label><span data-i18n="allergens">Allergens</span></label>
-        <div class="checkbox-group">
+        <div class="checkbox-group" role="group" aria-label="Allergens">
           <label><input type="checkbox" name="allergens" value="Wheat/gluten"> <span>Wheat/gluten</span></label>
           <label><input type="checkbox" name="allergens" value="Dairy"> <span>Dairy</span></label>
           <label><input type="checkbox" name="allergens" value="Eggs"> <span>Eggs</span></label>
@@ -153,45 +163,48 @@
       </div>
     </div>
 
-    <!-- Section: Photo & Contact -->
+    <!-- Section: Photo -->
     <div class="form-section">
       <h2 data-i18n="sectionPhoto">Photo & Contact</h2>
 
       <div class="form-group">
         <label><span data-i18n="photo">Upload a photo of your recipe</span> <span class="optional" data-i18n="optional">(optional)</span></label>
-        <div class="photo-upload" id="photoUpload">
+        <div class="photo-upload" id="photoUpload" role="button" tabindex="0" aria-label="Upload a photo">
           <span class="emoji">📷</span>
           <p data-i18n="photoText">Click to upload or drag and drop</p>
-          <p class="hint" data-i18n="photoHint">JPG / PNG only · Max 2 MB</p>
-          <input type="file" id="photo" accept="image/jpeg,image/png" style="display:none">
+          <p class="hint" data-i18n="photoHint">JPG / PNG up to 5 MB</p>
+          <input type="file" id="photoInput" accept="image/jpeg,image/png,image/webp" style="display:none" aria-hidden="true">
+        </div>
+        <div class="photo-preview" id="photoPreview" style="display:none">
+          <img id="photoPreviewImg" alt="Recipe photo preview">
+          <button type="button" class="remove-photo" id="removePhoto" aria-label="Remove photo">✕ Remove photo</button>
         </div>
       </div>
 
       <div class="form-group">
-        <label><span data-i18n="email">Contact email</span> <span class="optional" data-i18n="optional">(optional)</span></label>
-        <input type="email" id="email" data-i18n="emailPh" placeholder="your@email.com">
-        <div class="hint" data-i18n="emailHint">Your email will not be displayed publicly.</div>
+        <label><span data-i18n="contactEmail">Your email (so we can thank you!)</span> <span class="optional" data-i18n="optional">(optional)</span></label>
+        <input type="email" id="contact_email" data-i18n="contactEmailPh" placeholder="e.g. mei@example.com">
       </div>
     </div>
 
     <!-- Permission -->
     <div class="permission-group">
-      <input type="checkbox" id="permission" required>
-      <label for="permission" data-i18n="permission">I confirm that I have permission to share this recipe and photo, and I give permission for the festival organisers to publish my recipe, name/name displayed and uploaded photo on the community recipe website.</label>
+      <input type="checkbox" id="permission" required aria-required="true">
+      <label for="permission"><span data-i18n="permission">I give permission for my recipe to be included in the Community Recipe Book and shared with the community.</span> <span class="required">*</span></label>
     </div>
+    <div class="error" id="permission_error" style="display:none;color:var(--red);font-size:0.85rem;margin-top:-8px;margin-bottom:16px;" data-i18n="permissionError">Please give permission to submit your recipe.</div>
 
     <button type="submit" class="submit-btn" data-i18n="submitBtn">🥟 Submit Recipe</button>
   </form>
 
-  <!-- Success Message -->
+  <!-- Success Message (hidden by default) -->
   <div class="success-message" id="successMessage" style="display:none">
     <span class="emoji">🎉</span>
-    <h2 data-i18n="successTitle">Thank you for sharing your recipe!</h2>
-    <p data-i18n="successText">Your recipe has been submitted and will be reviewed before being added to our community recipe book.</p>
-    <p data-i18n="successThankYou">🥟 Thank you for helping us celebrate food, family & culture!</p>
+    <h2 data-i18n="successTitle">Thank you for sharing!</h2>
+    <p data-i18n="successText">Your recipe has been saved. It's now part of our Community Recipe Book!</p>
     <div class="success-actions">
-      <a href="./" class="submit-btn" style="background:var(--purple);" data-i18n="successBrowse">Browse recipes</a>
-      <button onclick="document.getElementById('recipeForm').reset();document.getElementById('successMessage').style.display='none';document.getElementById('recipeForm').style.display='block';" class="submit-btn" style="background:var(--ink-muted);" data-i18n="successAnother">Submit another</button>
+      <a href="./" class="submit-btn" style="display:inline-flex;text-decoration:none;width:auto;padding:12px 28px;font-size:1rem;" data-i18n="successBrowse">Browse recipes</a>
+      <a href="./submit.html" class="submit-btn" style="display:inline-flex;text-decoration:none;width:auto;padding:12px 28px;font-size:1rem;background:var(--purple);" data-i18n="successAnother">Submit another</a>
     </div>
   </div>
 </div>
@@ -214,6 +227,8 @@ function openDB() {
       if (!db.objectStoreNames.contains(STORE_NAME)) {
         const store = db.createObjectStore(STORE_NAME, { keyPath: 'slug' });
         store.createIndex('created_at', 'created_at', { unique: false });
+        store.createIndex('origin', 'origin', { unique: false });
+        store.createIndex('difficulty', 'difficulty', { unique: false });
       }
     };
     req.onsuccess = () => resolve(req.result);
@@ -233,53 +248,121 @@ async function addRecipe(recipe) {
 }
 
 function slugify(text) {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  return text.toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .substring(0, 60);
 }
 
-// ── Photo Upload ──
+// ── Photo Upload (drag & drop + file input + preview) ──
+let photoDataUrl = '';
+
 const photoUpload = document.getElementById('photoUpload');
-const photoInput = document.getElementById('photo');
+const photoInput = document.getElementById('photoInput');
+const photoPreview = document.getElementById('photoPreview');
+const photoPreviewImg = document.getElementById('photoPreviewImg');
+const removePhoto = document.getElementById('removePhoto');
 
 photoUpload.addEventListener('click', () => photoInput.click());
-photoUpload.addEventListener('dragover', (e) => { e.preventDefault(); photoUpload.style.borderColor = 'var(--red)'; });
-photoUpload.addEventListener('dragleave', () => { photoUpload.style.borderColor = 'var(--pink)'; });
-photoUpload.addEventListener('drop', (e) => {
-  e.preventDefault();
-  photoUpload.style.borderColor = 'var(--pink)';
-  if (e.dataTransfer.files.length) {
-    photoInput.files = e.dataTransfer.files;
-    updatePhotoPreview();
+photoUpload.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    photoInput.click();
   }
 });
 
-photoInput.addEventListener('change', updatePhotoPreview);
-
-function updatePhotoPreview() {
-  const file = photoInput.files[0];
-  if (file) {
-    photoUpload.innerHTML = `<span class="emoji">✅</span><p>${file.name}</p><p class="hint">Click to change</p><input type="file" id="photo" accept="image/jpeg,image/png" style="display:none">`;
-    // Re-attach change listener
-    document.getElementById('photo').addEventListener('change', updatePhotoPreview);
-  }
-}
-
-// ── Form Submission ──
-document.getElementById('recipeForm').addEventListener('submit', async (e) => {
+// Drag & drop
+photoUpload.addEventListener('dragover', (e) => {
   e.preventDefault();
+  photoUpload.classList.add('dragover');
+});
 
-  const recipeName = document.getElementById('recipe_name').value.trim();
-  const ingredients = document.getElementById('ingredients').value.trim();
-  const method = document.getElementById('method').value.trim();
+photoUpload.addEventListener('dragleave', () => {
+  photoUpload.classList.remove('dragover');
+});
 
-  if (!recipeName || !ingredients || !method) {
-    alert('Please fill in all required fields.');
+photoUpload.addEventListener('drop', (e) => {
+  e.preventDefault();
+  photoUpload.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    processPhoto(file);
+  }
+});
+
+photoInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) processPhoto(file);
+});
+
+function processPhoto(file) {
+  if (file.size > 5 * 1024 * 1024) {
+    alert('Photo must be less than 5 MB');
     return;
   }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    photoDataUrl = e.target.result;
+    photoPreviewImg.src = photoDataUrl;
+    photoPreview.style.display = 'block';
+    photoUpload.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
 
-  const dietary = Array.from(document.querySelectorAll('input[name="dietary"]:checked')).map(c => c.value);
-  const allergens = Array.from(document.querySelectorAll('input[name="allergens"]:checked')).map(c => c.value);
+removePhoto.addEventListener('click', () => {
+  photoDataUrl = '';
+  photoPreviewImg.src = '';
+  photoPreview.style.display = 'none';
+  photoUpload.style.display = 'block';
+  photoInput.value = '';
+});
 
-  const slug = slugify(recipeName) + '-' + Date.now().toString(36);
+// ── Form Validation & Submission ──
+function showError(fieldId) {
+  const errorEl = document.getElementById(fieldId + '_error');
+  if (errorEl) errorEl.style.display = 'block';
+  const inputEl = document.getElementById(fieldId);
+  if (inputEl) inputEl.style.borderColor = 'var(--red)';
+}
+
+function clearErrors() {
+  document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('.form-group input, .form-group textarea').forEach(el => {
+    el.style.borderColor = '';
+  });
+  document.getElementById('permission_error').style.display = 'none';
+}
+
+document.getElementById('recipeForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  clearErrors();
+
+  const recipeName = document.getElementById('recipe_name').value.trim();
+  const serves = document.getElementById('serves').value.trim();
+  const ingredients = document.getElementById('ingredients').value.trim();
+  const method = document.getElementById('method').value.trim();
+  const permission = document.getElementById('permission').checked;
+
+  let valid = true;
+
+  if (!recipeName) { showError('recipe_name'); valid = false; }
+  if (!serves) { showError('serves'); valid = false; }
+  if (!ingredients) { showError('ingredients'); valid = false; }
+  if (!method) { showError('method'); valid = false; }
+  if (!permission) {
+    document.getElementById('permission_error').style.display = 'block';
+    valid = false;
+  }
+
+  if (!valid) return;
+
+  const slug = slugify(recipeName) + '-' + Date.now();
+  const dietary = [];
+  document.querySelectorAll('input[name="dietary"]:checked').forEach(cb => dietary.push(cb.value));
+  const allergens = [];
+  document.querySelectorAll('input[name="allergens"]:checked').forEach(cb => allergens.push(cb.value));
 
   const recipe = {
     slug,
@@ -287,7 +370,7 @@ document.getElementById('recipeForm').addEventListener('submit', async (e) => {
     display_name: document.getElementById('display_name').value.trim(),
     origin: document.getElementById('origin').value.trim(),
     story: document.getElementById('story').value.trim(),
-    serves: document.getElementById('serves').value.trim() || '4',
+    serves,
     prep_time: document.getElementById('prep_time').value.trim(),
     cook_time: document.getElementById('cook_time').value.trim(),
     difficulty: document.getElementById('difficulty').value,
@@ -296,17 +379,51 @@ document.getElementById('recipeForm').addEventListener('submit', async (e) => {
     serve_with: document.getElementById('serve_with').value.trim(),
     dietary,
     allergens,
-    photo: '',
-    email: document.getElementById('email').value.trim(),
+    photo: photoDataUrl,
+    contact_email: document.getElementById('contact_email').value.trim(),
     created_at: new Date().toISOString()
   };
 
-  await addRecipe(recipe);
-
-  document.getElementById('recipeForm').style.display = 'none';
-  document.getElementById('successMessage').style.display = 'block';
-  window.scrollTo(0, 0);
+  try {
+    await addRecipe(recipe);
+    document.getElementById('recipeForm').style.display = 'none';
+    document.querySelector('.intro-box').style.display = 'none';
+    const successMsg = document.getElementById('successMessage');
+    successMsg.style.display = 'block';
+    successMsg.scrollIntoView({ behavior: 'smooth' });
+  } catch (err) {
+    alert('Error saving recipe. Please try again.');
+    console.error(err);
+  }
 });
+
+// Clear error on input
+document.querySelectorAll('.form-group input, .form-group textarea').forEach(el => {
+  el.addEventListener('input', () => {
+    el.style.borderColor = '';
+    const errorEl = document.getElementById(el.id + '_error');
+    if (errorEl) errorEl.style.display = 'none';
+  });
+});
+
+// ── Theme Toggle ──
+function initTheme() {
+  const saved = localStorage.getItem('recipeBookTheme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+}
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('recipeBookTheme', next);
+});
+
+initTheme();
 
 // ── Language Dropdown ──
 function buildLangDropdown() {
@@ -322,25 +439,42 @@ function buildLangDropdown() {
     item.className = 'lang-dropdown-item' + (lang === currentLang ? ' active' : '');
     item.textContent = window.i18n.LANG_NAMES[lang];
     item.dataset.lang = lang;
+    item.setAttribute('role', 'option');
+    item.setAttribute('aria-selected', lang === currentLang ? 'true' : 'false');
     item.addEventListener('click', (e) => {
       e.preventDefault();
       window.i18n.setLanguage(lang);
       btn.textContent = '🌐 ' + window.i18n.LANG_NAMES[lang];
+      btn.setAttribute('aria-expanded', 'false');
       const url = new URL(window.location);
       url.searchParams.set('lang', lang);
       history.replaceState(null, '', url);
       menu.classList.remove('open');
-      menu.querySelectorAll('.lang-dropdown-item').forEach(i => i.classList.toggle('active', i.dataset.lang === lang));
+      menu.querySelectorAll('.lang-dropdown-item').forEach(i => {
+        i.classList.toggle('active', i.dataset.lang === lang);
+        i.setAttribute('aria-selected', i.dataset.lang === lang ? 'true' : 'false');
+      });
     });
     menu.appendChild(item);
   });
 
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
-    menu.classList.toggle('open');
+    const isOpen = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   });
 
-  document.addEventListener('click', () => menu.classList.remove('open'));
+  document.addEventListener('click', () => {
+    menu.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  });
+
+  btn.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
 }
 
 // ── Init ──
