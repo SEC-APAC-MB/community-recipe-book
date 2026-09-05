@@ -997,9 +997,15 @@ img {
 }
 
 .permission-group input[type="checkbox"] {
-  width: auto;
-  margin-top: 4px;
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  min-height: 22px;
+  margin-top: 2px;
   accent-color: var(--red);
+  cursor: pointer;
+  -webkit-appearance: checkbox;
+  appearance: checkbox;
 }
 
 .permission-group label {
