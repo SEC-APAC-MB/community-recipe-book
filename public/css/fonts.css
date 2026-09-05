@@ -1,6 +1,17 @@
 /* ── CommunityBook Custom Fonts ── */
-/* Based on Cormorant Garamond (SIL OFL 1.1) — modified for Community Recipe Book */
-/* Extracted via MiniCPM-V vision analysis + fonttools custom build */
+/* Based on Cormorant Garamond (SIL OFL 1.1) + Abril Fatface (SIL OFL 1.1) + Inter (SIL OFL 1.1) */
+/* Modified for Community Recipe Book — poster-style typography */
+
+/* ── CommunityBook Display (Poster Heading Font) ── */
+/* Bold, playful display font from the Dumpling Festival poster */
+@font-face {
+  font-family: 'CommunityBook Display';
+  src: url('CommunityBookDisplay-Regular.woff2') format('woff2'),
+       url('CommunityBookDisplay-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* ── CommunityBook (Serif Heading Font) ── */
 @font-face {

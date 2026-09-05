@@ -93,7 +93,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'CommunityBook', Georgia, serif;
+  font-family: 'CommunityBook Display', 'CommunityBook', Georgia, serif;
   color: var(--purple);
   line-height: 1.3;
 }
@@ -127,9 +127,9 @@ img {
 }
 
 .nav-brand {
-  font-family: 'CommunityBook', serif;
+  font-family: 'CommunityBook Display', 'CommunityBook', serif;
   font-size: 1.2rem;
-  font-weight: 700;
+  font-weight: 400;
   color: var(--warm-white) !important;
   text-decoration: none;
 }
@@ -199,8 +199,10 @@ img {
   border-radius: var(--radius-md);
   box-shadow: 0 4px 16px var(--shadow-strong);
   z-index: 200;
-  min-width: 140px;
-  overflow: hidden;
+  min-width: 160px;
+  max-height: 280px;
+  overflow-y: auto;
+  overflow-x: hidden;
   margin-top: 4px;
 }
 
@@ -250,7 +252,7 @@ img {
     var(--warm-white) 100%
   );
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .hero::before {
@@ -273,7 +275,10 @@ img {
 }
 
 .hero h1 {
+  font-family: 'CommunityBook Display', 'CommunityBook', Georgia, serif;
   font-size: 2.5rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
   margin-bottom: var(--space-sm);
   position: relative;
   color: var(--purple);
