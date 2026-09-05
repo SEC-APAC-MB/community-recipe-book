@@ -1,0 +1,104 @@
+/* ── CommunityBook Custom Fonts ── */
+/* Based on Cormorant Garamond (SIL OFL 1.1) — modified for Community Recipe Book */
+/* Extracted via MiniCPM-V vision analysis + fonttools custom build */
+
+/* ── CommunityBook (Serif Heading Font) ── */
+@font-face {
+  font-family: 'CommunityBook';
+  src: url('CommunityBook-Regular.woff2') format('woff2'),
+       url('CommunityBook-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CommunityBook';
+  src: url('CommunityBook-Medium.woff2') format('woff2'),
+       url('CommunityBook-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CommunityBook';
+  src: url('CommunityBook-SemiBold.woff2') format('woff2'),
+       url('CommunityBook-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CommunityBook';
+  src: url('CommunityBook-Bold.woff2') format('woff2'),
+       url('CommunityBook-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CommunityBook';
+  src: url('CommunityBook-Italic.woff2') format('woff2'),
+       url('CommunityBook-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CommunityBook';
+  src: url('CommunityBook-MediumItalic.woff2') format('woff2'),
+       url('CommunityBook-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ── CommunityBook Sans (Body Text Font) ── */
+@font-face {
+  font-family: 'CommunityBook Sans';
+  src: url('CommunityBookSans-Light.woff2') format('woff2'),
+       url('CommunityBookSans-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CommunityBook Sans';
+  src: url('CommunityBookSans-Regular.woff2') format('woff2'),
+       url('CommunityBookSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CommunityBook Sans';
+  src: url('CommunityBookSans-Medium.woff2') format('woff2'),
+       url('CommunityBookSans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CommunityBook Sans';
+  src: url('CommunityBookSans-SemiBold.woff2') format('woff2'),
+       url('CommunityBookSans-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CommunityBook Sans';
+  src: url('CommunityBookSans-Bold.woff2') format('woff2'),
+       url('CommunityBookSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
