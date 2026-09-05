@@ -10,15 +10,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <nav class="nav">
-  <a href="/" class="nav-brand">🥟 Community Recipe Book</a>
+  <a href="index.html" class="nav-brand">🥟 Community Recipe Book</a>
   <div class="nav-links">
-    <a href="/">Browse</a>
-    <a href="/submit.html" class="active">Submit</a>
+    <a href="index.html">Browse</a>
+    <a href="submit.html" class="active">Submit</a>
   </div>
 </nav>
 
@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <form class="recipe-form" id="recipeForm" enctype="multipart/form-data" novalidate>
+  <form class="recipe-form" id="recipeForm" novalidate>
 
     <div class="section-divider"><span class="icon">📝</span> Your Recipe</div>
 
@@ -158,7 +158,7 @@
         <input type="file" id="recipePhoto" name="photo" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
         <span class="upload-icon">📷</span>
         <p class="upload-text"><strong>Click to upload</strong> or drag and drop</p>
-        <p class="upload-hint">JPG / PNG only</p>
+        <p class="upload-hint">JPG / PNG only · Max 2 MB</p>
       </div>
       <img id="imagePreview" class="image-preview" style="display:none" alt="Recipe photo preview">
     </div>
@@ -191,12 +191,96 @@
     <h2>Thank you for sharing your recipe!</h2>
     <p>Your recipe has been submitted and will be reviewed before being added to our community recipe book.</p>
     <p class="thank-you">🥟 Thank you for helping us celebrate food, family and culture!</p>
-    <a href="/" class="close-btn">Browse recipes</a>
+    <a href="index.html" class="close-btn">Browse recipes</a>
     <button class="close-btn" onclick="document.getElementById('successOverlay').classList.remove('visible'); document.getElementById('recipeForm').reset(); document.getElementById('imagePreview').style.display='none';" style="margin-left:8px;background:var(--ink-soft)">Submit another</button>
   </div>
 </div>
 
 <script>
+// ── IndexedDB Recipe Store ──
+const DB_NAME = 'CommunityRecipeBook';
+const DB_VERSION = 1;
+const STORE_NAME = 'recipes';
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        const store = db.createObjectStore(STORE_NAME, { keyPath: 'slug' });
+        store.createIndex('created_at', 'created_at', { unique: false });
+        store.createIndex('origin', 'origin', { unique: false });
+        store.createIndex('difficulty', 'difficulty', { unique: false });
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function addRecipe(recipe) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    const store = tx.objectStore(STORE_NAME);
+    const req = store.put(recipe);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+// ── Slug generator ──
+function generateSlug(name) {
+  return name.toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim()
+    .substring(0, 80);
+}
+
+// ── Photo to base64 ──
+let photoData = '';
+
+function handlePhoto(file) {
+  if (!file) return;
+  if (!file.type.match(/^image\/(jpeg|png)$/)) {
+    alert('Please upload a JPG or PNG image.');
+    document.getElementById('recipePhoto').value = '';
+    return;
+  }
+  if (file.size > 2 * 1024 * 1024) {
+    alert('Photo must be under 2 MB.');
+    document.getElementById('recipePhoto').value = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    photoData = e.target.result;
+    const preview = document.getElementById('imagePreview');
+    preview.src = photoData;
+    preview.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+document.getElementById('recipePhoto').addEventListener('change', (e) => handlePhoto(e.target.files[0]));
+
+const dropZone = document.getElementById('dropZone');
+dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragging'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragging'));
+dropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropZone.classList.remove('dragging');
+  const file = e.dataTransfer.files[0];
+  if (file) {
+    document.getElementById('recipePhoto').files = e.dataTransfer.files;
+    handlePhoto(file);
+  }
+});
+
+// ── Form submission ──
 const form = document.getElementById('recipeForm');
 const submitBtn = document.getElementById('submitBtn');
 
@@ -237,66 +321,46 @@ form.addEventListener('submit', async (e) => {
     return;
   }
 
-  // Submit to API
+  // Collect values
+  const getCheckboxes = (name) => {
+    const checked = [];
+    document.querySelectorAll(`input[name="${name}"]:checked`).forEach(cb => checked.push(cb.value));
+    return checked;
+  };
+
+  const slug = generateSlug(document.getElementById('recipeName').value) + '-' + Date.now();
+
+  const recipe = {
+    slug,
+    recipe_name: document.getElementById('recipeName').value.trim(),
+    display_name: document.getElementById('displayName').value.trim(),
+    origin: document.getElementById('origin').value.trim(),
+    story: document.getElementById('story').value.trim(),
+    serves: document.getElementById('serves').value.trim(),
+    prep_time: document.getElementById('prepTime').value.trim(),
+    cook_time: document.getElementById('cookTime').value.trim(),
+    difficulty: document.querySelector('input[name="difficulty"]:checked')?.value || '',
+    ingredients: document.getElementById('ingredients').value.trim(),
+    method: document.getElementById('method').value.trim(),
+    serve_with: document.getElementById('serveWith').value.trim(),
+    dietary: getCheckboxes('dietary'),
+    allergens: getCheckboxes('allergens'),
+    photo: photoData,
+    created_at: new Date().toISOString()
+  };
+
   submitBtn.disabled = true;
-  submitBtn.textContent = 'Submitting...';
+  submitBtn.textContent = 'Saving...';
 
   try {
-    const formData = new FormData(form);
-    const res = await fetch('/api/recipes', {
-      method: 'POST',
-      body: formData
-    });
-
-    if (res.ok) {
-      document.getElementById('successOverlay').classList.add('visible');
-    } else {
-      const err = await res.json();
-      alert('Submission failed: ' + (err.error || 'Please try again.'));
-    }
+    await addRecipe(recipe);
+    document.getElementById('successOverlay').classList.add('visible');
   } catch (err) {
-    alert('Network error. Please check your connection and try again.');
+    alert('Failed to save recipe. Please try again.');
+    console.error(err);
   } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = '🥟 Submit Recipe';
-  }
-});
-
-// Image preview
-document.getElementById('recipePhoto').addEventListener('change', function(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  if (!file.type.match(/^image\/(jpeg|png)$/)) {
-    alert('Please upload a JPG or PNG image.');
-    e.target.value = '';
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = function(ev) {
-    const preview = document.getElementById('imagePreview');
-    preview.src = ev.target.result;
-    preview.style.display = 'block';
-  };
-  reader.readAsDataURL(file);
-});
-
-// Drag and drop
-const dropZone = document.getElementById('dropZone');
-dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragging'); });
-dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragging'));
-dropZone.addEventListener('drop', e => {
-  e.preventDefault();
-  dropZone.classList.remove('dragging');
-  const file = e.dataTransfer.files[0];
-  if (file && file.type.match(/^image\/(jpeg|png)$/)) {
-    document.getElementById('recipePhoto').files = e.dataTransfer.files;
-    const reader = new FileReader();
-    reader.onload = function(ev) {
-      const preview = document.getElementById('imagePreview');
-      preview.src = ev.target.result;
-      preview.style.display = 'block';
-    };
-    reader.readAsDataURL(file);
   }
 });
 

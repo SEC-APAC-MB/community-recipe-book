@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recipe — 🥟 Community Recipe Book</title>
+<meta name="description" content="A community recipe from our recipe book.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-brand">🥟 Community Recipe Book</a>
+  <div class="nav-links">
+    <a href="index.html">Browse</a>
+    <a href="submit.html">Submit</a>
+  </div>
+</nav>
+
+<main class="recipe-detail" id="recipeDetail">
+  <a href="index.html" class="back-link">← Back to all recipes</a>
+  <div style="text-align:center;padding:60px 20px;color:var(--ink-muted);">
+    <p>Loading recipe...</p>
+  </div>
+</main>
+
+<footer class="footer">
+  <p>🥟 Community Recipe Book — Celebrating food, family &amp; culture</p>
+</footer>
+
+<script>
+// ── IndexedDB ──
+const DB_NAME = 'CommunityRecipeBook';
+const DB_VERSION = 1;
+const STORE_NAME = 'recipes';
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME, { keyPath: 'slug' });
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function getRecipe(slug) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readonly');
+    const store = tx.objectStore(STORE_NAME);
+    const req = store.get(slug);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function escapeHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+async function renderRecipe() {
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get('slug');
+
+  if (!slug) {
+    window.location.href = 'index.html';
+    return;
+  }
+
+  const recipe = await getRecipe(slug);
+
+  if (!recipe) {
+    document.getElementById('recipeDetail').innerHTML = `
+      <a href="index.html" class="back-link">← Back to all recipes</a>
+      <div class="no-results">
+        <span class="emoji">🔍</span>
+        <h3>Recipe not found</h3>
+        <p>This recipe may have been removed or the link is incorrect.</p>
+        <a href="index.html" class="submit-btn" style="display:inline-flex;text-decoration:none;margin-top:24px;width:auto;padding:12px 28px;font-size:1rem;">Browse all recipes</a>
+      </div>
+    `;
+    return;
+  }
+
+  const difficultyEmoji = { Easy: '😊', Intermediate: '🤔', Advanced: '👨‍🍳' }[recipe.difficulty] || '';
+  const date = new Date(recipe.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  document.title = `${escapeHtml(recipe.recipe_name)} — Community Recipe Book`;
+
+  // Update meta description
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if (metaDesc) metaDesc.content = recipe.story || recipe.recipe_name + ' — a community recipe';
+
+  const dietary = recipe.dietary || [];
+  const allergens = recipe.allergens || [];
+
+  document.getElementById('recipeDetail').innerHTML = `
+    <a href="index.html" class="back-link">← Back to all recipes</a>
+
+    ${recipe.photo
+      ? `<img src="${escapeHtml(recipe.photo)}" alt="${escapeHtml(recipe.recipe_name)}" class="recipe-detail-image">`
+      : `<div class="recipe-detail-placeholder">🥘</div>`
+    }
+
+    <h1>${escapeHtml(recipe.recipe_name)}</h1>
+
+    <div class="meta">
+      ${recipe.display_name ? `<span>👤 ${escapeHtml(recipe.display_name)}</span>` : ''}
+      ${recipe.origin ? `<span>🌍 ${escapeHtml(recipe.origin)}</span>` : ''}
+      <span>👥 Serves ${escapeHtml(recipe.serves)}</span>
+      <span>⏱ Prep: ${escapeHtml(recipe.prep_time)}</span>
+      <span>🔥 Cook: ${escapeHtml(recipe.cook_time)}</span>
+      ${recipe.difficulty ? `<span>${difficultyEmoji} ${escapeHtml(recipe.difficulty)}</span>` : ''}
+    </div>
+
+    ${recipe.story ? `<div class="story">${escapeHtml(recipe.story)}</div>` : ''}
+
+    ${dietary.length ? `
+      <div class="recipe-card-tags" style="margin-bottom:8px">
+        ${dietary.map(d => `<span class="tag tag-dietary">${escapeHtml(d)}</span>`).join('')}
+      </div>
+    ` : ''}
+
+    ${allergens.length ? `
+      <div class="recipe-card-tags" style="margin-bottom:24px">
+        ${allergens.map(a => `<span class="tag">${escapeHtml(a)}</span>`).join('')}
+      </div>
+    ` : ''}
+
+    <h2>Ingredients</h2>
+    <div class="ingredients-list">${escapeHtml(recipe.ingredients)}</div>
+
+    <h2>Method</h2>
+    <div class="method-text">${escapeHtml(recipe.method)}</div>
+
+    ${recipe.serve_with ? `
+      <h2>Serve with</h2>
+      <div class="method-text">${escapeHtml(recipe.serve_with)}</div>
+    ` : ''}
+
+    <p style="margin-top:32px;color:var(--ink-muted);font-size:0.85rem;">Added ${date}</p>
+  `;
+}
+
+renderRecipe();
+</script>
+</body>
+</html>

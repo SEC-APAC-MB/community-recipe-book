@@ -4,21 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🥟 Community Recipe Book — Share & Discover Recipes</title>
-<meta name="description" content="Have a recipe you love? Share it with us! Your recipe may be featured in our community recipe book.">
+<meta name="description" content="Have a recipe you love? Share it with us! Your recipe may be featured in our community recipe book for other festival attendees and food lovers to discover.">
 <meta property="og:title" content="Community Recipe Book">
 <meta property="og:description" content="Share your recipe and discover dishes from around the world.">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <nav class="nav">
-  <a href="/" class="nav-brand">🥟 Community Recipe Book</a>
+  <a href="index.html" class="nav-brand">🥟 Community Recipe Book</a>
   <div class="nav-links">
-    <a href="/" class="active">Browse</a>
-    <a href="/submit.html">Submit</a>
+    <a href="index.html" class="active">Browse</a>
+    <a href="submit.html">Submit</a>
   </div>
 </nav>
 
@@ -35,7 +36,7 @@
     <button type="submit" class="search-btn" aria-label="Search">🔍</button>
   </form>
   <div class="filter-tags" id="filterTags">
-    <a href="#" class="filter-tag" data-filter="all">All</a>
+    <a href="#" class="filter-tag active" data-filter="all">All</a>
     <a href="#" class="filter-tag" data-dietary="Vegetarian">🥬 Vegetarian</a>
     <a href="#" class="filter-tag" data-dietary="Vegan">🌱 Vegan</a>
     <a href="#" class="filter-tag" data-dietary="Gluten-free">🌾 Gluten-free</a>
@@ -59,10 +60,6 @@
     <h3>No recipes found</h3>
     <p>Try a different search term or filter.</p>
   </div>
-
-  <div id="loadMore" style="text-align:center;margin-top:24px;display:none">
-    <button onclick="loadMore()" style="padding:12px 32px;background:var(--terra);color:white;border:none;border-radius:8px;font-size:1rem;cursor:pointer;font-family:'Source Sans 3',sans-serif;font-weight:600">Load more recipes</button>
-  </div>
 </div>
 
 <footer class="footer">
@@ -70,52 +67,176 @@
 </footer>
 
 <script>
-let currentPage = 1;
-let totalPages = 1;
-let currentQuery = '';
-let currentDietary = '';
-let currentDifficulty = '';
-let currentSort = 'newest';
+// ── IndexedDB Recipe Store ──
+const DB_NAME = 'CommunityRecipeBook';
+const DB_VERSION = 1;
+const STORE_NAME = 'recipes';
 
-// Load recipes from API
-async function loadRecipes(append = false) {
-  const params = new URLSearchParams();
-  if (currentQuery) params.set('q', currentQuery);
-  if (currentDietary) params.set('dietary', currentDietary);
-  if (currentDifficulty) params.set('difficulty', currentDifficulty);
-  params.set('page', currentPage);
-  params.set('limit', 12);
-  params.set('sort', currentSort);
-
-  try {
-    const res = await fetch(`/api/recipes?${params}`);
-    const data = await res.json();
-
-    if (!append) {
-      document.getElementById('recipeGrid').innerHTML = '';
-    }
-
-    if (data.recipes.length === 0 && currentPage === 1) {
-      document.getElementById('noResults').style.display = 'block';
-      document.getElementById('loadMore').style.display = 'none';
-    } else {
-      document.getElementById('noResults').style.display = 'none';
-      data.recipes.forEach(recipe => renderCard(recipe));
-      document.getElementById('loadMore').style.display =
-        currentPage < data.totalPages ? 'block' : 'none';
-    }
-
-    totalPages = data.totalPages;
-  } catch (err) {
-    console.error('Failed to load recipes:', err);
-  }
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        const store = db.createObjectStore(STORE_NAME, { keyPath: 'slug' });
+        store.createIndex('created_at', 'created_at', { unique: false });
+        store.createIndex('origin', 'origin', { unique: false });
+        store.createIndex('difficulty', 'difficulty', { unique: false });
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
 }
 
-// Render a recipe card
+async function getAllRecipes() {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readonly');
+    const store = tx.objectStore(STORE_NAME);
+    const req = store.getAll();
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function addRecipe(recipe) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    const store = tx.objectStore(STORE_NAME);
+    const req = store.put(recipe);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function getRecipe(slug) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readonly');
+    const store = tx.objectStore(STORE_NAME);
+    const req = store.get(slug);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+// ── Seed demo recipes if empty ──
+async function seedIfEmpty() {
+  const recipes = await getAllRecipes();
+  if (recipes.length > 0) return;
+
+  const demos = [
+    {
+      slug: 'pork-dumplings',
+      recipe_name: "Grandma's Pork Dumplings",
+      display_name: 'Mei Chen',
+      origin: 'Sichuan, China',
+      story: 'My grandmother made these every Lunar New Year. The whole family would gather around the kitchen table, folding dumplings together. It was never just about the food — it was about being together, sharing stories, and passing traditions down.',
+      serves: '4',
+      prep_time: '30 minutes',
+      cook_time: '15 minutes',
+      difficulty: 'Intermediate',
+      ingredients: '500 g pork mince\n2 spring onions, finely chopped\n1 tbsp soy sauce\n1 tbsp sesame oil\n1 tsp fresh ginger, grated\n1 pack dumpling wrappers\nPinch of white pepper',
+      method: '1. Mix pork mince, spring onions, soy sauce, sesame oil, ginger, and white pepper in a bowl.\n2. Place a heaped teaspoon of filling in the centre of each wrapper.\n3. Wet the edges with water, fold in half, and pleat one side to seal.\n4. Steam over boiling water for 10 minutes, or pan-fry in a little oil until golden on the bottom, then add 2 tbsp water and cover for 5 minutes.',
+      serve_with: 'Chilli oil, black vinegar, pickled ginger',
+      dietary: ['Contains pork'],
+      allergens: ['Wheat/gluten', 'Soy'],
+      photo: '',
+      created_at: new Date('2026-01-15').toISOString()
+    },
+    {
+      slug: 'mango-sticky-rice',
+      recipe_name: 'Mango Sticky Rice',
+      display_name: 'Siriwan P.',
+      origin: 'Thailand',
+      story: "During Songkran, my mother would wake before dawn to prepare this. The smell of coconut milk steaming through the house is the smell of home. It's simple, but it takes patience — you can't rush sticky rice.",
+      serves: '6',
+      prep_time: '4 hours (including soaking)',
+      cook_time: '25 minutes',
+      difficulty: 'Easy',
+      ingredients: '2 cups glutinous rice\n1 cup coconut milk\n1/2 cup sugar\n1/4 tsp salt\n2 ripe mangoes, sliced\n1 tbsp sesame seeds (toasted)',
+      method: '1. Soak glutinous rice in water for at least 4 hours (overnight is best).\n2. Steam the rice in a steamer basket for 20-25 minutes until tender.\n3. While rice steams, heat coconut milk, sugar, and salt until sugar dissolves (don\'t boil).\n4. Pour 3/4 of the coconut sauce over the steamed rice, stir gently, cover, and let absorb for 10 minutes.\n5. Slice mangoes and arrange on plates. Top with rice, drizzle remaining coconut sauce, and sprinkle with sesame seeds.',
+      serve_with: 'Extra coconut sauce on the side',
+      dietary: ['Vegan', 'Gluten-free', 'Dairy-free'],
+      allergens: [],
+      photo: '',
+      created_at: new Date('2026-03-22').toISOString()
+    },
+    {
+      slug: 'empanada-de-carne',
+      recipe_name: 'Empanada de Carne',
+      display_name: 'Carlos M.',
+      origin: 'Argentina',
+      story: "Every Sunday, my abuela would make empanadas. She'd sit at the kitchen table for hours, crimping each one by hand. She said the secret was love — and a little cumin. I still make these with her recipe, handwritten on a stained index card.",
+      serves: '8',
+      prep_time: '45 minutes',
+      cook_time: '30 minutes',
+      difficulty: 'Intermediate',
+      ingredients: '500 g beef mince\n2 large onions, diced\n1 red capsicum, diced\n2 hard-boiled eggs, chopped\n1/2 cup green olives, sliced\n1 tsp cumin\n1 tsp paprika\n2 tbsp oil\n1 pack empanada discs (or homemade dough)\n1 egg, beaten (for glazing)',
+      method: '1. Heat oil in a large pan. Sauté onions and capsicum until soft.\n2. Add beef mince, cumin, and paprika. Cook until browned.\n3. Stir in chopped eggs and olives. Season with salt and pepper.\n4. Let filling cool completely.\n5. Place 2 tbsp filling on each empanada disc. Fold and crimp edges.\n6. Brush with beaten egg. Bake at 200°C for 25-30 minutes until golden.',
+      serve_with: 'Chimichurri sauce, ensalada mixta',
+      dietary: ['Contains beef', 'Dairy-free'],
+      allergens: ['Wheat/gluten', 'Egg'],
+      photo: '',
+      created_at: new Date('2026-05-10').toISOString()
+    },
+    {
+      slug: 'samosas',
+      recipe_name: 'Aunty Priya\'s Samosas',
+      display_name: 'Priya K.',
+      origin: 'Punjab, India',
+      story: "Every Diwali, our house smelled like frying samosas from morning till night. My aunty Priya taught me to fold them — she could make 100 in an hour. The trick is cold dough and hot oil. I've never matched her speed, but the taste is the same.",
+      serves: '6',
+      prep_time: '40 minutes',
+      cook_time: '20 minutes',
+      difficulty: 'Advanced',
+      ingredients: '2 cups plain flour\n4 tbsp oil or ghee\n1/2 tsp salt\nWater as needed\n3 medium potatoes, boiled and mashed\n1 cup green peas\n1 tsp cumin seeds\n1 tsp garam masala\n1/2 tsp chilli powder\n2 tbsp fresh coriander, chopped\nOil for deep frying',
+      method: '1. Mix flour, oil/ghee, and salt. Add water gradually to make a stiff dough. Rest 30 minutes.\n2. For filling: heat oil, add cumin seeds until they splutter. Add peas and cook 2 minutes.\n3. Add mashed potatoes, garam masala, chilli powder, coriander, and salt. Mix well and cool.\n4. Divide dough into balls, roll into ovals, cut in half.\n5. Form each half into a cone, fill with potato mixture, and seal edges with water.\n6. Deep fry in medium-hot oil until golden and crispy.',
+      serve_with: 'Mint chutney, tamarind sauce',
+      dietary: ['Vegetarian', 'Halal'],
+      allergens: ['Wheat/gluten'],
+      photo: '',
+      created_at: new Date('2026-07-04').toISOString()
+    },
+    {
+      slug: 'baklava',
+      recipe_name: 'Mama\'s Baklava',
+      display_name: 'Elena S.',
+      origin: 'Greece',
+      story: "My mother would make baklava for Easter every year. She'd layer the phyllo so thin you could almost see through it, brushing each layer with melted butter. The honey syrup had to be just right — warm enough to soak in, cool enough not to make it soggy. It takes patience, but that's the point.",
+      serves: '12',
+      prep_time: '1 hour',
+      cook_time: '45 minutes',
+      difficulty: 'Advanced',
+      ingredients: '500 g phyllo dough\n300 g walnuts, finely chopped\n200 g butter, melted\n1 tsp cinnamon\n1 cup sugar\n1 cup water\n1/2 cup honey\n1 tsp vanilla\nPinch of clove',
+      method: '1. Preheat oven to 180°C. Brush a large baking dish with butter.\n2. Mix chopped walnuts with cinnamon and clove.\n3. Layer 8 sheets of phyllo in the dish, brushing each with butter.\n4. Spread a thin layer of walnut mixture over the phyllo.\n5. Repeat layers: 4 sheets buttered phyllo, then walnut filling, until walnuts are used up.\n6. Top with 8 more buttered phyllo sheets.\n7. Cut diamond shapes with a sharp knife before baking.\n8. Bake 45 minutes until golden.\n9. While baking, simmer sugar and water until dissolved. Add honey and vanilla.\n10. Pour warm syrup over hot baklava. Let soak for 4+ hours.',
+      serve_with: 'Greek coffee, strong and sweet',
+      dietary: ['Vegetarian'],
+      allergens: ['Wheat/gluten', 'Milk', 'Tree nuts'],
+      photo: '',
+      created_at: new Date('2026-04-18').toISOString()
+    }
+  ];
+
+  for (const recipe of demos) {
+    await addRecipe(recipe);
+  }
+  console.log('✅ Seeded demo recipes');
+}
+
+// ── Render ──
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
 function renderCard(recipe) {
   const grid = document.getElementById('recipeGrid');
   const card = document.createElement('a');
-  card.href = `/recipe/${recipe.slug}`;
+  card.href = `recipe.html?slug=${recipe.slug}`;
   card.className = 'recipe-card';
   card.style.animation = 'fadeSlideUp 0.4s ease-out both';
   card.style.animationDelay = `${Math.random() * 0.3}s`;
@@ -124,7 +245,7 @@ function renderCard(recipe) {
 
   card.innerHTML = `
     ${recipe.photo
-      ? `<img src="${recipe.photo}" alt="${recipe.recipe_name}" class="recipe-card-image" loading="lazy">`
+      ? `<img src="${recipe.photo}" alt="${escapeHtml(recipe.recipe_name)}" class="recipe-card-image" loading="lazy">`
       : `<div class="recipe-card-placeholder">🥘</div>`
     }
     <div class="recipe-card-body">
@@ -136,7 +257,7 @@ function renderCard(recipe) {
         <span>⏱ ${escapeHtml(recipe.prep_time)}</span>
         ${recipe.difficulty ? `<span>${difficultyEmoji} ${recipe.difficulty}</span>` : ''}
       </div>
-      ${recipe.story ? `<p class="recipe-card-story">${escapeHtml(recipe.story)}</p>` : ''}
+      ${recipe.story ? `<p class="recipe-card-story">${escapeHtml(recipe.story.substring(0, 150))}${recipe.story.length > 150 ? '…' : ''}</p>` : ''}
       <div class="recipe-card-tags">
         ${(recipe.dietary || []).map(d => `<span class="tag tag-dietary">${escapeHtml(d)}</span>`).join('')}
         ${(recipe.allergens || []).slice(0, 3).map(a => `<span class="tag">${escapeHtml(a)}</span>`).join('')}
@@ -147,67 +268,93 @@ function renderCard(recipe) {
   grid.appendChild(card);
 }
 
-// Load stats
-async function loadStats() {
-  try {
-    const res = await fetch('/api/stats');
-    const data = await res.json();
-    document.getElementById('totalCount').textContent = data.totalRecipes;
-    document.getElementById('originCount').textContent = data.uniqueOrigins;
-  } catch (err) {
-    console.error('Failed to load stats:', err);
+function renderNoResults() {
+  document.getElementById('recipeGrid').innerHTML = '';
+  document.getElementById('noResults').style.display = 'block';
+}
+
+async function loadAndRender(query = '', dietary = '', difficulty = '') {
+  let recipes = await getAllRecipes();
+
+  // Filter
+  if (query) {
+    const q = query.toLowerCase();
+    recipes = recipes.filter(r =>
+      r.recipe_name.toLowerCase().includes(q) ||
+      r.origin.toLowerCase().includes(q) ||
+      r.ingredients.toLowerCase().includes(q) ||
+      r.method.toLowerCase().includes(q) ||
+      r.story.toLowerCase().includes(q)
+    );
   }
+  if (dietary) {
+    recipes = recipes.filter(r => (r.dietary || []).includes(dietary));
+  }
+  if (difficulty) {
+    recipes = recipes.filter(r => r.difficulty === difficulty);
+  }
+
+  // Sort newest first
+  recipes.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+  document.getElementById('recipeGrid').innerHTML = '';
+
+  if (recipes.length === 0) {
+    renderNoResults();
+  } else {
+    document.getElementById('noResults').style.display = 'none';
+    recipes.forEach(r => renderCard(r));
+  }
+
+  // Stats
+  const all = await getAllRecipes();
+  const origins = new Set(all.filter(r => r.origin).map(r => r.origin));
+  document.getElementById('totalCount').textContent = all.length;
+  document.getElementById('originCount').textContent = origins.size;
 }
 
-// Escape HTML
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
-
-// Search form
+// ── Events ──
 document.getElementById('searchForm').addEventListener('submit', e => {
   e.preventDefault();
-  currentQuery = document.getElementById('searchInput').value.trim();
-  currentPage = 1;
-  loadRecipes();
+  const q = document.getElementById('searchInput').value.trim();
+  const activeTag = document.querySelector('.filter-tag.active');
+  const dietary = activeTag ? activeTag.dataset.dietary : '';
+  const difficulty = activeTag ? activeTag.dataset.difficulty : '';
+  loadAndRender(q, dietary, difficulty);
 });
 
-// Live search with debounce
 let searchTimeout;
-document.getElementById('searchInput').addEventListener('input', e => {
+document.getElementById('searchInput').addEventListener('input', () => {
   clearTimeout(searchTimeout);
   searchTimeout = setTimeout(() => {
-    currentQuery = e.target.value.trim();
-    currentPage = 1;
-    loadRecipes();
+    const q = document.getElementById('searchInput').value.trim();
+    const activeTag = document.querySelector('.filter-tag.active');
+    const dietary = activeTag ? activeTag.dataset.dietary : '';
+    const difficulty = activeTag ? activeTag.dataset.difficulty : '';
+    loadAndRender(q, dietary, difficulty);
   }, 300);
 });
 
-// Filter tags
 document.querySelectorAll('.filter-tag').forEach(tag => {
   tag.addEventListener('click', e => {
     e.preventDefault();
     document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
     tag.classList.add('active');
-
-    currentDietary = tag.dataset.dietary || '';
-    currentDifficulty = tag.dataset.difficulty || '';
-    currentPage = 1;
-    loadRecipes();
+    const q = document.getElementById('searchInput').value.trim();
+    const dietary = tag.dataset.dietary || '';
+    const difficulty = tag.dataset.difficulty || '';
+    loadAndRender(q, dietary, difficulty);
   });
 });
 
-// Load more
-function loadMore() {
-  currentPage++;
-  loadRecipes(true);
+// URL query param support
+const params = new URLSearchParams(window.location.search);
+if (params.get('q')) {
+  document.getElementById('searchInput').value = params.get('q');
 }
 
 // Initial load
-loadRecipes();
-loadStats();
+seedIfEmpty().then(() => loadAndRender());
 </script>
 </body>
 </html>
