@@ -12,12 +12,12 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Dumpling Festival">
-<link rel="stylesheet" href="./css/fonts.css?v=f0e6311">
-<link rel="stylesheet" href="./css/style.css?v=f0e6311">
+<link rel="stylesheet" href="./css/fonts.css?v=535c3b3">
+<link rel="stylesheet" href="./css/style.css?v=535c3b3">
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" type="image/png" sizes="32x32" href="./favicon.png">
   <link rel="apple-touch-icon" href="./icons/icon-192x192.png">
-<script src="./js/i18n.js?v=f0e6311"></script>
+<script src="./js/i18n.js?v=535c3b3"></script>
 </head>
 <body>
 
@@ -88,47 +88,69 @@ const STORE_NAME = 'recipes';
 
 function openDB() {
   return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, DB_VERSION);
-    req.onupgradeneeded = (e) => {
-      const db = e.target.result;
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        const store = db.createObjectStore(STORE_NAME, { keyPath: 'slug' });
-        store.createIndex('created_at', 'created_at', { unique: false });
-        store.createIndex('origin', 'origin', { unique: false });
-        store.createIndex('difficulty', 'difficulty', { unique: false });
-      }
-    };
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
+    try {
+      const req = indexedDB.open(DB_NAME, DB_VERSION);
+      req.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains(STORE_NAME)) {
+          const store = db.createObjectStore(STORE_NAME, { keyPath: 'slug' });
+          store.createIndex('created_at', 'created_at', { unique: false });
+          store.createIndex('origin', 'origin', { unique: false });
+          store.createIndex('difficulty', 'difficulty', { unique: false });
+        }
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+      req.onblocked = () => reject(new Error('IndexedDB blocked'));
+    } catch (err) {
+      reject(err);
+    }
   });
 }
 
 async function getAllRecipes() {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, 'readonly');
-    const store = tx.objectStore(STORE_NAME);
-    const req = store.getAll();
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, 'readonly');
+      const store = tx.objectStore(STORE_NAME);
+      const req = store.getAll();
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+      tx.onerror = () => reject(tx.error);
+    });
+  } catch (err) {
+    console.error('getAllRecipes failed:', err);
+    return [];
+  }
 }
 
 async function addRecipe(recipe) {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, 'readwrite');
-    const store = tx.objectStore(STORE_NAME);
-    const req = store.put(recipe);
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, 'readwrite');
+      const store = tx.objectStore(STORE_NAME);
+      const req = store.put(recipe);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+      tx.onerror = () => reject(tx.error);
+    });
+  } catch (err) {
+    console.error('addRecipe failed:', err);
+    return null;
+  }
 }
 
 // ── Seed demo recipes if empty ──
 async function seedIfEmpty() {
-  const recipes = await getAllRecipes();
-  if (recipes.length > 0) return;
+  try {
+    const recipes = await getAllRecipes();
+    if (recipes.length > 0) return;
+  } catch (err) {
+    console.error('seedIfEmpty: getAllRecipes failed:', err);
+    return;
+  }
 
   const demos = [
     {
@@ -224,7 +246,11 @@ async function seedIfEmpty() {
   ];
 
   for (const recipe of demos) {
-    await addRecipe(recipe);
+    try {
+      await addRecipe(recipe);
+    } catch (err) {
+      console.error('seedIfEmpty: addRecipe failed:', err);
+    }
   }
 }
 

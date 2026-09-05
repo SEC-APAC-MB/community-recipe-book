@@ -9,12 +9,12 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Dumpling Festival">
-<link rel="stylesheet" href="./css/fonts.css?v=f0e6311">
-<link rel="stylesheet" href="./css/style.css?v=f0e6311">
+<link rel="stylesheet" href="./css/fonts.css?v=535c3b3">
+<link rel="stylesheet" href="./css/style.css?v=535c3b3">
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" type="image/png" sizes="32x32" href="./favicon.png">
   <link rel="apple-touch-icon" href="./icons/icon-192x192.png">
-<script src="./js/i18n.js?v=f0e6311"></script>
+<script src="./js/i18n.js?v=535c3b3"></script>
 </head>
 <body>
 
@@ -54,27 +54,39 @@ const STORE_NAME = 'recipes';
 
 function openDB() {
   return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, DB_VERSION);
-    req.onupgradeneeded = (e) => {
-      const db = e.target.result;
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, { keyPath: 'slug' });
-      }
-    };
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
+    try {
+      const req = indexedDB.open(DB_NAME, DB_VERSION);
+      req.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains(STORE_NAME)) {
+          db.createObjectStore(STORE_NAME, { keyPath: 'slug' });
+        }
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+      req.onblocked = () => reject(new Error('IndexedDB blocked'));
+    } catch (err) {
+      reject(err);
+    }
   });
 }
 
 async function getRecipe(slug) {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, 'readonly');
-    const store = tx.objectStore(STORE_NAME);
-    const req = store.get(slug);
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, 'readonly');
+      const store = tx.objectStore(STORE_NAME);
+      const req = store.get(slug);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+      tx.oncomplete = () => {};
+      tx.onerror = () => reject(tx.error);
+    });
+  } catch (err) {
+    console.error('getRecipe failed:', err);
+    return null;
+  }
 }
 
 function escapeHtml(str) {
@@ -178,24 +190,31 @@ const DEMO_RECIPES = [
 ];
 
 async function seedIfEmpty() {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, 'readonly');
-    const store = tx.objectStore(STORE_NAME);
-    const req = store.getAll();
-    req.onsuccess = () => {
-      if (req.result.length > 0) { resolve(); return; }
-      // Seed demo recipes
-      const writeTx = db.transaction(STORE_NAME, 'readwrite');
-      const writeStore = writeTx.objectStore(STORE_NAME);
+  try {
+    const db = await openDB();
+    // Check if DB already has recipes
+    const count = await new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, 'readonly');
+      const store = tx.objectStore(STORE_NAME);
+      const req = store.count();
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+    if (count > 0) return;
+    // Seed demo recipes in a separate transaction
+    await new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, 'readwrite');
+      const store = tx.objectStore(STORE_NAME);
       for (const recipe of DEMO_RECIPES) {
-        writeStore.put(recipe);
+        store.put(recipe);
       }
-      writeTx.oncomplete = () => resolve();
-      writeTx.onerror = () => reject(writeTx.error);
-    };
-    req.onerror = () => reject(req.error);
-  });
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+  } catch (err) {
+    console.error('seedIfEmpty failed:', err);
+    // Continue even if seeding fails — recipe page still works without seed data
+  }
 }
 
 async function renderRecipe() {
@@ -207,8 +226,18 @@ async function renderRecipe() {
     return;
   }
 
-  await seedIfEmpty();
-  const recipe = await getRecipe(slug);
+  let recipe;
+  try {
+    await seedIfEmpty();
+    recipe = await getRecipe(slug);
+  } catch (err) {
+    console.error('IndexedDB failed, using fallback:', err);
+  }
+
+  // Fallback: if IndexedDB failed, try DEMO_RECIPES directly
+  if (!recipe) {
+    recipe = DEMO_RECIPES.find(r => r.slug === slug) || null;
+  }
 
   const t = window.i18n.translations[window.i18n.detectLanguage()] || window.i18n.translations.en;
 
