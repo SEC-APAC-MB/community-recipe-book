@@ -154,7 +154,7 @@
           <label><input type="checkbox" name="dietary" value="Freezer-friendly"> <span>❄️ Freezer-friendly</span></label>
           <label class="other-checkbox-label"><input type="checkbox" name="dietary" value="_other" id="dietaryOtherCheckbox"> <span data-i18n="other">Other</span></label>
         </div>
-        <input type="text" id="dietaryOther" data-i18n="otherDietaryPh" placeholder="e.g. FODMAP, Pescatarian..." style="margin-top:8px;" class="other-input">
+        <input type="text" id="dietaryOther" data-i18n="otherDietaryPh" placeholder="e.g. FODMAP, Pescatarian..." style="display:none;margin-top:8px;" class="other-input">
       </div>
 
       <div class="form-group">
@@ -176,7 +176,7 @@
           <label><input type="checkbox" name="allergens" value="Molluscs"> <span>🐚 Molluscs</span></label>
           <label class="other-checkbox-label"><input type="checkbox" name="allergens" value="_other" id="allergensOtherCheckbox"> <span data-i18n="other">Other</span></label>
         </div>
-        <input type="text" id="allergensOther" data-i18n="otherAllergensPh" placeholder="e.g. Lupin, Molluscs..." style="margin-top:8px;" class="other-input">
+        <input type="text" id="allergensOther" data-i18n="otherAllergensPh" placeholder="e.g. Lupin, Molluscs..." style="display:none;margin-top:8px;" class="other-input">
       </div>
     </div>
 
@@ -207,7 +207,7 @@
           <label><input type="checkbox" name="cuisine" value="Fusion"> <span>🌍 Fusion</span></label>
           <label class="other-checkbox-label"><input type="checkbox" name="cuisine" value="_other" id="cuisineOtherCheckbox"> <span data-i18n="other">Other</span></label>
         </div>
-        <input type="text" id="cuisineOther" data-i18n="otherCuisinePh" placeholder="e.g. Peruvian, Ethiopian, Burmese..." style="margin-top:8px;" class="other-input">
+        <input type="text" id="cuisineOther" data-i18n="otherCuisinePh" placeholder="e.g. Peruvian, Ethiopian, Burmese..." style="display:none;margin-top:8px;" class="other-input">
       </div>
 
       <div class="form-group">
@@ -225,7 +225,7 @@
           <label><input type="checkbox" name="meal_type" value="Preserve/Pickle"> <span>🫙 Preserve/Pickle</span></label>
           <label class="other-checkbox-label"><input type="checkbox" name="meal_type" value="_other" id="mealTypeOtherCheckbox"> <span data-i18n="other">Other</span></label>
         </div>
-        <input type="text" id="mealTypeOther" data-i18n="otherMealTypePh" placeholder="e.g. Brunch, Street food..." style="margin-top:8px;" class="other-input">
+        <input type="text" id="mealTypeOther" data-i18n="otherMealTypePh" placeholder="e.g. Brunch, Street food..." style="display:none;margin-top:8px;" class="other-input">
       </div>
     </div>
 
@@ -383,6 +383,24 @@ removePhoto.addEventListener('click', () => {
   photoPreview.style.display = 'none';
   photoUpload.style.display = 'block';
   photoInput.value = '';
+});
+
+// ── Other checkbox toggle logic ──
+document.getElementById('dietaryOtherCheckbox').addEventListener('change', function() {
+  document.getElementById('dietaryOther').style.display = this.checked ? 'block' : 'none';
+  if (!this.checked) document.getElementById('dietaryOther').value = '';
+});
+document.getElementById('allergensOtherCheckbox').addEventListener('change', function() {
+  document.getElementById('allergensOther').style.display = this.checked ? 'block' : 'none';
+  if (!this.checked) document.getElementById('allergensOther').value = '';
+});
+document.getElementById('cuisineOtherCheckbox').addEventListener('change', function() {
+  document.getElementById('cuisineOther').style.display = this.checked ? 'block' : 'none';
+  if (!this.checked) document.getElementById('cuisineOther').value = '';
+});
+document.getElementById('mealTypeOtherCheckbox').addEventListener('change', function() {
+  document.getElementById('mealTypeOther').style.display = this.checked ? 'block' : 'none';
+  if (!this.checked) document.getElementById('mealTypeOther').value = '';
 });
 
 // ── Form Validation & Submission ──
