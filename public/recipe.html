@@ -9,13 +9,13 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Dumpling Festival">
-<link rel="stylesheet" href="./css/fonts.css?v=73acb53">
-<link rel="stylesheet" href="./css/style.css?v=73acb53">
+<link rel="stylesheet" href="./css/fonts.css?v=93afed3">
+<link rel="stylesheet" href="./css/style.css?v=93afed3">
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" type="image/png" sizes="32x32" href="./favicon.png">
   <link rel="apple-touch-icon" href="./icons/icon-192x192.png">
-  <link rel="stylesheet" href="./css/view-toggle.css?v=73acb53">
-<script src="./js/i18n.js?v=73acb53"></script>
+  <link rel="stylesheet" href="./css/view-toggle.css?v=93afed3">
+<script src="./js/i18n.js?v=93afed3"></script>
 </head>
 <body>
 
@@ -84,6 +84,121 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+// ── Seed demo recipes if IndexedDB is empty ──
+const DEMO_RECIPES = [
+  {
+    slug: 'pork-dumplings',
+    recipe_name: "Grandma's Pork Dumplings",
+    display_name: 'Mei Chen',
+    origin: 'Sichuan, China',
+    story: 'My grandmother made these every Lunar New Year. The whole family would gather around the kitchen table, folding dumplings together. It was never just about the food — it was about being together, sharing stories, and passing traditions down.',
+    serves: '4',
+    prep_time: '30 minutes',
+    cook_time: '15 minutes',
+    difficulty: 'Intermediate',
+    ingredients: '500 g pork mince\n2 spring onions, finely chopped\n1 tbsp soy sauce\n1 tbsp sesame oil\n1 tsp fresh ginger, grated\n1 pack dumpling wrappers\nPinch of white pepper',
+    method: '1. Mix pork mince, spring onions, soy sauce, sesame oil, ginger, and white pepper in a bowl.\n2. Place a heaped teaspoon of filling in the centre of each wrapper.\n3. Wet the edges with water, fold in half, and pleat one side to seal.\n4. Steam over boiling water for 10 minutes, or pan-fry in a little oil until golden on the bottom, then add 2 tbsp water and cover for 5 minutes.',
+    serve_with: 'Chilli oil, black vinegar, pickled ginger',
+    dietary: ['Contains pork'],
+    allergens: ['Wheat/gluten', 'Soy'],
+    photo: '',
+    created_at: new Date('2026-01-15').toISOString()
+  },
+  {
+    slug: 'mango-sticky-rice',
+    recipe_name: 'Mango Sticky Rice',
+    display_name: 'Siriwan P.',
+    origin: 'Thailand',
+    story: "During Songkran, my mother would wake before dawn to prepare this. The smell of coconut milk steaming through the house is the smell of home. It's simple, but it takes patience — you can't rush sticky rice.",
+    serves: '6',
+    prep_time: '4 hours (including soaking)',
+    cook_time: '25 minutes',
+    difficulty: 'Easy',
+    ingredients: '2 cups glutinous rice\n1 cup coconut milk\n1/2 cup sugar\n1/4 tsp salt\n2 ripe mangoes, sliced\n1 tbsp sesame seeds (toasted)',
+    method: '1. Soak glutinous rice in water for at least 4 hours (overnight is best).\n2. Steam the rice in a steamer basket for 20-25 minutes until tender.\n3. While rice steams, heat coconut milk, sugar, and salt until sugar dissolves (don\'t boil).\n4. Pour 3/4 of the coconut sauce over the steamed rice, stir gently, cover, and let absorb for 10 minutes.\n5. Slice mangoes and arrange on plates. Top with rice, drizzle remaining coconut sauce, and sprinkle with sesame seeds.',
+    serve_with: 'Extra coconut sauce on the side',
+    dietary: ['Vegan', 'Gluten-free', 'Dairy-free'],
+    allergens: [],
+    photo: '',
+    created_at: new Date('2026-03-22').toISOString()
+  },
+  {
+    slug: 'empanada-de-carne',
+    recipe_name: 'Empanada de Carne',
+    display_name: 'Carlos M.',
+    origin: 'Argentina',
+    story: "Every Sunday, my abuela would make empanadas. She'd sit at the kitchen table for hours, crimping each one by hand. She said the secret was love — and a pinch of cumin. I still use her recipe, and I still think of her every time.",
+    serves: '8',
+    prep_time: '45 minutes',
+    cook_time: '20 minutes',
+    difficulty: 'Intermediate',
+    ingredients: '500 g beef mince\n2 onions, diced\n1 hard-boiled egg, chopped\n1 tbsp cumin\n1 tbsp paprika\n1 pack empanada discs\n2 tbsp olive oil\nSalt and pepper to taste',
+    method: '1. Heat olive oil and cook onions until soft.\n2. Add beef mince, cumin, paprika, salt, and pepper. Cook until browned.\n3. Stir in chopped egg and let filling cool.\n4. Place a spoonful of filling on each disc, fold in half, and crimp edges.\n5. Bake at 200°C for 20 minutes until golden.',
+    serve_with: 'Chimichurri sauce',
+    dietary: ['Contains beef'],
+    allergens: ['Wheat/gluten'],
+    photo: '',
+    created_at: new Date('2026-02-10').toISOString()
+  },
+  {
+    slug: 'samosa',
+    recipe_name: "Aunty Priya's Samosas",
+    display_name: 'Priya K.',
+    origin: 'Punjab, India',
+    story: 'Every Diwali, my aunty would make hundreds of samosas. The whole house would smell like cumin and ghee. We\'d sneak them fresh from the oil, burning our tongues because we couldn\'t wait. That\'s how you know they\'re good.',
+    serves: '6',
+    prep_time: '40 minutes',
+    cook_time: '15 minutes',
+    difficulty: 'Advanced',
+    ingredients: '2 cups all-purpose flour\n4 tbsp ghee\n1/2 tsp salt\nWater for dough\n3 potatoes, boiled and mashed\n1 tsp cumin seeds\n1 tsp garam masala\n1/2 tsp chilli powder\n1/2 cup peas\nOil for frying',
+    method: '1. Mix flour, ghee, and salt. Add water gradually to form a stiff dough. Rest 20 minutes.\n2. For filling: heat oil, add cumin seeds, then add potatoes, peas, garam masala, and chilli powder. Cook 5 minutes.\n3. Divide dough into balls, roll into ovals, cut in half.\n4. Form each half into a cone, fill with potato mixture, and seal edges with water.\n5. Deep fry in hot oil until golden and crispy.',
+    serve_with: 'Mint chutney, tamarind sauce',
+    dietary: ['Vegetarian', 'Halal'],
+    allergens: ['Wheat/gluten', 'Dairy'],
+    photo: '',
+    created_at: new Date('2026-04-05').toISOString()
+  },
+  {
+    slug: 'baklava',
+    recipe_name: 'Baklava',
+    display_name: 'Elif D.',
+    origin: 'Turkey',
+    story: "My grandmother's baklava was legendary. She'd count the layers of filo — '40 for 40 days of Lent,' she'd say. The secret isn't just the recipe, it's the patience. You can't rush the syrup, and you can't rush love.",
+    serves: '12',
+    prep_time: '60 minutes',
+    cook_time: '45 minutes',
+    difficulty: 'Advanced',
+    ingredients: '500 g filo pastry\n250 g unsalted butter, melted\n2 cups walnuts, finely chopped\n1 tsp cinnamon\n1 cup sugar\n3/4 cup water\n1 tbsp lemon juice\n1/4 cup honey',
+    method: '1. For syrup: boil sugar, water, and lemon juice for 10 minutes. Add honey, stir, and let cool completely.\n2. Mix walnuts with cinnamon.\n3. Layer filo in a buttered dish, brushing each sheet with melted butter. Every 3rd layer, sprinkle walnut mixture.\n4. Continue until all filo is used. Cut into diamond shapes with a sharp knife.\n5. Bake at 175°C for 45 minutes until golden.\n6. Pour cooled syrup over hot baklava immediately from the oven. Let soak for 4+ hours.',
+    serve_with: 'Turkish tea',
+    dietary: ['Vegetarian'],
+    allergens: ['Walnuts', 'Wheat/gluten', 'Dairy'],
+    photo: '',
+    created_at: new Date('2026-05-18').toISOString()
+  }
+];
+
+async function seedIfEmpty() {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readonly');
+    const store = tx.objectStore(STORE_NAME);
+    const req = store.getAll();
+    req.onsuccess = () => {
+      if (req.result.length > 0) { resolve(); return; }
+      // Seed demo recipes
+      const writeTx = db.transaction(STORE_NAME, 'readwrite');
+      const writeStore = writeTx.objectStore(STORE_NAME);
+      for (const recipe of DEMO_RECIPES) {
+        writeStore.put(recipe);
+      }
+      writeTx.oncomplete = () => resolve();
+      writeTx.onerror = () => reject(writeTx.error);
+    };
+    req.onerror = () => reject(req.error);
+  });
+}
+
 async function renderRecipe() {
   const params = new URLSearchParams(window.location.search);
   const slug = params.get('slug');
@@ -93,6 +208,7 @@ async function renderRecipe() {
     return;
   }
 
+  await seedIfEmpty();
   const recipe = await getRecipe(slug);
 
   const t = window.i18n.translations[window.i18n.detectLanguage()] || window.i18n.translations.en;
