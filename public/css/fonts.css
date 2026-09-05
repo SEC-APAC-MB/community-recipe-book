@@ -1,9 +1,8 @@
 /* ── CommunityBook Custom Fonts ── */
 /* Based on Poppins (SIL OFL 1.1) for display headings + Inter (SIL OFL 1.1) for body */
-/* Modified for Community Recipe Book — Dumpling Festival poster typography */
+/* Poppins Black (900) matches the Dumpling Festival poster's heavy chunky headings */
 
-/* ── CommunityBook Display (Poster Heading Font) ── */
-/* Bold, rounded, geometric sans-serif — matches the Dumpling Festival poster */
+/* ── CommunityBook Display (Poster Heading Font — Poppins) ── */
 @font-face {
   font-family: 'CommunityBook Display';
   src: url('../fonts/CommunityBookDisplay-Regular.woff2') format('woff2'),
@@ -31,7 +30,25 @@
   font-display: swap;
 }
 
-/* ── CommunityBook Sans (Body Text Font) ── */
+@font-face {
+  font-family: 'CommunityBook Display';
+  src: url('../fonts/CommunityBookDisplay-ExtraBold.woff2') format('woff2'),
+       url('../fonts/CommunityBookDisplay-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CommunityBook Display';
+  src: url('../fonts/CommunityBookDisplay-Black.woff2') format('woff2'),
+       url('../fonts/CommunityBookDisplay-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── CommunityBook Sans (Body Text Font — Inter) ── */
 @font-face {
   font-family: 'CommunityBook Sans';
   src: url('../fonts/CommunityBookSans-Light.woff2') format('woff2'),
