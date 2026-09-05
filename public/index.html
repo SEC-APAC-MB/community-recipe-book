@@ -22,7 +22,6 @@
   <div class="nav-links">
     <a href="./" class="active" data-i18n="navBrowse">Browse</a>
     <a href="./submit.html" data-i18n="navSubmit">Submit</a>
-    <button class="translate-btn" id="translateBtn" aria-label="Translate page" title="Use browser translation">🌐 Translate</button>
   </div>
 </nav>
 
@@ -448,43 +447,6 @@ renderRecipes();
 // ── Register Service Worker ──
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js').catch(() => {
-}
-// ── Browser Translation ──
-const translateBtn = document.getElementById("translateBtn");
-if (translateBtn) {
-  translateBtn.addEventListener("click", () => {
-    if (typeof window.translation !== "undefined" && window.translation.translate) {
-      const currentLang = document.documentElement.lang || "en";
-      const langs = { en: "zh", zh: "en", nl: "en", ar: "en", tr: "en", pl: "en" };
-      const target = langs[currentLang] || "en";
-      window.translation.translate(document.body.textContent, { sourceLanguage: currentLang, targetLanguage: target })
-        .then(() => translateBtn.textContent = "✓ Translated")
-        .catch(() => showTranslateTip());
-    } else {
-      showTranslateTip();
-    }
-  });
-}
-
-function showTranslateTip() {
-  const btn = document.getElementById("translateBtn");
-  if (!btn) return;
-  const tip = document.createElement("div");
-  tip.style.cssText = "position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--purple);color:var(--warm-white);padding:12px 20px;border-radius:8px;font-size:0.9rem;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.3);text-align:center;max-width:320px;";
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  if (isMobile) {
-    const isSafari = /Safari/i.test(navigator.userAgent) && !/Chrome/i.test(navigator.userAgent);
-    tip.textContent = isSafari
-      ? "Tap the aA icon in the address bar → Translate to..."
-      : "Tap ⋮ menu → Translate this page";
-  } else {
-    const isSafari = /Safari/i.test(navigator.userAgent) && !/Chrome/i.test(navigator.userAgent);
-    tip.textContent = isSafari
-      ? "Right-click → Translate to your language"
-      : "Right-click anywhere → Translate to your language";
-  }
-  document.body.appendChild(tip);
-  setTimeout(() => tip.remove(), 4000);
 }
 </script>
 </body>

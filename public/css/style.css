@@ -241,29 +241,6 @@ img {
   background: var(--dark-muted);
 }
 
-.translate-btn {
-  background: var(--purple);
-  color: var(--warm-white);
-  border: none;
-  border-radius: var(--radius-sm);
-  padding: var(--space-xs) var(--space-sm);
-  font-size: 0.82rem;
-  font-family: inherit;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background var(--transition-fast), transform var(--transition-fast);
-  white-space: nowrap;
-}
-
-.translate-btn:hover {
-  background: var(--purple-deep);
-  transform: scale(1.05);
-}
-
-.translate-btn:active {
-  transform: scale(0.97);
-}
-
 /* ── Theme Toggle ── */
 
 
