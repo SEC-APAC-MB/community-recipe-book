@@ -67,3 +67,37 @@
   font-size: 15px;
   border-radius: 32px;
 }
+/* ── Captcha ── */
+.captcha-group {
+  background: #f8f0fa;
+  border: 2px solid #6A4994;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.captcha-group label {
+  font-weight: 600;
+  color: #6A4994;
+  font-size: 1rem;
+}
+.captcha-group input[type="number"] {
+  width: 80px;
+  padding: 8px 12px;
+  border: 2px solid #E8CFC4;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 8px;
+  -moz-appearance: textfield;
+}
+.captcha-group input[type="number"]::-webkit-inner-spin-button,
+.captcha-group input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+#captchaQuestion {
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: #C7493D;
+}

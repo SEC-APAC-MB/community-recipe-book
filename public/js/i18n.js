@@ -41,7 +41,7 @@ const translations = {
     sectionDetails: "The Details",
     sectionTheRecipe: "The Recipe",
     sectionDietary: "Dietary & Allergens",
-    sectionPhoto: "Photo & Contact",
+    sectionPhoto: "Photo",
     // Fields
     recipeName: "Recipe name",
     displayName: "Your name / name you'd like displayed",
@@ -61,8 +61,6 @@ const translations = {
     photo: "Upload a photo of your recipe",
     photoText: "Click to upload or drag and drop",
     photoHint: "JPG / PNG up to 5 MB",
-    contactEmail: "Your email (so we can thank you!)",
-    contactEmailPh: "e.g. mei@example.com",
     permissionError: "Please give permission to submit your recipe.",
     shareLabel: "Share",
     printLabel: "Print",
@@ -110,6 +108,9 @@ const translations = {
     otherAllergensPh: "e.g. Lupin, Molluscs...",
     otherCuisinePh: "e.g. Peruvian, Ethiopian, Burmese...",
     otherMealTypePh: "e.g. Brunch, Street food...",
+    sectionPhoto: "Photo",
+    captchaLabel: "What is",
+    captchaError: "Please answer correctly to prove you are human.",
   },
 
   nl: {
@@ -206,6 +207,9 @@ const translations = {
     otherAllergensPh: "bijv. Lupine, Weekdieren...",
     otherCuisinePh: "bijv. Peruaans, Etiopisch, Burmees...",
     otherMealTypePh: "bijv. Brunch, Straatvoedsel...",
+    sectionPhoto: "Foto",
+    captchaLabel: "Wat is",
+    captchaError: "Beantwoord correct om te bewijzen dat u geen robot bent.",
   },
 
   ar: {
@@ -302,6 +306,9 @@ const translations = {
     otherAllergensPh: "مثال: لوبيا، رخويات...",
     otherCuisinePh: "مثال: بيروفي، إثيوبي، بورمي...",
     otherMealTypePh: "مثال: فطور متأخر، طعام الشارع...",
+    sectionPhoto: "صورة",
+    captchaLabel: "ما هو",
+    captchaError: "يرجى الإجابة بشكل صحيح لإثبات أنك إنسان.",
   },
 
   tr: {
@@ -398,6 +405,9 @@ const translations = {
     otherAllergensPh: "örn. Lupin, Yumuşakçalar...",
     otherCuisinePh: "örn. Peru, Etiyopya, Burma...",
     otherMealTypePh: "örn. Brunch, Sokak yemeği...",
+    sectionPhoto: "Fotoğraf",
+    captchaLabel: "Kaç eder",
+    captchaError: "İnsan olduğunuzu kanıtlamak için doğru cevap verin.",
   },
 
   pl: {
@@ -494,6 +504,9 @@ const translations = {
     otherAllergensPh: "np. Łubin, Mięczaki...",
     otherCuisinePh: "np. Peruwiańska, Etiopska, Birmańska...",
     otherMealTypePh: "np. Brunch, Street food...",
+    sectionPhoto: "Zdjęcie",
+    captchaLabel: "Ile to",
+    captchaError: "Odpowiedz poprawnie, aby udowodnić, że jesteś człowiekiem.",
   },
 
   zh: {
@@ -590,6 +603,9 @@ const translations = {
     otherAllergensPh: "例如：羽扇豆、软体动物...",
     otherCuisinePh: "例如：秘鲁、埃塞俄比亚、缅甸...",
     otherMealTypePh: "例如：早午餐、街头美食...",
+    sectionPhoto: "照片",
+    captchaLabel: "等于多少",
+    captchaError: "请正确回答以证明您是人类。",
   }
 };
 
