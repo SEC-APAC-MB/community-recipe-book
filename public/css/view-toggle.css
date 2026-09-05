@@ -2,7 +2,9 @@
 .view-toggle {
   position: fixed;
   bottom: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
   right: 20px;
+  right: calc(20px + env(safe-area-inset-right, 0px));
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -19,6 +21,7 @@
   box-shadow: 0 4px 16px rgba(106, 73, 148, 0.4);
   transition: all 0.3s ease;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 .view-toggle:hover {
   background: #5a3d82;
@@ -62,7 +65,9 @@
 }
 [data-view="app"] .view-toggle {
   bottom: 24px;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   right: 24px;
+  right: calc(24px + env(safe-area-inset-right, 0px));
   padding: 12px 22px;
   font-size: 15px;
   border-radius: 32px;
