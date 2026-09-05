@@ -882,9 +882,15 @@ img {
 }
 
 .checkbox-group {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-sm);
+}
+
+@media (min-width: 480px) {
+  .checkbox-group {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .checkbox-group label {
@@ -1015,6 +1021,16 @@ img {
   color: var(--dark-text);
 }
 
+/* Other input spans full width in checkbox grid */
+.other-input {
+  grid-column: 1 / -1;
+}
+
+/* Sticky submit button container */
+#recipeForm {
+  padding-bottom: 80px;
+}
+
 /* Submit button */
 .submit-btn {
   display: block;
@@ -1029,6 +1045,9 @@ img {
   font-family: inherit;
   cursor: pointer;
   transition: background var(--transition-fast), transform 0.1s ease;
+  position: sticky;
+  bottom: 0;
+  z-index: 100;
 }
 
 .submit-btn:hover {
