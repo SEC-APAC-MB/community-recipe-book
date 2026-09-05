@@ -8,20 +8,20 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 
 <nav class="nav">
-  <a href="index.html" class="nav-brand">🥟 Community Recipe Book</a>
+  <a href="./" class="nav-brand">🥟 Community Recipe Book</a>
   <div class="nav-links">
-    <a href="index.html">Browse</a>
-    <a href="submit.html">Submit</a>
+    <a href="./">Browse</a>
+    <a href="./submit.html">Submit</a>
   </div>
 </nav>
 
 <main class="recipe-detail" id="recipeDetail">
-  <a href="index.html" class="back-link">← Back to all recipes</a>
+  <a href="./" class="back-link">← Back to all recipes</a>
   <div style="text-align:center;padding:60px 20px;color:var(--ink-muted);">
     <p>Loading recipe...</p>
   </div>
@@ -76,7 +76,7 @@ async function renderRecipe() {
   const slug = params.get('slug');
 
   if (!slug) {
-    window.location.href = 'index.html';
+    window.location.href = './';
     return;
   }
 
@@ -84,12 +84,12 @@ async function renderRecipe() {
 
   if (!recipe) {
     document.getElementById('recipeDetail').innerHTML = `
-      <a href="index.html" class="back-link">← Back to all recipes</a>
+      <a href="./" class="back-link">← Back to all recipes</a>
       <div class="no-results">
         <span class="emoji">🔍</span>
         <h3>Recipe not found</h3>
         <p>This recipe may have been removed or the link is incorrect.</p>
-        <a href="index.html" class="submit-btn" style="display:inline-flex;text-decoration:none;margin-top:24px;width:auto;padding:12px 28px;font-size:1rem;">Browse all recipes</a>
+        <a href="./" class="submit-btn" style="display:inline-flex;text-decoration:none;margin-top:24px;width:auto;padding:12px 28px;font-size:1rem;">Browse all recipes</a>
       </div>
     `;
     return;
@@ -108,7 +108,7 @@ async function renderRecipe() {
   const allergens = recipe.allergens || [];
 
   document.getElementById('recipeDetail').innerHTML = `
-    <a href="index.html" class="back-link">← Back to all recipes</a>
+    <a href="./" class="back-link">← Back to all recipes</a>
 
     ${recipe.photo
       ? `<img src="${escapeHtml(recipe.photo)}" alt="${escapeHtml(recipe.recipe_name)}" class="recipe-detail-image">`

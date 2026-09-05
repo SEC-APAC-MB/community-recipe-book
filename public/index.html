@@ -11,15 +11,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 
 <nav class="nav">
-  <a href="index.html" class="nav-brand">🥟 Community Recipe Book</a>
+  <a href="./" class="nav-brand">🥟 Community Recipe Book</a>
   <div class="nav-links">
-    <a href="index.html" class="active">Browse</a>
-    <a href="submit.html">Submit</a>
+    <a href="./" class="active">Browse</a>
+    <a href="./submit.html">Submit</a>
   </div>
 </nav>
 
@@ -36,14 +36,14 @@
     <button type="submit" class="search-btn" aria-label="Search">🔍</button>
   </form>
   <div class="filter-tags" id="filterTags">
-    <a href="#" class="filter-tag active" data-filter="all">All</a>
-    <a href="#" class="filter-tag" data-dietary="Vegetarian">🥬 Vegetarian</a>
-    <a href="#" class="filter-tag" data-dietary="Vegan">🌱 Vegan</a>
-    <a href="#" class="filter-tag" data-dietary="Gluten-free">🌾 Gluten-free</a>
-    <a href="#" class="filter-tag" data-dietary="Halal">☪️ Halal</a>
-    <a href="#" class="filter-tag" data-difficulty="Easy">😊 Easy</a>
-    <a href="#" class="filter-tag" data-difficulty="Intermediate">🤔 Intermediate</a>
-    <a href="#" class="filter-tag" data-difficulty="Advanced">👨‍🍳 Advanced</a>
+    <a href="javascript:void(0)" class="filter-tag active" data-filter="all">All</a>
+    <a href="javascript:void(0)" class="filter-tag" data-dietary="Vegetarian">🥬 Vegetarian</a>
+    <a href="javascript:void(0)" class="filter-tag" data-dietary="Vegan">🌱 Vegan</a>
+    <a href="javascript:void(0)" class="filter-tag" data-dietary="Gluten-free">🌾 Gluten-free</a>
+    <a href="javascript:void(0)" class="filter-tag" data-dietary="Halal">☪️ Halal</a>
+    <a href="javascript:void(0)" class="filter-tag" data-difficulty="Easy">😊 Easy</a>
+    <a href="javascript:void(0)" class="filter-tag" data-difficulty="Intermediate">🤔 Intermediate</a>
+    <a href="javascript:void(0)" class="filter-tag" data-difficulty="Advanced">👨‍🍳 Advanced</a>
   </div>
 </div>
 
@@ -236,7 +236,7 @@ function escapeHtml(str) {
 function renderCard(recipe) {
   const grid = document.getElementById('recipeGrid');
   const card = document.createElement('a');
-  card.href = `recipe.html?slug=${recipe.slug}`;
+  card.href = `./recipe.html?slug=${recipe.slug}`;
   card.className = 'recipe-card';
   card.style.animation = 'fadeSlideUp 0.4s ease-out both';
   card.style.animationDelay = `${Math.random() * 0.3}s`;
