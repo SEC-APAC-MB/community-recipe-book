@@ -575,7 +575,14 @@ function applyTranslations(lang) {
       if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
         el.placeholder = t[key];
       } else {
-        el.innerHTML = t[key];
+        // Use textContent for filter tags to preserve data-* attributes
+        // innerHTML can destroy data-dietary/data-difficulty attrs
+        const hasDataAttrs = el.hasAttribute('data-dietary') || el.hasAttribute('data-difficulty') || el.hasAttribute('data-filter');
+        if (hasDataAttrs) {
+          el.textContent = t[key];
+        } else {
+          el.innerHTML = t[key];
+        }
       }
     }
   });
