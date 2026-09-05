@@ -5,9 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Recipe — 🥟 Community Recipe Book</title>
 <meta name="description" content="A community recipe from our recipe book.">
-<meta name="theme-color" content="#5F3994">
+<meta name="theme-color" content="#6A4994">
 <link rel="stylesheet" href="./css/fonts.css">
 <link rel="stylesheet" href="./css/style.css">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon.png">
+  <link rel="apple-touch-icon" href="./icons/icon-192x192.png">
+  <link rel="stylesheet" href="./css/view-toggle.css">
 <script src="./js/i18n.js"></script>
 </head>
 <body>
@@ -286,6 +290,38 @@ const lang = window.i18n.detectLanguage();
 window.i18n.setLanguage(lang);
 buildLangDropdown();
 renderRecipe();
+
+// ── View Toggle (Website / App) ──
+(function() {
+  var toggle = document.getElementById('viewToggle');
+  var label = toggle ? toggle.querySelector('.toggle-label') : null;
+  var icon = toggle ? toggle.querySelector('.toggle-icon') : null;
+  if (!toggle) return;
+  var current = localStorage.getItem('recipeBookView') || 'website';
+  if (current === 'app') {
+    document.documentElement.setAttribute('data-view', 'app');
+    if (label) label.textContent = 'Website';
+    if (icon) icon.textContent = '🖥️';
+  }
+  toggle.addEventListener('click', function() {
+    var now = document.documentElement.getAttribute('data-view');
+    if (now === 'app') {
+      document.documentElement.removeAttribute('data-view');
+      localStorage.setItem('recipeBookView', 'website');
+      if (label) label.textContent = 'App View';
+      if (icon) icon.textContent = '📱';
+    } else {
+      document.documentElement.setAttribute('data-view', 'app');
+      localStorage.setItem('recipeBookView', 'app');
+      if (label) label.textContent = 'Website';
+      if (icon) icon.textContent = '🖥️';
+    }
+  });
+})();
+
 </script>
+  <button class="view-toggle" id="viewToggle" title="Switch view">
+    <span class="toggle-icon">📱</span> <span class="toggle-label">App View</span>
+  </button>
 </body>
 </html>
