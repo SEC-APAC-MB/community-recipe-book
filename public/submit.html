@@ -19,10 +19,6 @@
   <div class="nav-links">
     <a href="./" data-i18n="navBrowse">Browse</a>
     <a href="./submit.html" class="active" data-i18n="navSubmit">Submit</a>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-      <span class="icon-moon">🌙</span>
-      <span class="icon-sun">☀️</span>
-    </button>
   </div>
 </nav>
 
@@ -502,23 +498,6 @@ form.addEventListener('submit', async e => {
   }
 });
 
-// ── Dark Mode ──
-const themeToggle = document.getElementById('themeToggle');
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-
-function setTheme(dark) {
-  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-  themeToggle.classList.toggle('dark', dark);
-  localStorage.setItem('theme', dark ? 'dark' : 'light');
-}
-
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme) setTheme(savedTheme === 'dark');
-else if (prefersDark.matches) setTheme(true);
-
-themeToggle.addEventListener('click', () => {
-  setTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
-});
 
 // ── i18n / Language ──
 const dropdown = document.getElementById('langDropdown');

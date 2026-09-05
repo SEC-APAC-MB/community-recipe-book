@@ -19,10 +19,6 @@
   <div class="nav-links">
     <a href="./" data-i18n="navBrowse">Browse</a>
     <a href="./submit.html" data-i18n="navSubmit">Submit</a>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-      <span class="icon-moon">🌙</span>
-      <span class="icon-sun">☀️</span>
-    </button>
   </div>
 </nav>
 
@@ -56,12 +52,11 @@ function openDB() {
     req.onupgradeneeded = (e) => {
       const db = e.target.result;
       if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, { keyPath: 'slug' });
+        db.createObjectStore(STORE_NAME, { keyPath: 'slug'
       }
     };
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
-  });
 }
 
 async function getRecipe(slug) {
@@ -72,7 +67,6 @@ async function getRecipe(slug) {
     const req = store.get(slug);
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
-  });
 }
 
 function escapeHtml(str) {
@@ -108,7 +102,7 @@ async function renderRecipe() {
   }
 
   const difficultyEmoji = { Easy: '😊', Intermediate: '🤔', Advanced: '👨‍🍳' }[recipe.difficulty] || '';
-  const date = new Date(recipe.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const date = new Date(recipe.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric'
 
   document.title = `${recipe.recipe_name} — Community Recipe Book`;
 
@@ -190,7 +184,7 @@ async function renderRecipe() {
 function shareRecipe() {
   const url = window.location.href;
   if (navigator.share) {
-    navigator.share({ title: document.title, url: url }).catch(() => {});
+    navigator.share({ title: document.title, url: url }).catch(() => {
   } else {
     // Fallback: copy to clipboard
     navigator.clipboard.writeText(url).then(() => {
@@ -206,7 +200,6 @@ function shareRecipe() {
       input.select();
       document.execCommand('copy');
       document.body.removeChild(input);
-    });
   }
 }
 
@@ -247,18 +240,10 @@ function addRecipeStructuredData(recipe) {
 function initTheme() {
   const saved = localStorage.getItem('recipeBookTheme');
   if (saved) {
-    document.documentElement.setAttribute('data-theme', saved);
   } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    document.documentElement.setAttribute('data-theme', 'dark');
   }
-}
-
-document.getElementById('themeToggle').addEventListener('click', () => {
-  const current = document.documentElement.getAttribute('data-theme');
-  const next = current === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
+}  const next = current === 'dark' ? 'light' : 'dark';
   localStorage.setItem('recipeBookTheme', next);
-});
 
 initTheme();
 
@@ -290,29 +275,23 @@ function buildLangDropdown() {
       menu.querySelectorAll('.lang-dropdown-item').forEach(i => {
         i.classList.toggle('active', i.dataset.lang === lang);
         i.setAttribute('aria-selected', i.dataset.lang === lang ? 'true' : 'false');
-      });
       renderRecipe();
-    });
     menu.appendChild(item);
-  });
 
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
     const isOpen = menu.classList.toggle('open');
     btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-  });
 
   document.addEventListener('click', () => {
     menu.classList.remove('open');
     btn.setAttribute('aria-expanded', 'false');
-  });
 
   btn.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       menu.classList.remove('open');
       btn.setAttribute('aria-expanded', 'false');
     }
-  });
 }
 
 // ── Init ──
