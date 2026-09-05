@@ -22,10 +22,6 @@
   <div class="nav-links">
     <a href="./" class="active" data-i18n="navBrowse">Browse</a>
     <a href="./submit.html" data-i18n="navSubmit">Submit</a>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-      <span class="icon-moon">🌙</span>
-      <span class="icon-sun">☀️</span>
-    </button>
   </div>
 </nav>
 
@@ -383,24 +379,6 @@ async function filterRecipes() {
   }
 }
 
-// ── Theme Toggle ──
-function initTheme() {
-  const saved = localStorage.getItem('recipeBookTheme');
-  if (saved) {
-    document.documentElement.setAttribute('data-theme', saved);
-  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    document.documentElement.setAttribute('data-theme', 'dark');
-  }
-}
-
-document.getElementById('themeToggle').addEventListener('click', () => {
-  const current = document.documentElement.getAttribute('data-theme');
-  const next = current === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('recipeBookTheme', next);
-});
-
-initTheme();
 
 // ── Language Dropdown ──
 function buildLangDropdown() {

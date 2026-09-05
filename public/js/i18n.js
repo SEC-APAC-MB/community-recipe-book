@@ -101,7 +101,15 @@ const translations = {
     footer: "🥟 Community Recipe Book — Celebrating food, family & culture",
     // Optional label
     optional: "(optional)",
-    required: "*"
+    required: "*",
+    sectionCuisine: "Cuisine & Meal Type",
+    cuisineType: "Cuisine / region",
+    mealType: "Meal type",
+    other: "Other",
+    otherDietaryPh: "e.g. FODMAP, Pescatarian...",
+    otherAllergensPh: "e.g. Lupin, Molluscs...",
+    otherCuisinePh: "e.g. Peruvian, Ethiopian, Burmese...",
+    otherMealTypePh: "e.g. Brunch, Street food...",
   },
 
   nl: {
@@ -189,7 +197,15 @@ const translations = {
     addedLabel: "Toegevoegd op",
     footer: "🥟 Gemeenschapskookboek — Eten, familie & cultuur vieren",
     optional: "(optioneel)",
-    required: "*"
+    required: "*",
+    sectionCuisine: "Keuken & Maaltijdtype",
+    cuisineType: "Keuken / regio",
+    mealType: "Maaltijdtype",
+    other: "Anders",
+    otherDietaryPh: "bijv. FODMAP, Pescatarisch...",
+    otherAllergensPh: "bijv. Lupine, Weekdieren...",
+    otherCuisinePh: "bijv. Peruaans, Etiopisch, Burmees...",
+    otherMealTypePh: "bijv. Brunch, Straatvoedsel...",
   },
 
   ar: {
@@ -277,7 +293,15 @@ const translations = {
     addedLabel: "أُضيف في",
     footer: "🥟 كتاب وصفات المجتمع — نحتفل بالطعام والعائلة والثقافة",
     optional: "(اختياري)",
-    required: "*"
+    required: "*",
+    sectionCuisine: "المطبخ ونوع الوجبة",
+    cuisineType: "المطبخ / المنطقة",
+    mealType: "نوع الوجبة",
+    other: "أخرى",
+    otherDietaryPh: "مثال: فودماب، نباتي أسماك...",
+    otherAllergensPh: "مثال: لوبيا، رخويات...",
+    otherCuisinePh: "مثال: بيروفي، إثيوبي، بورمي...",
+    otherMealTypePh: "مثال: فطور متأخر، طعام الشارع...",
   },
 
   tr: {
@@ -365,7 +389,15 @@ const translations = {
     addedLabel: "Eklendi",
     footer: "🥟 Topluluk Tarif Kitabı — Yemeği, aileyi ve kültürü kutluyoruz",
     optional: "(isteğe bağlı)",
-    required: "*"
+    required: "*",
+    sectionCuisine: "Mutfak & Öğün Türü",
+    cuisineType: "Mutfak / bölge",
+    mealType: "Öğün türü",
+    other: "Diğer",
+    otherDietaryPh: "örn. FODMAP, Pesketaryen...",
+    otherAllergensPh: "örn. Lupin, Yumuşakçalar...",
+    otherCuisinePh: "örn. Peru, Etiyopya, Burma...",
+    otherMealTypePh: "örn. Brunch, Sokak yemeği...",
   },
 
   pl: {
@@ -453,7 +485,15 @@ const translations = {
     addedLabel: "Dodano",
     footer: "🥟 Książka Przepisów Społeczności — Świętujemy jedzenie, rodzinę i kulturę",
     optional: "(opcjonalnie)",
-    required: "*"
+    required: "*",
+    sectionCuisine: "Kuchnia i typ posiłku",
+    cuisineType: "Kuchnia / region",
+    mealType: "Typ posiłku",
+    other: "Inne",
+    otherDietaryPh: "np. FODMAP, Pescetariańska...",
+    otherAllergensPh: "np. Łubin, Mięczaki...",
+    otherCuisinePh: "np. Peruwiańska, Etiopska, Birmańska...",
+    otherMealTypePh: "np. Brunch, Street food...",
   },
 
   zh: {
@@ -541,7 +581,15 @@ const translations = {
     addedLabel: "添加于",
     footer: "🥟 社区食谱 — 庆祝美食、家庭与文化",
     optional: "（可选）",
-    required: "*"
+    required: "*",
+    sectionCuisine: "菜系与用餐类型",
+    cuisineType: "菜系 / 地区",
+    mealType: "用餐类型",
+    other: "其他",
+    otherDietaryPh: "例如：FODMAP、鱼素...",
+    otherAllergensPh: "例如：羽扇豆、软体动物...",
+    otherCuisinePh: "例如：秘鲁、埃塞俄比亚、缅甸...",
+    otherMealTypePh: "例如：早午餐、街头美食...",
   }
 };
 
