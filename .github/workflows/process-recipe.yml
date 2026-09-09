@@ -1,0 +1,107 @@
+name: Process Recipe Issue
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  process-recipe:
+    if: contains(github.event.issue.labels.*.name, 'recipe')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse and create recipe file
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -e
+          
+          # Extract JSON from issue body (between ```json and ```)
+          JSON_BLOCK=$(echo "$ISSUE_BODY" | sed -n '/^```json$/,/^```$/p' | sed '1d;$d')
+          
+          if [ -z "$JSON_BLOCK" ]; then
+            gh issue comment "$ISSUE_NUMBER" --body "❌ Could not find recipe JSON in the issue. Please use the submit form to create the issue."
+            exit 0
+          fi
+          
+          # Save raw recipe JSON
+          echo "$JSON_BLOCK" > /tmp/recipe_raw.json
+          
+          # Extract fields using python
+          SLUG=$(python3 -c "import json; d=json.load(open('/tmp/recipe_raw.json')); print(d.get('recipe_name','').lower().replace(' ','-').replace('--','-')[:80])")
+          CREATED_AT=$(python3 -c "import json; d=json.load(open('/tmp/recipe_raw.json')); print(d.get('created_at',''))")
+          
+          if [ -z "$SLUG" ]; then
+            gh issue comment "$ISSUE_NUMBER" --body "❌ Recipe name is missing."
+            exit 0
+          fi
+          
+          # Create recipe directory
+          mkdir -p public/recipes
+          
+          # Save individual recipe file
+          cp /tmp/recipe_raw.json "public/recipes/${SLUG}.json"
+          
+          # Update recipes.json index
+          python3 <<'PYEOF'
+          import json, os
+          
+          with open('/tmp/recipe_raw.json') as f:
+              recipe = json.load(f)
+          
+          slug = recipe.get('recipe_name','').lower().replace(' ','-').replace('--','-')[:80]
+          
+          # Load existing index
+          try:
+              with open('public/recipes.json') as f:
+                  recipes = json.load(f)
+          except:
+              recipes = []
+          
+          # Check if slug already exists (update if so)
+          existing = [i for i, r in enumerate(recipes) if r.get('slug') == slug]
+          
+          summary = {
+              'slug': slug,
+              'recipe_name': recipe.get('recipe_name', ''),
+              'display_name': recipe.get('display_name', ''),
+              'origin': recipe.get('origin', ''),
+              'serves': recipe.get('serves', ''),
+              'difficulty': recipe.get('difficulty', ''),
+              'dietary': recipe.get('dietary', []),
+              'photo': recipe.get('photo', ''),
+              'created_at': recipe.get('created_at', '')
+          }
+          
+          if existing:
+              recipes[existing[0]] = summary
+          else:
+              recipes.append(summary)
+          
+          # Sort by created_at descending
+          recipes.sort(key=lambda r: r.get('created_at', ''), reverse=True)
+          
+          with open('public/recipes.json', 'w') as f:
+              json.dump(recipes, f, indent=2, ensure_ascii=False)
+          
+          print(f"Index updated: {len(recipes)} recipes")
+          PYEOF
+          
+          # Commit changes
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "public/recipes/${SLUG}.json" public/recipes.json
+          git commit -m "recipe: add ${SLUG}"
+          git push
+          
+          # Close issue with link
+          PAGE_URL="https://sec-apac-mb.github.io/community-recipe-book/recipe.html?slug=${SLUG}"
+          gh issue comment "$ISSUE_NUMBER" --body "✅ Your recipe has been added! View it here: ${PAGE_URL}"
+          gh issue close "$ISSUE_NUMBER"
