@@ -275,8 +275,9 @@
   <!-- Success Message (hidden by default) -->
   <div class="success-message" id="successMessage" style="display:none">
     <span class="emoji">🎉</span>
-    <h2 data-i18n="successTitle">Thank you for sharing!</h2>
-    <p data-i18n="successText">Your recipe has been saved. It's now part of our Dumpling Festival Rivierenbuurt!</p>
+    <h2 data-i18n="successTitle">🎉 Recipe Submitted!</h2>
+    <p data-i18n="successText">You're being redirected to GitHub to finalise your submission. A new issue will be created — once approved, your recipe will appear on the site automatically.</p>
+    <p style="font-size:0.85rem;color:var(--ink-muted);margin-top:8px;">If the redirect doesn't work, <a href="https://github.com/SEC-APAC-MB/community-recipe-book/issues/new?labels=recipe" target="_blank" style="color:var(--purple);">click here to submit manually</a>.</p>
     <div class="success-actions">
       <a href="./" class="submit-btn" style="display:inline-flex;text-decoration:none;width:auto;padding:12px 28px;font-size:1rem;" data-i18n="successBrowse">Browse recipes</a>
       <a href="./submit.html" class="submit-btn" style="display:inline-flex;text-decoration:none;width:auto;padding:12px 28px;font-size:1rem;background:var(--purple);" data-i18n="successAnother">Submit another</a>
@@ -534,17 +535,26 @@ document.getElementById('recipeForm').addEventListener('submit', async (e) => {
     created_at: new Date().toISOString()
   };
 
-  try {
-    await addRecipe(recipe);
-    document.getElementById('recipeForm').style.display = 'none';
-    document.querySelector('.intro-box').style.display = 'none';
-    const successMsg = document.getElementById('successMessage');
-    successMsg.style.display = 'block';
-    successMsg.scrollIntoView({ behavior: 'smooth' });
-  } catch (err) {
-    alert('Error saving recipe. Please try again.');
-    console.error(err);
-  }
+  // Build GitHub Issue body
+  const dietaryLines = dietary.map(d => `- [x] ${d}`).join('\n');
+  const allergenLines = allergens.map(a => `- [x] ${a}`).join('\n');
+
+  const issueBody = `### Recipe Name *\n\n${recipeName}\n\n### Your Name / Name You'd Like Displayed\n\n${recipe.display_name || 'Anonymous'}\n\n### Country or Region of Origin\n\n${recipe.origin || ''}\n\n### Tell Us the Story Behind Your Recipe\n\n${recipe.story || ''}\n\n### Serves *\n\n${serves}\n\n### Prep Time *\n\n${recipe.prep_time || ''}\n\n### Cook Time *\n\n${recipe.cook_time || ''}\n\n### Difficulty\n\n${recipe.difficulty || ''}\n\n### Ingredients *\n\n${ingredients}\n\n### Method / Instructions *\n\n${method}\n\n### What to Serve With\n\n${recipe.serve_with || ''}\n\n### Dietary\n\n${dietaryLines}\n\n### Allergen Information\n\n${allergenLines}\n\n### Email *\n\n${document.getElementById('email').value.trim()}`;
+
+  const issueTitle = `🥟 Recipe: ${recipeName}`;
+  const issueUrl = `https://github.com/SEC-APAC-MB/community-recipe-book/issues/new?labels=recipe&title=${encodeURIComponent(issueTitle)}&body=${encodeURIComponent(issueBody)}`;
+
+  // Show success message with redirect link
+  document.getElementById('recipeForm').style.display = 'none';
+  document.querySelector('.intro-box').style.display = 'none';
+  const successMsg = document.getElementById('successMessage');
+  successMsg.style.display = 'block';
+  successMsg.scrollIntoView({ behavior: 'smooth' });
+
+  // Auto-redirect to GitHub Issues after a brief pause
+  setTimeout(() => {
+    window.open(issueUrl, '_blank');
+  }, 1500);
 });
 
 // Clear error on input
