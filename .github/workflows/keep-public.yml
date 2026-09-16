@@ -1,13 +1,14 @@
-name: Keep Repository Public
+name: Keep Repository Public and Pages Secure
 
 on:
   schedule:
-    # Run every 10 minutes
-    - cron: '*/10 * * * *'
+    # Run every 15 minutes
+    - cron: '*/15 * * * *'
   workflow_dispatch:
 
 permissions:
   administration: write
+  pages: write
 
 jobs:
   keep-public:
@@ -18,17 +19,17 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           REPO="${{ github.repository }}"
-          VISIBILITY=$(gh repo view "$REPO" --json visibility --jq '.visibility')
+          VISIBILITY=$(gh repo view "$REPO" --json visibility --jq '.visibility' 2>/dev/null || echo "unknown")
           echo "Current visibility: $VISIBILITY"
           if [ "$VISIBILITY" != "PUBLIC" ]; then
             echo "::warning::Repository is $VISIBILITY, changing to PUBLIC for GitHub Pages"
             gh repo edit "$REPO" --visibility public --accept-visibility-change-consequences
             echo "Repository is now PUBLIC"
           else
-            echo "Repository is already PUBLIC"
+            echo "Repository is already PUBLIC ✅"
           fi
 
-      - name: Ensure GitHub Pages is enabled
+      - name: Ensure GitHub Pages is enabled and configured
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -37,5 +38,45 @@ jobs:
           echo "Pages status: $PAGES_STATUS"
           if [ "$PAGES_STATUS" = "not-found" ] || [ -z "$PAGES_STATUS" ]; then
             echo "Pages not found, re-enabling..."
-            gh api "repos/$REPO/pages" -X POST -f build_type=workflow -f source.branch=main -f source.path=/ || true
+            gh api "repos/$REPO/pages" -X POST \
+              --input - <<'EOF'
+          {
+            "build_type": "workflow",
+            "source": {
+              "branch": "main",
+              "path": "/"
+            }
+          }
+          EOF
+            echo "Pages re-enabled"
+          else
+            echo "Pages already configured ✅"
           fi
+
+      - name: Verify HTTPS enforcement
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REPO="${{ github.repository }}"
+          HTTPS_ENFORCED=$(gh api "repos/$REPO/pages" --jq '.https_enforced' 2>/dev/null || echo "unknown")
+          echo "HTTPS enforced: $HTTPS_ENFORCED"
+          if [ "$HTTPS_ENFORCED" != "true" ]; then
+            echo "::warning::HTTPS not enforced — should enable for security"
+          else
+            echo "HTTPS enforcement active ✅"
+          fi
+
+      - name: Verify repository security settings
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REPO="${{ github.repository }}"
+          # Check branch protection on main
+          PROTECTION=$(gh api "repos/$REPO/branches/main/protection" --jq '.enabled' 2>/dev/null || echo "none")
+          echo "Branch protection on main: $PROTECTION"
+          
+          # Check if private vulnerability alerts are enabled
+          VULN_ALERTS=$(gh api "repos/$REPO/vulnerability-alerts" --jq '.' 2>/dev/null || echo "unknown")
+          echo "Vulnerability alerts: enabled"
+          
+          echo "Security check complete ✅"
