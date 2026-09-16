@@ -192,7 +192,7 @@ img {
 }
 
 /* ═══════════════════════════════════════════
-   NAVIGATION — Clean editorial bar
+   NAVIGATION — Professional editorial bar
    ═══════════════════════════════════════════ */
 .nav {
   display: flex;
@@ -220,6 +220,7 @@ img {
   align-items: center;
   gap: var(--space-2);
   transition: opacity var(--duration-fast);
+  white-space: nowrap;
 }
 
 .nav-brand:hover {
@@ -229,15 +230,15 @@ img {
 
 .nav-links {
   display: flex;
-  gap: var(--space-1);
+  gap: var(--space-2);
   align-items: center;
 }
 
 .nav-links a {
   color: var(--text-secondary);
   font-weight: 500;
-  font-size: 0.9rem;
-  padding: var(--space-2) var(--space-3);
+  font-size: 0.88rem;
+  padding: 7px 14px;
   border-radius: var(--radius-sm);
   transition: all var(--duration-fast) var(--ease-out);
   position: relative;
@@ -252,6 +253,77 @@ img {
   color: var(--purple);
   background: var(--pink-light);
   font-weight: 600;
+}
+
+/* CTA Submit button in nav */
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--purple) !important;
+  color: var(--text-inverse) !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  padding: 8px 18px !important;
+  border-radius: var(--radius-full) !important;
+  transition: all var(--duration-fast) var(--ease-out) !important;
+  box-shadow: 0 2px 8px rgba(106, 73, 148, 0.25);
+}
+
+.nav-cta:hover {
+  background: var(--purple-deep) !important;
+  color: var(--text-inverse) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(106, 73, 148, 0.35) !important;
+}
+
+.nav-cta.active {
+  background: var(--purple-deep) !important;
+  color: var(--text-inverse) !important;
+  box-shadow: 0 2px 8px rgba(106, 73, 148, 0.25) !important;
+}
+
+/* Hamburger toggle (mobile) */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  transition: background var(--duration-fast);
+  z-index: 210;
+}
+
+.nav-toggle:hover {
+  background: var(--pink-light);
+}
+
+.nav-toggle-bar {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: all var(--duration-normal) var(--ease-out);
+  transform-origin: center;
+}
+
+/* Hamburger → X animation */
+.nav-toggle.open .nav-toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-toggle.open .nav-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+.nav-toggle.open .nav-toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 /* ── Language Dropdown ── */
@@ -1270,9 +1342,48 @@ img {
     font-size: 0.95rem;
   }
 
+  /* Show hamburger, hide desktop links */
+  .nav-toggle {
+    display: flex;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 56px;
+    right: 0;
+    bottom: 0;
+    width: 280px;
+    flex-direction: column;
+    align-items: stretch;
+    padding: var(--space-5);
+    gap: var(--space-2);
+    background: rgba(253, 249, 240, 0.98);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-left: 1px solid var(--border-light);
+    transform: translateX(100%);
+    transition: transform var(--duration-normal) var(--ease-out);
+    z-index: 200;
+    box-shadow: -4px 0 24px rgba(0,0,0,0.08);
+  }
+
+  .nav-links.open {
+    transform: translateX(0);
+  }
+
   .nav-links a {
-    font-size: 0.82rem;
-    padding: var(--space-1) var(--space-2);
+    font-size: 0.95rem;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    text-align: left;
+  }
+
+  .nav-cta {
+    margin-top: var(--space-2) !important;
+    justify-content: center !important;
+    padding: 12px var(--space-4) !important;
+    font-size: 0.95rem !important;
+    border-radius: var(--radius-md) !important;
   }
 
   .hero {
@@ -1371,6 +1482,23 @@ img {
 
   .recipe-actions {
     flex-direction: column;
+  }
+
+  /* Nav overlay backdrop (mobile) */
+  .nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    top: 56px;
+    background: rgba(0,0,0,0.25);
+    z-index: 199;
+    opacity: 0;
+    transition: opacity var(--duration-normal) var(--ease-out);
+  }
+
+  .nav-overlay.open {
+    display: block;
+    opacity: 1;
   }
 }
 

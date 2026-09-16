@@ -24,9 +24,15 @@
   <a href="./" class="nav-brand" data-i18n="navBrand">🥟 Dumpling Festival Rivierenbuurt</a>
   <div class="nav-links">
     <a href="./" data-i18n="navBrowse">Browse</a>
-    <a href="./submit.html" data-i18n="navSubmit">Submit</a>
+    <a href="./submit.html" class="nav-cta" data-i18n="navSubmit">＋ Submit Recipe</a>
   </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+    <span class="nav-toggle-bar"></span>
+    <span class="nav-toggle-bar"></span>
+    <span class="nav-toggle-bar"></span>
+  </button>
 </nav>
+<div class="nav-overlay" id="navOverlay"></div>
 
 <main class="recipe-detail" id="main">
   <div style="text-align:center;margin-bottom:16px;">
@@ -307,6 +313,32 @@ const lang = window.i18n.detectLanguage();
 window.i18n.setLanguage(lang);
 buildLangDropdown();
 renderRecipe();
+</script>
+<script>
+// Mobile hamburger nav toggle
+(function() {
+  const toggle = document.getElementById('navToggle');
+  const links = document.querySelector('.nav-links');
+  const overlay = document.getElementById('navOverlay');
+  if (!toggle || !links) return;
+  function closeNav() {
+    toggle.classList.remove('open');
+    links.classList.remove('open');
+    if (overlay) overlay.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+  toggle.addEventListener('click', function() {
+    const isOpen = toggle.classList.contains('open');
+    if (isOpen) { closeNav(); } else {
+      toggle.classList.add('open');
+      links.classList.add('open');
+      if (overlay) overlay.classList.add('open');
+      toggle.setAttribute('aria-expanded', 'true');
+    }
+  });
+  if (overlay) overlay.addEventListener('click', closeNav);
+  links.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeNav); });
+})();
 </script>
 </body>
 </html>
