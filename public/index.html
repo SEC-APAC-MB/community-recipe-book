@@ -81,7 +81,7 @@
 </footer>
 
 <script>
-// ── Recipe Store: recipes.json (primary) → IndexedDB (cache) → demo seed (fallback) ──
+// ── Recipe Store: recipes.json (primary) → IndexedDB (offline cache) ──
 const DB_NAME = 'CommunityRecipeBook';
 const DB_VERSION = 1;
 const STORE_NAME = 'recipes';
@@ -153,7 +153,7 @@ async function getAllRecipes() {
     if (dbRecipes.length > 0) return dbRecipes;
   } catch (err) { console.warn('IndexedDB read failed:', err); }
 
-  // 3. Last resort: demo seed (inline)
+  // IndexedDB is now just an offline cache; recipes.json is the source of truth.
   return [];
 }
 

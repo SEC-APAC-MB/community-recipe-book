@@ -1,24 +1,10 @@
 {
   "name": "community-recipe-book",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "🥟 Community Recipe Book — share recipes, search, discover",
-  "main": "server.js",
+  "private": true,
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
-    "build": "node scripts/build.js"
-  },
-  "dependencies": {
-    "express": "^5.2.1",
-    "fuse.js": "^7.0.0",
-    "marked": "^14.0.0",
-    "multer": "^2.2.0",
-    "sanitize-html": "^2.13.0",
-    "sharp": "^0.35.4",
-    "sql.js": "^1.11.0"
-  },
-  "engines": {
-    "node": ">=18.0.0"
+    "test": "echo \"Static site — no tests configured\" && exit 0"
   },
   "license": "MIT"
 }
