@@ -17,59 +17,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Security check: ensure repo is public and Pages is configured
-  verify-public:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Ensure repository is public
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          REPO="${{ github.repository }}"
-          VISIBILITY=$(gh repo view "$REPO" --json visibility --jq '.visibility' 2>/dev/null || echo "unknown")
-          echo "Repository visibility: $VISIBILITY"
-          if [ "$VISIBILITY" != "PUBLIC" ]; then
-            echo "::warning::Repository is $VISIBILITY — GitHub Pages on free plan requires public visibility"
-          fi
-
-      - name: Ensure GitHub Pages is enabled
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          REPO="${{ github.repository }}"
-          # Check if Pages is configured
-          PAGES_STATUS=$(gh api "repos/$REPO/pages" --jq '.status' 2>/dev/null || echo "not-found")
-          echo "Pages status: $PAGES_STATUS"
-          if [ "$PAGES_STATUS" = "not-found" ] || [ -z "$PAGES_STATUS" ]; then
-            echo "Pages not configured, enabling..."
-            gh api "repos/$REPO/pages" -X POST \
-              --input - <<'EOF'
-          {
-            "build_type": "workflow",
-            "source": {
-              "branch": "main",
-              "path": "/"
-            }
-          }
-          EOF
-            echo "Pages enabled"
-          else
-            echo "Pages already configured"
-          fi
-
-      - name: Verify HTTPS enforcement
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          REPO="${{ github.repository }}"
-          HTTPS_ENFORCED=$(gh api "repos/$REPO/pages" --jq '.https_enforced' 2>/dev/null || echo "unknown")
-          echo "HTTPS enforced: $HTTPS_ENFORCED"
-          if [ "$HTTPS_ENFORCED" != "true" ]; then
-            echo "::warning::HTTPS not enforced on Pages"
-          fi
-
   build:
-    needs: verify-public
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

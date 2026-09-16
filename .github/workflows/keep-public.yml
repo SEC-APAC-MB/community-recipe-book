@@ -1,4 +1,4 @@
-name: Keep Repository Public and Pages Secure
+name: Keep Repository Public and Secure
 
 on:
   schedule:
@@ -9,9 +9,10 @@ on:
 permissions:
   administration: write
   pages: write
+  id-token: write
 
 jobs:
-  keep-public:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - name: Ensure repository is public
@@ -20,13 +21,13 @@ jobs:
         run: |
           REPO="${{ github.repository }}"
           VISIBILITY=$(gh repo view "$REPO" --json visibility --jq '.visibility' 2>/dev/null || echo "unknown")
-          echo "Current visibility: $VISIBILITY"
+          echo "Repository visibility: $VISIBILITY"
           if [ "$VISIBILITY" != "PUBLIC" ]; then
-            echo "::warning::Repository is $VISIBILITY, changing to PUBLIC for GitHub Pages"
+            echo "::warning::Repository is $VISIBILITY — changing to PUBLIC"
             gh repo edit "$REPO" --visibility public --accept-visibility-change-consequences
-            echo "Repository is now PUBLIC"
+            echo "✅ Repository set to PUBLIC"
           else
-            echo "Repository is already PUBLIC ✅"
+            echo "✅ Repository is PUBLIC"
           fi
 
       - name: Ensure GitHub Pages is enabled and configured
@@ -37,7 +38,7 @@ jobs:
           PAGES_STATUS=$(gh api "repos/$REPO/pages" --jq '.status' 2>/dev/null || echo "not-found")
           echo "Pages status: $PAGES_STATUS"
           if [ "$PAGES_STATUS" = "not-found" ] || [ -z "$PAGES_STATUS" ]; then
-            echo "Pages not found, re-enabling..."
+            echo "⚠️ Pages not configured — enabling..."
             gh api "repos/$REPO/pages" -X POST \
               --input - <<'EOF'
           {
@@ -48,9 +49,9 @@ jobs:
             }
           }
           EOF
-            echo "Pages re-enabled"
+            echo "✅ Pages enabled"
           else
-            echo "Pages already configured ✅"
+            echo "✅ Pages already configured"
           fi
 
       - name: Verify HTTPS enforcement
@@ -61,22 +62,21 @@ jobs:
           HTTPS_ENFORCED=$(gh api "repos/$REPO/pages" --jq '.https_enforced' 2>/dev/null || echo "unknown")
           echo "HTTPS enforced: $HTTPS_ENFORCED"
           if [ "$HTTPS_ENFORCED" != "true" ]; then
-            echo "::warning::HTTPS not enforced — should enable for security"
+            echo "::warning::HTTPS not enforced on Pages — should enable for security"
           else
-            echo "HTTPS enforcement active ✅"
+            echo "✅ HTTPS enforcement active"
           fi
 
-      - name: Verify repository security settings
+      - name: Verify site is live
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          REPO="${{ github.repository }}"
-          # Check branch protection on main
-          PROTECTION=$(gh api "repos/$REPO/branches/main/protection" --jq '.enabled' 2>/dev/null || echo "none")
-          echo "Branch protection on main: $PROTECTION"
-          
-          # Check if private vulnerability alerts are enabled
-          VULN_ALERTS=$(gh api "repos/$REPO/vulnerability-alerts" --jq '.' 2>/dev/null || echo "unknown")
-          echo "Vulnerability alerts: enabled"
-          
-          echo "Security check complete ✅"
+          SITE_URL="https://sec-apac-mb.github.io/community-recipe-book/"
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$SITE_URL" 2>/dev/null || echo "000")
+          echo "Site HTTP status: $HTTP_CODE"
+          if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "301" ] || [ "$HTTP_CODE" = "302" ]; then
+            echo "✅ Site is live"
+          else
+            echo "⚠️ Site returned HTTP $HTTP_CODE — triggering deployment"
+            gh workflow run pages.yml --repo "${{ github.repository }}" 2>/dev/null || true
+          fi
